@@ -7,154 +7,154 @@ public class Meta{
 	public static String _chs = "";
 	public static String value="";
 	public static String  documentStatistics="<meta:document-statistics";
-	
+
 	public static void process_start(String qName,Attributes atts){
 
 		String result = "";
-		if(qName.equals("uof:ÔªÊı¾İ")){
+		if(qName.equals("uof:å…ƒæ•°æ®")){
 			result +="<office:meta>";
 		}
 		if (qName.equals("meta:generator")){
-			result +="<uof:´´½¨Ó¦ÓÃ³ÌĞò>";
+			result +="<uof:åˆ›å»ºåº”ç”¨ç¨‹åº>";
 		}
-		if(qName.equals("uof:±êÌâ")){
+		if(qName.equals("uof:æ ‡é¢˜")){
 			result +="<dc:title>";
 		}
-		if(qName.equals("uof:ÕªÒª")){
+		if(qName.equals("uof:æ‘˜è¦")){
 			result +="<dc:description>";
 		}
-		if(qName.equals("uof:Ö÷Ìâ")){
+		if(qName.equals("uof:ä¸»é¢˜")){
 			result +="<dc:subject>";
 		}
-		if(qName.equals("uof:¹Ø¼ü×Ö")){
+		if(qName.equals("uof:å…³é”®å­—")){
 			result +="<meta:keyword>";
 		}
-		if(qName.equals("uof:´´½¨Õß")){
+		if(qName.equals("uof:åˆ›å»ºè€…")){
 			result +="<meta:initial-creator>";
 		}
-		if(qName.equals("uof:×÷Õß")){
+		if(qName.equals("uof:ä½œè€…")){
 			result +="<dc:creator>";
 		}
-		if(qName.equals("uof:×îºó×÷Õß")){
+		if(qName.equals("uof:æœ€åä½œè€…")){
 			result +="<meta:printed-by>";
 		}
-		if(qName.equals("uof:´´½¨ÈÕÆÚ")){
+		if(qName.equals("uof:åˆ›å»ºæ—¥æœŸ")){
 			result +="<meta:creation-date>";
 		}
-		if(qName.equals("uof:±à¼­´ÎÊı")){
+		if(qName.equals("uof:ç¼–è¾‘æ¬¡æ•°")){
 			result +="<meta:editing-cycles>";
 		}
-		if(qName.equals("uof:±à¼­Ê±¼ä")){
+		if(qName.equals("uof:ç¼–è¾‘æ—¶é—´")){
 			result +="<meta:editing-duration>";
 		}
-		if(qName.equals("uof:ÎÄµµÄ£°æ")){//meta:template»¹ÓĞÒ»Ğ©ÊôĞÔ²»ÖªµÀÔõÑù¶ÔÓ¦
+		if(qName.equals("uof:æ–‡æ¡£æ¨¡ç‰ˆ")){//meta:templateè¿˜æœ‰ä¸€äº›å±æ€§ä¸çŸ¥é“æ€æ ·å¯¹åº”
 			result +="<meta:template>";
 		}
-		
-		//"<meta:document-statistics"ÔõÑù´¦Àí
-		if(qName.equals("uof:ÓÃ»§×Ô¶¨ÒåÔªÊı¾İ")){
+
+		//"<meta:document-statistics"æ€æ ·å¤„ç†
+		if(qName.equals("uof:ç”¨æˆ·è‡ªå®šä¹‰å…ƒæ•°æ®")){
 			result +="<meta:user-defined";
-			if((value=atts.getValue("uof:Ãû³Æ"))!=null){
+			if((value=atts.getValue("uof:åç§°"))!=null){
 				result+=" meta:name=\"" + value +"\"";
 			}
-			if((value=atts.getValue("uof:ÀàĞÍ"))!=null){
+			if((value=atts.getValue("uof:ç±»å‹"))!=null){
 				result+=" meta:type=\"" + value +"\"";
 			}
 			result+=">";
-			
+
 		}
-		if(qName.equals("uof:Ò³Êı")){
+		if(qName.equals("uof:é¡µæ•°")){
 			documentStatistics +=" meta:page-coun=\"";
 		}
-		if(qName.equals("uof:¶ÎÂäÊı")){
+		if(qName.equals("uof:æ®µè½æ•°")){
 			//documentStatistics +=" meta:paragraph-count=\"";
 			documentStatistics +=" meta:paragraph-count=\"";
 		}
-		if(qName.equals("uof:×ÖÊı")){
+		if(qName.equals("uof:å­—æ•°")){
 			documentStatistics +=" meta:word-count=\"";
 		}
-		if(qName.equals("uof:Ó¢ÎÄ×Ö·ûÊı")){
+		if(qName.equals("uof:è‹±æ–‡å­—ç¬¦æ•°")){
 			documentStatistics +=" meta:character-count=\"";
 		}
-		if(qName.equals("uof:ĞĞÊı")){
+		if(qName.equals("uof:è¡Œæ•°")){
 			documentStatistics +=" meta:row-count=\"";
 		}
-		if(qName.equals("uof:¶ÔÏóÊı")){
+		if(qName.equals("uof:å¯¹è±¡æ•°")){
 			documentStatistics +=" meta:object-count=\"";
 		}
-	
+
 		Results_Writer.processMetaResult(result);
 	}
-	
+
 	public static void process_chars(String chs){
 		_chs = chs;
 	}
 	public static void process_end(String qName){
 		String result = "";
-		if(qName.equals("uof:ÔªÊı¾İ")){
+		if(qName.equals("uof:å…ƒæ•°æ®")){
 			Results_Writer.processMetaResult(documentStatistics + "/>");
 			result += _chs +"</office:meta>";
 		}
-		if (qName .equals("meta:generator")){ 
-			result += _chs +"</uof:´´½¨Ó¦ÓÃ³ÌĞò>";
+		if (qName .equals("meta:generator")){
+			result += _chs +"</uof:åˆ›å»ºåº”ç”¨ç¨‹åº>";
 		}
-		if(qName.equals("uof:±êÌâ")){
+		if(qName.equals("uof:æ ‡é¢˜")){
 			result += _chs +"</dc:title>";
 		}
-		if(qName.equals("uof:ÕªÒª")){
+		if(qName.equals("uof:æ‘˜è¦")){
 			result += _chs +"</dc:description>";
 		}
-		if(qName.equals("uof:Ö÷Ìâ")){
+		if(qName.equals("uof:ä¸»é¢˜")){
 			result += _chs +"</dc:subject>";
 		}
-		if(qName.equals("uof:¹Ø¼ü×Ö")){
+		if(qName.equals("uof:å…³é”®å­—")){
 			result += _chs +"</meta:keyword>";
 		}
-		if(qName.equals("uof:´´½¨Õß")){
+		if(qName.equals("uof:åˆ›å»ºè€…")){
 			result += _chs +"</meta:initial-creator>";
 		}
-		if(qName.equals("uof:×÷Õß")){
+		if(qName.equals("uof:ä½œè€…")){
 			result +="</dc:creator>";
 		}
-		if(qName.equals("uof:×îºó×÷Õß")){
+		if(qName.equals("uof:æœ€åä½œè€…")){
 			result += _chs +"</meta:printed-by>";
 		}
-		if(qName.equals("uof:´´½¨ÈÕÆÚ")){
+		if(qName.equals("uof:åˆ›å»ºæ—¥æœŸ")){
 			result += _chs +"</meta:creation-date>";
 		}
-		if(qName.equals("uof:±à¼­´ÎÊı")){
+		if(qName.equals("uof:ç¼–è¾‘æ¬¡æ•°")){
 			result += _chs +"</meta:editing-cycles>";
 		}
-		if(qName.equals("uof:±à¼­Ê±¼ä")){
+		if(qName.equals("uof:ç¼–è¾‘æ—¶é—´")){
 			result += _chs +"</meta:editing-duration>";
 		}
-		if(qName.equals("uof:ÎÄµµÄ£°æ")){//meta:template»¹ÓĞÒ»Ğ©ÊôĞÔ²»ÖªµÀÔõÑù¶ÔÓ¦
+		if(qName.equals("uof:æ–‡æ¡£æ¨¡ç‰ˆ")){//meta:templateè¿˜æœ‰ä¸€äº›å±æ€§ä¸çŸ¥é“æ€æ ·å¯¹åº”
 			result +="</meta:template>";
 		}
-		
-		if(qName.equals("uof:Ò³Êı")){
+
+		if(qName.equals("uof:é¡µæ•°")){
 			documentStatistics +=( _chs +"\"");
 		}
-		if(qName.equals("uof:¶ÎÂäÊı")){
+		if(qName.equals("uof:æ®µè½æ•°")){
 			documentStatistics +=( _chs +"\"");
 		}
-		if(qName=="uof:¶ÔÏóÊı"){
+		if(qName=="uof:å¯¹è±¡æ•°"){
 			documentStatistics  +=( _chs +"\"");
 		}
-		if(qName.equals("uof:×ÖÊı")){
+		if(qName.equals("uof:å­—æ•°")){
 			documentStatistics +=( _chs +"\"");
 		}
-		if(qName.equals("uof:Ó¢ÎÄ×Ö·ûÊı")){
+		if(qName.equals("uof:è‹±æ–‡å­—ç¬¦æ•°")){
 			documentStatistics +=( _chs +"\"");
 		}
-		if(qName.equals("uof:ĞĞÊı")){
+		if(qName.equals("uof:è¡Œæ•°")){
 			documentStatistics +=( _chs +"\"");
 		}
-		if(qName.equals("uof:ÓÃ»§×Ô¶¨ÒåÔªÊı¾İ")){
+		if(qName.equals("uof:ç”¨æˆ·è‡ªå®šä¹‰å…ƒæ•°æ®")){
 			result +=(_chs+"</meta:user-defined>");
 		}
 		_chs = "";
 		Results_Writer.processMetaResult(result);
 	}
-	
+
 }

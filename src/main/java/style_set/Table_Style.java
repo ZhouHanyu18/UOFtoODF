@@ -9,13 +9,13 @@ import convertor.IDGenerator;
 
 /**
  * Create a <style:style> which style:family
- * is "table" for <uof:ÎÄ×Ö±íÊ½Ñù> / <×Ö:ÎÄ×Ö±íÊôĞÔ>
- * in <text> or <±í:¹¤×÷±í> in <spreadsheet>
+ * is "table" for <uof:æ–‡å­—è¡¨å¼æ ·> / <å­—:æ–‡å­—è¡¨å±æ€§>
+ * in <text> or <è¡¨:å·¥ä½œè¡¨> in <spreadsheet>
  * @author xie
  *
  */
-public class Table_Style {	
-	private static String _chs = "";   	
+public class Table_Style {
+	private static String _chs = "";
 
 	//attributes of <style:style>
 	private static String _ele_atts = "";
@@ -23,9 +23,9 @@ public class Table_Style {
 	private static String _table_pro = "";
 	//"default" type of table-style in UOF,
 	//this type of style goes to styles.xml
-	private static boolean _is_default = false; 
+	private static boolean _is_default = false;
 	//table name
-	private static String _table_id = "";   
+	private static String _table_id = "";
 	//parent table name
 	private static String _parent = "";
 	//
@@ -34,19 +34,19 @@ public class Table_Style {
 	private static String _table_styles = "";
 	//store <table coounter,table id>
 	//pairs for <spreadsheet>
-	private static Map<Integer,String> 
-		_sheet_tab_map = new TreeMap<Integer,String>();	
+	private static Map<Integer,String>
+		_sheet_tab_map = new TreeMap<Integer,String>();
 	//Store <table:column>-elements associated
 	// with a table id.For <text>
-	private static Map<String,String> 
+	private static Map<String,String>
 		_table_cols = new TreeMap<String,String>();
-	
-	
+
+
 	//initialize
 	public static void init(){
 		_table_counter = 0;
 	}
-	
+
 	private static void clear(){
 		_ele_atts = "";
 		_table_pro = "";
@@ -54,19 +54,19 @@ public class Table_Style {
 		_table_id = "";
 		_parent = "";
 	}
-	
+
 	//Return <table:column>-elements for the specified table
 	public static String get_columns(String tableID){
 		return _table_cols.get(tableID);
 	}
-	
+
 	public static String get_tab_id(int counter){
 		return _sheet_tab_map.get(counter);
 	}
-	
+
 	private static String get_one_style(){
 		String rst = "";
-		
+
 		rst = "<style:style style:family=\"table\"" + _ele_atts + ">";
 		rst += "<style:table-properties" + _table_pro + "/>";
 		rst += "</style:style>";
@@ -74,136 +74,136 @@ public class Table_Style {
 		clear();
 		return rst;
 	}
-	
+
 	public static String get_result(){
 		String rst = "";
-		
+
 		if(Common_Data.get_file_type().equals("text")){
 			rst = _table_styles;
 		}
 		else if(Common_Data.get_file_type().equals("spreadsheet")){
 			rst = _table_styles;
 		}
-		
+
 		_table_styles = "";
 		return rst;
 	}
-	
+
 	public static void process_sheet_atts(String qName, Attributes atts){
 		String attVal = "";
 		String tableAtt = "";
 		String styleName = "";
-		
-		if(qName.equals("±í:¹¤×÷±í")){
+
+		if(qName.equals("è¡¨:å·¥ä½œè¡¨")){
 			_table_counter ++;
 			styleName = "ta" + _table_counter;
-			
-			if((attVal=atts.getValue("±í:Òş²Ø"))!=null){
+
+			if((attVal=atts.getValue("è¡¨:éšè—"))!=null){
 				if(attVal.equals("false")){
 					tableAtt += " table:display=\"true\"";
 				}else{
 					tableAtt += " table:display=\"false\"";
 				}
 			}
-			
-			if((attVal=atts.getValue("±í:±³¾°"))!=null){
-				tableAtt += " fo:background-color=\"" 
+
+			if((attVal=atts.getValue("è¡¨:èƒŒæ™¯"))!=null){
+				tableAtt += " fo:background-color=\""
 					+ attVal + "\"";
 			}
-			
+
 			if(!tableAtt.equals("")){
 				String style = "";
-				style = "<style:style style:name=\"" + styleName 
+				style = "<style:style style:name=\"" + styleName
 				+ "\" style:family=\"table\">";
 				style += "<style:table-properties" + tableAtt + "/>";
 				style += "</style:style>";
-				
+
 				_table_styles += style;
 				_sheet_tab_map.put(_table_counter, styleName);
 			}
 		}
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if (qName.equals("uof:ÎÄ×Ö±íÊ½Ñù")) {
-			attVal = atts.getValue("×Ö:ÀàĞÍ");
+
+		if (qName.equals("uof:æ–‡å­—è¡¨å¼æ ·")) {
+			attVal = atts.getValue("å­—:ç±»å‹");
 			attVal = (attVal==null) ? "" : attVal;
-			
+
 			if(attVal.equals("default") || attVal.equals("custom")){
 				_is_default = true;
 			}
-			
-			if ((attVal = atts.getValue("×Ö:±êÊ¶·û")) != null){
+
+			if ((attVal = atts.getValue("å­—:æ ‡è¯†ç¬¦")) != null){
 				_ele_atts += " style:name=\"" + attVal + "\"";
 				_table_id = attVal;
 			}
-			if ((attVal = atts.getValue("×Ö:»ùÊ½ÑùÒıÓÃ")) != null){
+			if ((attVal = atts.getValue("å­—:åŸºå¼æ ·å¼•ç”¨")) != null){
 				_ele_atts += " style:parent-style-name=\"" + attVal + "\"";
 				_parent = attVal;
 			}
-			if((attVal = atts.getValue("×Ö:±ğÃû")) != null){
-				_ele_atts += " style:display-name=\"" + attVal + "\"";				
-			}	
+			if((attVal = atts.getValue("å­—:åˆ«å")) != null){
+				_ele_atts += " style:display-name=\"" + attVal + "\"";
+			}
 		}
-		else if(qName.equals("×Ö:ÎÄ×Ö±íÊôĞÔ")){
+		else if(qName.equals("å­—:æ–‡å­—è¡¨å±æ€§")){
 			_table_id = IDGenerator.get_table_id();
 			_ele_atts += " style:name=\"" + _table_id + "\"";
-			
-			if ((attVal = atts.getValue("×Ö:Ê½ÑùÒıÓÃ")) != null){
+
+			if ((attVal = atts.getValue("å­—:å¼æ ·å¼•ç”¨")) != null){
 				_ele_atts += " style:parent-style-name=\"" + attVal + "\"";
 				_parent = "";
 			}
 		}
-		else if (qName.equals("×Ö:¿í¶È")) {
-			if((attVal=atts.getValue("×Ö:¾ø¶Ô¿í¶È")) != null){
+		else if (qName.equals("å­—:å®½åº¦")) {
+			if((attVal=atts.getValue("å­—:ç»å¯¹å®½åº¦")) != null){
 				_table_pro += " style:width=\"" + attVal
 						+ Common_Data.get_unit() + "\"";
 			}
-			//To do:Ïà¶Ô¿í¶ÈÁ½¸ö±ê×¼µÄ±íÊ¾·¨²»Ò»Ñù
-			if (atts.getValue("×Ö:Ïà¶Ô¿í¶È") != null)
+			//To do:ç›¸å¯¹å®½åº¦ä¸¤ä¸ªæ ‡å‡†çš„è¡¨ç¤ºæ³•ä¸ä¸€æ ·
+			if (atts.getValue("å­—:ç›¸å¯¹å®½åº¦") != null)
 				_table_pro += " style:rel-width=\""
-					+ atts.getValue("×Ö:Ïà¶Ô¿í¶È") + "\"";			
+					+ atts.getValue("å­—:ç›¸å¯¹å®½åº¦") + "\"";
 		}
-		else if (qName.equals("×Ö:ÁĞ¿í")) {
+		else if (qName.equals("å­—:åˆ—å®½")) {
 			//nothing todo
 		}
-		else if (qName.equals("×Ö:¶ÔÆë")) {
-			
+		else if (qName.equals("å­—:å¯¹é½")) {
+
 		}
-		else if (qName.equals("×Ö:±ß¾à")) {
-			if ((attVal=atts.getValue("×Ö:ÉÏ")) != null){
+		else if (qName.equals("å­—:è¾¹è·")) {
+			if ((attVal=atts.getValue("å­—:ä¸Š")) != null){
 				_table_pro += " fo:margin-top=\"" + attVal + "\"";
 			}
-			else if ((attVal=atts.getValue("×Ö:×ó")) != null){
+			else if ((attVal=atts.getValue("å­—:å·¦")) != null){
 				//_table_pro += " fo:margin-left=\"" + attVal + "\"";
 			}
-			else if ((attVal=atts.getValue("×Ö:ÓÒ")) != null){
+			else if ((attVal=atts.getValue("å­—:å³")) != null){
 				_table_pro += " fo:margin-right=\"" + attVal + "\"";
 			}
-			else if ((attVal=atts.getValue("×Ö:ÏÂ")) != null){
+			else if ((attVal=atts.getValue("å­—:ä¸‹")) != null){
 				_table_pro += " fo:margin-bottom=\"" + attVal + "\"";
-			}		
+			}
 		}
-		
-		else if (qName.equals("×Ö:Í¼Æ¬")) {
-			//ËÆºõÎŞ¶ÔÓ¦
+
+		else if (qName.equals("å­—:å›¾ç‰‡")) {
+			//ä¼¼ä¹æ— å¯¹åº”
 		}
-		else if (qName.equals("×Ö:Í¼°¸")) {
-			//ËÆºõÎŞ¶ÔÓ¦
+		else if (qName.equals("å­—:å›¾æ¡ˆ")) {
+			//ä¼¼ä¹æ— å¯¹åº”
 		}
-		else if (qName.equals("×Ö:½¥±ä")) {
-			//ËÆºõÎŞ¶ÔÓ¦
-		}		
+		else if (qName.equals("å­—:æ¸å˜")) {
+			//ä¼¼ä¹æ— å¯¹åº”
+		}
 	}
-	
-	public static void process_chars(String chs){		
+
+	public static void process_chars(String chs){
 		_chs = chs;
 	}
-	
+
 	public static void process_end(String qName){
-		if (qName.equals("uof:ÎÄ×Ö±íÊ½Ñù") || qName.equals("×Ö:ÎÄ×Ö±íÊôĞÔ")) {
+		if (qName.equals("uof:æ–‡å­—è¡¨å¼æ ·") || qName.equals("å­—:æ–‡å­—è¡¨å±æ€§")) {
 			//store <table:column> elements for the table
 			String cols = Table_Column.get_table_cols();
 			if(cols.equals("") && !_parent.equals("")){
@@ -211,9 +211,9 @@ public class Table_Style {
 				cols = _table_cols.get(_parent);
 				cols = (cols==null) ? "" : cols;
 			}
-			
+
 			_table_cols.put(_table_id, cols);
-			
+
 			if(_is_default){
 				//"default" type of style goes to styles.xml
 				Stored_Data.addStylesInStylesXml(get_one_style());
@@ -222,20 +222,20 @@ public class Table_Style {
 				_table_styles += get_one_style();
 			}
 		}
-		else if(qName.equals("×Ö:×óËõ½ø")){
-			_table_pro +=" fo:margin-left=\"" 
+		else if(qName.equals("å­—:å·¦ç¼©è¿›")){
+			_table_pro +=" fo:margin-left=\""
 				+ _chs + Common_Data.get_unit()+ "\"";
 		}
-		else if (qName.equals("×Ö:ÁĞ¿í")) {
+		else if (qName.equals("å­—:åˆ—å®½")) {
 			Table_Column.process_text_col(_chs);
 		}
-		else if (qName.equals("×Ö:¶ÔÆë")) {
-			_table_pro += " table:align=\"" + _chs + "\""; 
+		else if (qName.equals("å­—:å¯¹é½")) {
+			_table_pro += " table:align=\"" + _chs + "\"";
 		}
-		else if (qName.equals("×Ö:ÑÕÉ«")) {
+		else if (qName.equals("å­—:é¢œè‰²")) {
 			_table_pro += " fo:background-color=\"" + _chs + "\"";
 		}
-		
-		_chs = "";   
+
+		_chs = "";
 	}
 }

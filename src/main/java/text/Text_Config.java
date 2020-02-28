@@ -6,44 +6,44 @@ import style_set.Common_Pro;
 import temp_structs.Common_Data;
 
 /**
- * 
+ *
  * @author xie
  *
  */
 public class Text_Config {
 	//the result
 	private static String _result = "";
-		
+
 	public static String get_result(){
 		String tc = "";
-		
+
 		tc = _result;
 		_result = "";
-		
+
 		return tc;
 	}
-	
+
 	public static void process(String qName,Attributes atts){
 		String attVal = "";
 		String config = "";
-		
-		if(qName.equals("×Ö:Î²×¢ÉèÖÃ") || qName.equals("×Ö:½Å×¢ÉèÖÃ")){	
+
+		if(qName.equals("å­—:å°¾æ³¨è®¾ç½®") || qName.equals("å­—:è„šæ³¨è®¾ç½®")){
 			config = "<text:notes-configuration";
-			
-			if(qName.equals("×Ö:Î²×¢ÉèÖÃ")){
+
+			if(qName.equals("å­—:å°¾æ³¨è®¾ç½®")){
 				config += " text:note-class=\"endnote\"";
 			}
 			else{
 				config += " text:note-class=\"footnote\"";
 			}
-			
-			if((attVal = atts.getValue("×Ö:¸ñÊ½")) != null){
+
+			if((attVal = atts.getValue("å­—:æ ¼å¼")) != null){
 				config += " style:num-format=\"" + Common_Pro.conv_num_format(attVal) + "\"";
 			}
-			if((attVal = atts.getValue("×Ö:ÆğÊ¼±àºÅ")) != null){
+			if((attVal = atts.getValue("å­—:èµ·å§‹ç¼–å·")) != null){
 				config += " text:start-value=\"" + (Integer.parseInt(attVal)-1) + "\"";
 			}
-			if((attVal = atts.getValue("×Ö:Î»ÖÃ")) != null){
+			if((attVal = atts.getValue("å­—:ä½ç½®")) != null){
 				if(attVal.equals("page-bottom")){
 					config += " text:footnotes-position=\"page\"";
 				}
@@ -52,33 +52,33 @@ public class Text_Config {
 				}
 			}
 			config += "/>";
-			
+
 			_result += config;
 		}
-		
-		else if(qName.equals("×Ö:ĞĞºÅÉèÖÃ")){
+
+		else if(qName.equals("å­—:è¡Œå·è®¾ç½®")){
 			config = "<text:linenumbering-configuration";
-			
-			attVal = atts.getValue("×Ö:Ê¹ÓÃĞĞºÅ");
+
+			attVal = atts.getValue("å­—:ä½¿ç”¨è¡Œå·");
 			attVal = (attVal==null) ? "false" :attVal;
 			config += " text:number-lines=\"" + attVal + "\"";
-			
-			if((attVal = atts.getValue("×Ö:¾à±ß½ç")) != null){
+
+			if((attVal = atts.getValue("å­—:è·è¾¹ç•Œ")) != null){
 				config += " text:offset=\"" + attVal + Common_Data.get_unit() + "\"";
 			}
-			
-			if((attVal = atts.getValue("×Ö:ÆğÊ¼±àºÅ")) != null){
+
+			if((attVal = atts.getValue("å­—:èµ·å§‹ç¼–å·")) != null){
 				config += " text:start-value=\"" + (Integer.parseInt(attVal)-1) + "\"";
 			}
-			
+
 			config += " text:number-position=\"left\"";
-			
-			if((attVal = atts.getValue("×Ö:ĞĞºÅ¼ä¸ô")) != null){
+
+			if((attVal = atts.getValue("å­—:è¡Œå·é—´éš”")) != null){
 				config += " text:increment=\"" + attVal + "\"";
 			}
-			
+
 			config += "/>";
-			
+
 			_result += config;
 		}
 	}

@@ -16,70 +16,70 @@ public class Pre_ConvHandler extends DefaultHandler {
 	private String _style_name = "";
 
 
-	public void startElement(String namespaceURI, String localName, 
-			String qName, Attributes atts)throws SAXException {		
+	public void startElement(String namespaceURI, String localName,
+			String qName, Attributes atts)throws SAXException {
 		_qName = qName;
-		
-		if(qName.equals("uof:ÎÄ×Ö´¦Àí")){
+
+		if(qName.equals("uof:æ–‡å­—å¤„ç†")){
 			Common_Data.set_file_type("text");
 		}
-		else if(qName.equals("uof:µç×Ó±í¸ñ")){
+		else if(qName.equals("uof:ç”µå­è¡¨æ ¼")){
 			Common_Data.set_file_type("spreadsheet");
 		}
-		else if(qName.equals("uof:ÑİÊ¾ÎÄ¸å")){
+		else if(qName.equals("uof:æ¼”ç¤ºæ–‡ç¨¿")){
 			Common_Data.set_file_type("presentation");
 		}
-		else if(qName.equals("±í:¹¤×÷±í")){
-			HyperLink.add_table_name(atts.getValue("±í:Ãû³Æ"));
+		else if(qName.equals("è¡¨:å·¥ä½œè¡¨")){
+			HyperLink.add_table_name(atts.getValue("è¡¨:åç§°"));
 		}
-		
+
 		if(Common_Data.get_file_type().equals("presentation")){
-			if(qName.equals("Ñİ:Ä¸°æ")){
-				String type = atts.getValue("Ñİ:ÀàĞÍ");
+			if(qName.equals("æ¼”:æ¯ç‰ˆ")){
+				String type = atts.getValue("æ¼”:ç±»å‹");
 				if(type != null && type.equals("slide")){
-					Presentation_Style.set_master_name(atts.getValue("Ñİ:±êÊ¶·û"));
+					Presentation_Style.set_master_name(atts.getValue("æ¼”:æ ‡è¯†ç¬¦"));
 				}
 			}
-			else if(qName.equals("Ñİ:ÎÄ±¾Ê½Ñù¼¯")){
+			else if(qName.equals("æ¼”:æ–‡æœ¬å¼æ ·é›†")){
 				_present_style_tag = true;
 			}
 			else if(_present_style_tag){
-				if(qName.equals("uof:¶ÎÂäÊ½Ñù")){
-					_style_name = atts.getValue("×Ö:±êÊ¶·û");
+				if(qName.equals("uof:æ®µè½å¼æ ·")){
+					_style_name = atts.getValue("å­—:æ ‡è¯†ç¬¦");
 				}
 			}
 		}
 	}
-	
-	public void characters(char[] ch, int start, int length) throws SAXException  {	
+
+	public void characters(char[] ch, int start, int length) throws SAXException  {
 		String chs = new String(ch, start, length).trim();
-		
+
 		if(chs.equals(""))		return ;
-		
-		if(_qName.endsWith("¶ÈÁ¿µ¥Î»")){		
+
+		if(_qName.endsWith("åº¦é‡å•ä½")){
 			Common_Data.set_unit(chs);
 		}
-		else if(_present_style_tag && _qName.equals("×Ö:´ó¸Ù¼¶±ğ")){
+		else if(_present_style_tag && _qName.equals("å­—:å¤§çº²çº§åˆ«")){
 			Presentation_Style.put_ps_level(_style_name,Integer.parseInt(chs));
 		}
 	}
-	
+
 	public void endElement(String namespaceURI, String localName, String qName)
 	throws SAXException {
-		
+
 	}
-	
-	public void error(SAXParseException exception) 
+
+	public void error(SAXParseException exception)
 	{
 		System.err.println("Error parsing the file: "+exception.getMessage());
 	}
-	
-	public void warning(SAXParseException exception) 
+
+	public void warning(SAXParseException exception)
 	{
 		System.err.println("Warning parsing the file: "+exception.getMessage());
 	}
-	
-	public void fatalError(SAXParseException exception) 
+
+	public void fatalError(SAXParseException exception)
 	{
 		System.err.println("Fatal error parsing the file: "+exception.getMessage());
 		System.err.println("Cannot continue.");

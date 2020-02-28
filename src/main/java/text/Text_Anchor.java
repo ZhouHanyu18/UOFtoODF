@@ -7,7 +7,7 @@ import temp_structs.Object_Set_Data;
 import temp_structs.Stored_Data;
 
 public class Text_Anchor {
-	private static boolean _anchor_tag = false;  //tag for <×Ö:Ãªµã>
+	private static boolean _anchor_tag = false;  //tag for <å­—:é”šç‚¹>
 	private static boolean _anchor_hori_tag = false;
 	private static boolean _anchor_vert_tag = false;
 	private static float _svgX = -1;
@@ -18,41 +18,41 @@ public class Text_Anchor {
 	private static String _anchor_hori_pos = "";
 	private static String _anchor_vert_rel = "";
 	private static String _anchor_vert_pos = "";
-	
+
 	private static String _chs = "";
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("×Ö:Ãªµã")){
+
+		if(qName.equals("å­—:é”šç‚¹")){
 			_anchor_tag = true;
 		}
-		else if(qName.equals("×Ö:Ë®Æ½") && _anchor_tag){
+		else if(qName.equals("å­—:æ°´å¹³") && _anchor_tag){
 			_anchor_hori_tag = true;
-			if ((attVal = atts.getValue("×Ö:Ïà¶ÔÓÚ")) != null)
+			if ((attVal = atts.getValue("å­—:ç›¸å¯¹äº")) != null)
 				_anchor_hori_rel = attVal;
 		}
-		else if(qName.equals("×Ö:´¹Ö±") && _anchor_tag){
+		else if(qName.equals("å­—:å‚ç›´") && _anchor_tag){
 			_anchor_vert_tag = true;
-			if ((attVal = atts.getValue("×Ö:Ïà¶ÔÓÚ")) != null)
+			if ((attVal = atts.getValue("å­—:ç›¸å¯¹äº")) != null)
 				_anchor_vert_rel = attVal;
 		}
-		else if(qName.equals("×Ö:¾ø¶Ô")){
-			attVal = atts.getValue("×Ö:Öµ");
+		else if(qName.equals("å­—:ç»å¯¹")){
+			attVal = atts.getValue("å­—:å€¼");
 			if (_anchor_hori_tag)
 				_svgX = Float.valueOf(attVal) * Common_Data.get_graphratio();
 			else if (_anchor_vert_tag)
 				_svgY = Float.valueOf(attVal) * Common_Data.get_graphratio();
 		}
-		else if(qName.equals("×Ö:Ïà¶Ô")){
-			attVal = atts.getValue("×Ö:Öµ");
+		else if(qName.equals("å­—:ç›¸å¯¹")){
+			attVal = atts.getValue("å­—:å€¼");
 			if (_anchor_hori_tag)
 				_anchor_hori_pos = attVal;
 			else if (_anchor_vert_tag)
 				_anchor_vert_pos = attVal;
 		}
-		else if(qName.equals("×Ö:Í¼ĞÎ")){
-			attVal = atts.getValue("×Ö:Í¼ĞÎÒıÓÃ");
+		else if(qName.equals("å­—:å›¾å½¢")){
+			attVal = atts.getValue("å­—:å›¾å½¢å¼•ç”¨");
 			String drawingStr = Object_Set_Data.getDrawing(attVal);
 			if (drawingStr.contains("draw:frame")) {
 				if(Object_Set_Data.getRefObj(attVal) != null) {
@@ -71,7 +71,7 @@ public class Text_Anchor {
 					+ "\" svg:y=\"" + _svgY + unit + "\""
 					+ drawingStr.substring(i);
 				else {  //for draw:line
-					float x1, y1, x2, y2; 
+					float x1, y1, x2, y2;
 					if (Object_Set_Data.getDrawingOverturn(attVal) != null) {
 						x1 = _svgX;
 						y1 = _svgY + _anchor_height;
@@ -111,9 +111,9 @@ public class Text_Anchor {
 			Object_Set_Data.addDrawing(attVal, drawingStr);
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("×Ö:Ãªµã")){
+		if(qName.equals("å­—:é”šç‚¹")){
 			 _anchor_tag = false;
 			 _svgX = -1;
 			 _svgY = -1;
@@ -124,23 +124,23 @@ public class Text_Anchor {
 			 _anchor_vert_rel = "";
 			 _anchor_vert_pos = "";
 		 }
-		 else if(qName.equals("×Ö:¿í¶È")){
+		 else if(qName.equals("å­—:å®½åº¦")){
 			 _anchor_width = Float.valueOf(_chs) * Common_Data.get_graphratio();
 		 }
-		 else if(qName.equals("×Ö:¸ß¶È")){
+		 else if(qName.equals("å­—:é«˜åº¦")){
 			 _anchor_height = Float.valueOf(_chs) * Common_Data.get_graphratio();
 		 }
-		 else if(qName.equals("×Ö:Ë®Æ½") && _anchor_tag){
+		 else if(qName.equals("å­—:æ°´å¹³") && _anchor_tag){
 			 _anchor_hori_tag = false;
 		 }
-		 else if(qName.equals("×Ö:´¹Ö±") && _anchor_tag){
+		 else if(qName.equals("å­—:å‚ç›´") && _anchor_tag){
 			 _anchor_vert_tag = false;
 		 }
-		 
+
 		 _chs = "";
 	}
-	
-	public static void process_chars(String chs){	
+
+	public static void process_chars(String chs){
 		_chs = chs;
 	}
 }

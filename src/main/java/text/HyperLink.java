@@ -6,7 +6,7 @@ import org.xml.sax.Attributes;
 import temp_structs.Common_Data;
 
 /**
- * 
+ *
  * @author xie
  *
  */
@@ -18,85 +18,85 @@ public class HyperLink {
 	//attributes of <text:a>
 	private static Map<String,String>
 		_hyper_link_map = new HashMap<String,String>();
-	
-	
+
+
 	//initialize
 	public static void init(){
 		_tableID_list.clear();
 		_hyper_link_map.clear();
 	}
-	
+
 	public static void add_table_name(String name){
 		_tableID_list.add(name);
 	}
-	
+
 	public static String get_link_atts(String id){
 		return _hyper_link_map.get(id);
 	}
-	
+
 	public static void process(String qName,Attributes atts){
 		String oneLink = "";
 		String attVal = "";
-		
-		if(qName.equals("uof:³¬¼¶Á´½Ó")){
+
+		if(qName.equals("uof:è¶…çº§é“¾æ¥")){
 			String id = "";
-			
-			if((attVal=atts.getValue("uof:±êÊ¶·û"))!=null){
+
+			if((attVal=atts.getValue("uof:æ ‡è¯†ç¬¦"))!=null){
 				oneLink += " office:name=\"" + attVal + "\"";
 				id = attVal;
 			}
-			
-			if((attVal=atts.getValue("uof:Ä¿±ê"))!=null){
+
+			if((attVal=atts.getValue("uof:ç›®æ ‡"))!=null){
 				oneLink += " xlink:href=\"" + link_href(attVal) + "\"";
 			}
-			
-			if((attVal=atts.getValue("uof:Ê½ÑùÒıÓÃ"))!=null){
+
+			if((attVal=atts.getValue("uof:å¼æ ·å¼•ç”¨"))!=null){
 				oneLink += " text:style-name=\"" + attVal + "\"";
 			}
-			
-			if((attVal=atts.getValue("uof:ÒÑ·ÃÎÊÊ½ÑùÒıÓÃ"))!=null){
+
+			if((attVal=atts.getValue("uof:å·²è®¿é—®å¼æ ·å¼•ç”¨"))!=null){
 				oneLink += " text:visited-style-name=\"" + attVal + "\"";
 			}
-			
-			if((attVal=atts.getValue("uof:Á´Ô´"))!=null){
+
+			if((attVal=atts.getValue("uof:é“¾æº"))!=null){
 				id = attVal;
 			}
 			_hyper_link_map.put(id,oneLink);
 		}
 	}
-	
+
 	private static String link_href(String rawHref){
 		String href = "";
 		boolean isTbAddr = false;
-		
+
 		if(Common_Data.get_file_type().equals("spreadsheet")){
 			for(int i=0; i<_tableID_list.size()&&!isTbAddr; i++){
 				isTbAddr = rawHref.startsWith(_tableID_list.get(i) + "!");
 			}
 		}
-		
+
 		if(isTbAddr){
 			href = "#" + rawHref.replace("!",".");
 		}
-		else if(!(rawHref.startsWith("http:") || rawHref.startsWith("ftp:") 
+		else if(!(rawHref.startsWith("http:") || rawHref.startsWith("ftp:")
 			|| rawHref.startsWith("telnet:") || rawHref.startsWith("mailto:")
 			|| rawHref.startsWith("news:"))){
-			
+
 			if(rawHref.length() > 3){
 				char c1 = rawHref.charAt(1);
 				char c2 = rawHref.charAt(2);
 				if(c1==':' && c2=='\\'){
 					href = "file:///" + rawHref.replace("\\","/");
-				}				
+				}
 			}
-			
+
 			if(href.equals("")){
 				href += "../" + rawHref;
 			}
 		}
-		
+
 		href = (href.equals("")) ? rawHref : href;
-		
+
 		return href;
 	}
 }

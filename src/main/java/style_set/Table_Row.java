@@ -5,38 +5,38 @@ import org.xml.sax.Attributes;
 import temp_structs.Common_Data;
 
 /**
- * 
+ *
  * @author xie
  *
  */
 public class Table_Row {
 	//table-row counter
 	private static int _row_counter = 0;
-	
+
 	//Used to generate a different style name
 	private static int _id_counter = 0;
-	
+
 	//The table-row-style attributes for <text>
 	private static String _text_atts = "";
-	
+
 	//Each new row attributes will be keeped in
 	// the map with its style name. For <text>
-	private static Map<String,String> 
+	private static Map<String,String>
 			_text_atts_map = new TreeMap<String,String>();
-	
+
 	//Each <table:row> is associated with a corresponding
 	//style name. For both <text> and <spreadsheet>
 	private static Map<Integer,String>
 			_style_name_map = new TreeMap<Integer,String>();
-	
+
 	//Each new row height (different from others) will
 	//be keeped in the map with its style name.
 	//For <spreadsheet>
-	private static Map<String,String> 
+	private static Map<String,String>
 			_sheet_att_map = new TreeMap<String,String>();
 	//name of default table-row style in <spreadsheet>
 	public static final String _DE_name = "de_row";
-	
+
 
 	//initialize
 	public static void init(){
@@ -47,52 +47,52 @@ public class Table_Row {
 		_style_name_map.clear();
 		_sheet_att_map.clear();
 	}
-	
+
 	//Generate a row style name.
 	private static String gen_row_id(){
 		_id_counter ++;
 		return "ro" + _id_counter;
 	}
-	
+
 	//Return the style name of the specified table-row
 	//For both <text> and <spreadsheet>
 	public static String get_style_id(int rowName){
 		return _style_name_map.get(rowName);
 	}
-	
+
 	//Get three attributes for <style:table-row-properties>
 	public static void process_text_atts(String qName, Attributes atts){
-		String attVal = "";		
+		String attVal = "";
 
-		if(qName.equals("×Ö:±íĞĞÊôĞÔ")){
+		if(qName.equals("å­—:è¡¨è¡Œå±æ€§")){
 			_row_counter ++;
 		}
-		
-		else if(qName.equals("×Ö:¸ß¶È")){
-			if((attVal=atts.getValue("×Ö:×îĞ¡Öµ")) != null){
-				_text_atts += " style:min-row-height=\"" 
+
+		else if(qName.equals("å­—:é«˜åº¦")){
+			if((attVal=atts.getValue("å­—:æœ€å°å€¼")) != null){
+				_text_atts += " style:min-row-height=\""
 					+ attVal + Common_Data.get_unit() + "\"";
 			}
-			if((attVal=atts.getValue("×Ö:¹Ì¶¨Öµ")) != null){
-				_text_atts += " style:row-height=\"" 
+			if((attVal=atts.getValue("å­—:å›ºå®šå€¼")) != null){
+				_text_atts += " style:row-height=\""
 					+ attVal + Common_Data.get_unit() + "\"";
-				
+
 			}
 		}
-		
-		else if(qName.equals("×Ö:¿çÒ³")){
-			if((attVal=atts.getValue("×Ö:Öµ")) != null){
+
+		else if(qName.equals("å­—:è·¨é¡µ")){
+			if((attVal=atts.getValue("å­—:å€¼")) != null){
 				_text_atts += " fo:keep-together=\"" + attVal + "\"";
 			}
 		}
 	}
-	
-	//if _text_atts isn't empty, we need to create a new 
+
+	//if _text_atts isn't empty, we need to create a new
 	//table-row style when it's different from others
-	// and associate current row with a style name. 
+	// and associate current row with a style name.
 	public static void add_text_atts(){
 		String styleName = "";
-		
+
 		if(!_text_atts.equals("")){
 			for(Iterator<String> it=_text_atts_map.keySet().iterator();it.hasNext();){
 				String name = it.next();
@@ -105,28 +105,28 @@ public class Table_Row {
 				styleName = gen_row_id();
 				_text_atts_map.put(styleName,_text_atts);
 			}
-			
+
 			//it should be cleared.
 			_text_atts = "";
 			_style_name_map.put(_row_counter, styleName);
 		}
 	}
-	
+
 	//Get <style:row-height>-att for <style:table-row-properties>
 	public static void process_sheet_row(String qName, Attributes atts){
 		String height = "";
 		String styleName = "";
-		
-		if(qName.equals("±í:ĞĞ")){
-			_row_counter ++;			
-			if(atts.getValue("±í:ĞĞ¸ß") != null){
-				height = atts.getValue("±í:ĞĞ¸ß");
+
+		if(qName.equals("è¡¨:è¡Œ")){
+			_row_counter ++;
+			if(atts.getValue("è¡¨:è¡Œé«˜") != null){
+				height = atts.getValue("è¡¨:è¡Œé«˜");
 			}
-		}	
-		
-		//if height isn't empty, we need to create a new 
+		}
+
+		//if height isn't empty, we need to create a new
 		//table-row style when this height is different from
-		//others and associate current row with a style name. 
+		//others and associate current row with a style name.
 		if(!height.equals("")){
 			for(Iterator<String> it=_sheet_att_map.keySet().iterator();it.hasNext();){
 				String name = it.next();
@@ -140,60 +140,60 @@ public class Table_Row {
 				_sheet_att_map.put(styleName,height);
 
 			}
-			
+
 			_style_name_map.put(_row_counter, styleName);
 		}
-		
+
 		//
-		if(qName.equals("±í:¹¤×÷±íÄÚÈİ")){
-			height = atts.getValue("±í:È±Ê¡ĞĞ¸ß");
+		if(qName.equals("è¡¨:å·¥ä½œè¡¨å†…å®¹")){
+			height = atts.getValue("è¡¨:ç¼ºçœè¡Œé«˜");
 			if(height != null){
 				_sheet_att_map.put(_DE_name,height);
 			}
 		}
 	}
-	
+
 	//Get all the table-row styles keeped in the map.<text>
 	public static String get_text_results(){
 		String rst = "";
-		
+
 		for(Iterator<String> it=
 			_text_atts_map.keySet().iterator(); it.hasNext();){
 			String id = it.next();
 
-			rst += "<style:style style:name=\"" + id + "\" style:family=\"table-row\">" 
-					+ "<style:table-row-properties" + _text_atts_map.get(id) + "/>" 
+			rst += "<style:style style:name=\"" + id + "\" style:family=\"table-row\">"
+					+ "<style:table-row-properties" + _text_atts_map.get(id) + "/>"
 					+ "</style:style>";
 		}
-		
+
 		return rst;
 	}
-	
+
 	//Get all the table-row styles keeped in the map.<spreadsheet>
 	public static String get_sheet_results(){
 		String rst = "";
-		
+
 		for(Iterator<String> it=
 			_sheet_att_map.keySet().iterator(); it.hasNext();){
 			String id = it.next();
-			rst += "<style:style style:name=\"" + id + "\" style:family=\"table-row\">" 
-					+ "<style:table-row-properties style:row-height=\"" + _sheet_att_map.get(id) 
+			rst += "<style:style style:name=\"" + id + "\" style:family=\"table-row\">"
+					+ "<style:table-row-properties style:row-height=\"" + _sheet_att_map.get(id)
 					+ Common_Data.get_unit() + "\"/></style:style>";
 		}
-		
+
 		return rst;
 	}
-	
+
 	public static String get_result(){
 		String rst = "";
-		
+
 		if(Common_Data.get_file_type().equals("text")){
 			rst = get_text_results();
 		}
 		else if(Common_Data.get_file_type().equals("spreadsheet")){
 			rst = get_sheet_results();
 		}
-		
+
 		return rst;
 	}
 }

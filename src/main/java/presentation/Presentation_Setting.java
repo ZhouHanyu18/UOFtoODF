@@ -3,8 +3,8 @@ package presentation;
 import org.xml.sax.Attributes;
 
 /**
- * Process the conversion from 
- * <Ñİ:·ÅÓ³ÉèÖÃ> to <presentation:settings> 
+ * Process the conversion from
+ * <æ¼”:æ”¾æ˜ è®¾ç½®> to <presentation:settings>
  * @author xie
  *
  */
@@ -12,30 +12,30 @@ public class Presentation_Setting {
 	//
 	private static String _chs = "";
 	//the result
-	private static String _rst = ""; 
-	
-	
+	private static String _rst = "";
+
+
 	public static String get_result(){
 		String rst = "";
-		
+
 		rst = "<presentation:settings" + _rst + "/>";
 		_chs = "";
 		_rst = "";
 		return rst;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
-		
+
 	}
-	
+
 	public static void process_chars(String chs){
 		_chs = chs;
 	}
-	
-	public static void process_end(String qName){	
-		if(qName.equals("Ñİ:»ÃµÆÆ¬ĞòÁĞ")){
+
+	public static void process_end(String qName){
+		if(qName.equals("æ¼”:å¹»ç¯ç‰‡åºåˆ—")){
 			String startPage = "";
-			
+
 			if(_chs.contains(" ")){
 				int ind = _chs.indexOf(" ");
 				startPage = _chs.substring(0,ind);
@@ -44,46 +44,46 @@ public class Presentation_Setting {
 			}
 			_rst += add_att("presentation:start-page",startPage);
 		}
-		else if(qName.equals("Ñİ:µ¥»÷Ìø×ª")){
+		else if(qName.equals("æ¼”:å•å‡»è·³è½¬")){
 			_rst += add_att("presentation:transition-on-click",convVal(_chs));
 		}
-		else if(qName.equals("Ñİ:·ÅÓ³¶¯»­")){
+		else if(qName.equals("æ¼”:æ”¾æ˜ åŠ¨ç”»")){
 			_rst += add_att("presentation:animations",convVal(_chs));
 		}
-		else if(qName.equals("Ñİ:È«ÆÁ·ÅÓ³")){
+		else if(qName.equals("æ¼”:å…¨å±æ”¾æ˜ ")){
 			_rst += add_att("presentation:full-screen",_chs);
 		}
-		else if(qName.equals("Ñİ:Ñ­»··ÅÓ³")){
+		else if(qName.equals("æ¼”:å¾ªç¯æ”¾æ˜ ")){
 			_rst += add_att("presentation:endless",_chs);
 		}
-		else if(qName.equals("Ñİ:·ÅÓ³¼ä¸ô")){
+		else if(qName.equals("æ¼”:æ”¾æ˜ é—´éš”")){
 			_rst += add_att("presentation:pause",Draw_Page_Style.conv_time(_chs));
 		}
-		else if(qName.equals("Ñİ:ÊÖ¶¯·½Ê½")){
+		else if(qName.equals("æ¼”:æ‰‹åŠ¨æ–¹å¼")){
 			_rst += add_att("presentation:force-manual",_chs);
 		}
-		else if(qName.equals("Ñİ:µ¼º½°ïÖú")){
+		else if(qName.equals("æ¼”:å¯¼èˆªå¸®åŠ©")){
 			_rst += add_att("presentation:start-with-navigator",_chs);
 		}
-		else if(qName.equals("Ñİ:Ç°¶ËÏÔÊ¾")){
+		else if(qName.equals("æ¼”:å‰ç«¯æ˜¾ç¤º")){
 			_rst += add_att("presentation:stay-on-top",_chs);
 		}
 	}
-	
+
 	private static String add_att(String attName,String val){
 		return " " + attName + "=\"" + val + "\"";
 	}
-	
+
 	private static String convVal(String val){
 		String str = "";
-		
+
 		if(val.equals("true")){
 			str = "enabled";
 		}
 		else{
 			str = "disabled";
 		}
-		
+
 		return str;
 	}
 }

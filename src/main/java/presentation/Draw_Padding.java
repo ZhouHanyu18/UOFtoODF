@@ -11,85 +11,85 @@ public class Draw_Padding {
 	private static String add_att(String attName,String attVal){
 		return " " + attName + "=\"" + attVal + "\"";
 	}
-	
+
 	//create a <draw:fill-image> element (to be
 	//saved in styles.xml), and return its name
 	public static String create_fill_image(Attributes atts){
 		String attVal = "";
 		String imagePro = "";
 		String imageID = "";
-		
-		attVal = atts.getValue("Í¼:Í¼ĞÎÒıÓÃ");
+
+		attVal = atts.getValue("å›¾:å›¾å½¢å¼•ç”¨");
 		attVal = (attVal==null) ? "" : attVal;
 
 		String href = Object_Set_Data.getOtherObj(attVal);
 		if(href != null){
 			imageID = IDGenerator.get_fill_image_id();
-			
+
 			imagePro += add_att("draw:name",imageID);
 			imagePro += add_att("xlink:href",href);
 			imagePro += add_att("xlink:type","simple");
 			imagePro += add_att("xlink:show","embed");
 			imagePro += add_att("xlink:actuate","onLoad");
-			
+
 			String image = "<draw:fill-image" + imagePro + "/>";
 			Stored_Data.addStylesInStylesXml(image);
 		}
-		
+
 		return imageID;
 	}
-	
-	//create a <draw:gradient> element (to be 
+
+	//create a <draw:gradient> element (to be
 	//saved in styles.xml), and return its name
 	public static String create_gradient(Attributes atts){
 		String attVal = "";
 		String gradPro = "";
 		String gradID = "";
-		
+
 		gradID = IDGenerator.get_gradient_id();
 		gradPro += add_att("draw:name",gradID);
-		
-		if((attVal=atts.getValue("Í¼:ÆğÊ¼É«")) != null){
+
+		if((attVal=atts.getValue("å›¾:èµ·å§‹è‰²")) != null){
 			gradPro += add_att("draw:start-color",attVal);
 		}
-		if((attVal=atts.getValue("Í¼:ÖÕÖ¹É«")) != null){
+		if((attVal=atts.getValue("å›¾:ç»ˆæ­¢è‰²")) != null){
 			gradPro += add_att("draw:end-color",attVal);
 		}
-		if((attVal=atts.getValue("Í¼:ÖÖ×ÓÀàĞÍ")) != null){
+		if((attVal=atts.getValue("å›¾:ç§å­ç±»å‹")) != null){
 			gradPro += add_att("draw:style",conv_style(attVal));
 		}
-		if((attVal=atts.getValue("Í¼:ÆğÊ¼Å¨¶È")) != null){
+		if((attVal=atts.getValue("å›¾:èµ·å§‹æµ“åº¦")) != null){
 			gradPro += add_att("draw:start-intensity",to_percent(attVal));
 		}
-		if((attVal=atts.getValue("Í¼:ÖÕÖ¹Å¨¶È")) != null){
+		if((attVal=atts.getValue("å›¾:ç»ˆæ­¢æµ“åº¦")) != null){
 			gradPro += add_att("draw:end-intensity",to_percent(attVal));
 		}
-		if((attVal=atts.getValue("Í¼:½¥±ä·½Ïò")) != null){
+		if((attVal=atts.getValue("å›¾:æ¸å˜æ–¹å‘")) != null){
 			gradPro += add_att("draw:angle",Float.parseFloat(attVal)+"");
 		}
-		if((attVal=atts.getValue("Í¼:±ß½ç")) != null){
+		if((attVal=atts.getValue("å›¾:è¾¹ç•Œ")) != null){
 			gradPro += add_att("draw:border",attVal+"%");
 		}
-		if((attVal=atts.getValue("Í¼:ÖÖ×ÓXÎ»ÖÃ")) != null){
+		if((attVal=atts.getValue("å›¾:ç§å­Xä½ç½®")) != null){
 			gradPro += add_att("draw:cX",attVal+"%");
 		}
-		if((attVal=atts.getValue("Í¼:ÖÖ×ÓYÎ»ÖÃ")) != null){
+		if((attVal=atts.getValue("å›¾:ç§å­Yä½ç½®")) != null){
 			gradPro += add_att("draw:cY",attVal+"%");
 		}
-		
+
 		String style = "<draw:gradient" + gradPro + "/>";
 		Stored_Data.addStylesInStylesXml(style);
-		
+
 		return gradID;
 	}
-	
+
 	private static String to_percent(String val){
 		return Float.parseFloat(val) * 100 + "%";
 	}
-	
+
 	private static String conv_style(String val){
 		String convVal = "linear";
-		
+
 		if(val.equals("linear")){
 			convVal = "linear";
 		}
@@ -105,7 +105,7 @@ public class Draw_Padding {
 		else if(val.equals("rectangular")){
 			convVal = "rectangle";
 		}
-		
+
 		return convVal;
 	}
 }

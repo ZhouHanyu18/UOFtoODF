@@ -7,62 +7,62 @@ import temp_structs.*;
 import text.Text_Content;
 
 public class Drawing {
-	
-	private static String _text_node = "";   //ÓÃÓÚ´æ·ÅÎÄ±¾½ÚµãµÄÄÚÈİ
-	private static boolean _need_to_store_text = false;   //±êÊ¶ÊÇ·ñĞèÒªÈ¡³öÎÄ±¾½ÚµãµÄÖµ
-	
+
+	private static String _text_node = "";   //ç”¨äºå­˜æ”¾æ–‡æœ¬èŠ‚ç‚¹çš„å†…å®¹
+	private static boolean _need_to_store_text = false;   //æ ‡è¯†æ˜¯å¦éœ€è¦å–å‡ºæ–‡æœ¬èŠ‚ç‚¹çš„å€¼
+
 	private static String _drawing_id = "";
-	private static String _drawing_content = "";   //½«»áĞ´Èëcontent.xmlµÄ<body>µÄÄÚÈİ
-	private static String _drawing_style = "";     //½«»áĞ´Èëcontent.xmlµÄ<style:automatic-style>µÄÄÚÈİ
-	
-	//ÒÔÏÂÊÇ_drawing_contentµÄ×é³É²¿·Ö
+	private static String _drawing_content = "";   //å°†ä¼šå†™å…¥content.xmlçš„<body>çš„å†…å®¹
+	private static String _drawing_style = "";     //å°†ä¼šå†™å…¥content.xmlçš„<style:automatic-style>çš„å†…å®¹
+
+	//ä»¥ä¸‹æ˜¯_drawing_contentçš„ç»„æˆéƒ¨åˆ†
 	private static String _drawing_name = "";
 	private static String _drawing_atts = "";
 	private static String _drawing_text = "";
 	private static String _draw_type = "";
-	
-	//ÒÔÏÂÊÇÍ¼ĞÎµÄstyleµÄ×é³É²¿·Ö
+
+	//ä»¥ä¸‹æ˜¯å›¾å½¢çš„styleçš„ç»„æˆéƒ¨åˆ†
 	private static String _graphic_pro = "<style:graphic-properties";
 	private static String _para_pro = "<style:paragraph-properties";
 	private static String _text_pro = "<style:text-properties";
 	private static String _bg_img = "";
-	
-	private static String _draw_transform = "";   //ODFÖĞdraw:transformÊôĞÔÖµ£¬¿ÉÄÜÓÉUOFÖĞ¶à¸öÔªËØ¾ö¶¨
-	
-	private static boolean _is_text_box = false;   //±êÊ¶ÊÇ·ñÎÄ±¾¿ò
-	private static boolean _text_content_tag = false;   //±êÊ¶ÊÇ·ñÊÇÎÄ±¾ÄÚÈİ
-	private static boolean _frame_tag = false;  //±êÊ¶ÊÇ·ñframe;
-	private static boolean _g_tag = false;  //±êÊ¶ÊÇ·ñdraw:g;
-	
+
+	private static String _draw_transform = "";   //ODFä¸­draw:transformå±æ€§å€¼ï¼Œå¯èƒ½ç”±UOFä¸­å¤šä¸ªå…ƒç´ å†³å®š
+
+	private static boolean _is_text_box = false;   //æ ‡è¯†æ˜¯å¦æ–‡æœ¬æ¡†
+	private static boolean _text_content_tag = false;   //æ ‡è¯†æ˜¯å¦æ˜¯æ–‡æœ¬å†…å®¹
+	private static boolean _frame_tag = false;  //æ ‡è¯†æ˜¯å¦frame;
+	private static boolean _g_tag = false;  //æ ‡è¯†æ˜¯å¦draw:g;
+
 	private static String _textbox_height = "";
-	
+
 	private static float _width = 0;
 	private static float _height = 0;
-	
+
 	private static boolean _overturn_tag = false;
 	private static boolean _viewBox_tag = false;
-	
+
 	public Drawing() {
-		
+
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		if (_text_content_tag)
 			Text_Content.process_start(qName,atts);
-		
-		else if (qName.equals("Í¼:Í¼ĞÎ")) {  
-			_drawing_id = atts.getValue("Í¼:±êÊ¶·û");
+
+		else if (qName.equals("å›¾:å›¾å½¢")) {
+			_drawing_id = atts.getValue("å›¾:æ ‡è¯†ç¬¦");
 			_drawing_atts = " draw:style-name=\"" + _drawing_id + "\"";
-			if (atts.getValue("Í¼:²ã´Î") != null)
-				_drawing_atts += " draw:z-index=\"" + atts.getValue("Í¼:²ã´Î") + "\"";
+			if (atts.getValue("å›¾:å±‚æ¬¡") != null)
+				_drawing_atts += " draw:z-index=\"" + atts.getValue("å›¾:å±‚æ¬¡") + "\"";
 			_drawing_style += "<style:style style:family=\"graphic\" style:name=\"" + _drawing_id + "\"";
-			if (atts.getValue("Í¼:ÆäËû¶ÔÏó") != null) {
-				Object_Set_Data.addRefObj(_drawing_id, atts.getValue("Í¼:ÆäËû¶ÔÏó"));
+			if (atts.getValue("å›¾:å…¶ä»–å¯¹è±¡") != null) {
+				Object_Set_Data.addRefObj(_drawing_id, atts.getValue("å›¾:å…¶ä»–å¯¹è±¡"));
 				_frame_tag = true;
 			}
-			if (atts.getValue("Í¼:×éºÏÁĞ±í") != null) {
+			if (atts.getValue("å›¾:ç»„åˆåˆ—è¡¨") != null) {
 				_g_tag = true;
-				String gStr = atts.getValue("Í¼:×éºÏÁĞ±í");
+				String gStr = atts.getValue("å›¾:ç»„åˆåˆ—è¡¨");
 				String gID = "";
 				int i = gStr.indexOf(" ");
 				while (i > 0) {
@@ -72,86 +72,86 @@ public class Drawing {
 					i = gStr.indexOf(" ");
 				}
 				_drawing_text += Object_Set_Data.getDrawing(gStr);
-				//_drawing_content 
+				//_drawing_content
 			}
 		}
-//		else if (qName.equals("Í¼:svgÍ¼ĞÎ¶ÔÏó")) {
+//		else if (qName.equals("å›¾:svgå›¾å½¢å¯¹è±¡")) {
 			//To do.
 //		}
-		
-		else if (qName.equals("Í¼:¹Ø¼üµã×ø±ê")) {
+
+		else if (qName.equals("å›¾:å…³é”®ç‚¹åæ ‡")) {
 			_drawing_name = "draw:path";
 			_viewBox_tag = true;
-			String path = atts.getValue("Í¼:Â·¾¶").toLowerCase();
+			String path = atts.getValue("å›¾:è·¯å¾„").toLowerCase();
 			path = calculate_path(path);
 			_drawing_atts += " svg:d=\"" + path + "\"";
 		}
-		
-		//<Àà±ğ>ºÍ<Ãû³Æ>ÊÇÒ»Ò»¶ÔÓ¦µÄ£¬Ö»´¦ÀíÁ½ÕßÖ®Ò»¼´¿É
-		//<Éú³ÉÈí¼ş>Ã»ÓĞ¶ÔÓ¦
-		//Î´´¦Àí:Í¼°¸¡¢Í¼Æ¬¡¢½¥±ä
-		//Î´´¦Àí:Ç°¶Ë¼ıÍ·¡¢ºó¶Ë¼ıÍ·
-		//Î´´¦Àí£ºËø¶¨×İºá±È¡¢Ïà¶ÔÔ­Ê¼±ÈÀı¡¢´òÓ¡¶ÔÏó¡¢WebÎÄ×Ö
-		else if (qName.equals("Í¼:ÏßÑÕÉ«") || qName.equals("Í¼:Ãû³Æ") || qName.equals("Í¼:ÑÕÉ«")
-				|| qName.equals("Í¼:ÏßĞÍ") || qName.equals("Í¼:Ïß´ÖÏ¸") || qName.equals("Í¼:¿í¶È")
-				|| qName.equals("Í¼:¸ß¶È") || qName.equals("Í¼:Ğı×ª½Ç¶È") || qName.equals("Í¼:X-Ëõ·Å±ÈÀı")
-				|| qName.equals("Í¼:Y-Ëõ·Å±ÈÀı") || qName.equals("Í¼:Í¸Ã÷¶È")) {
+
+		//<ç±»åˆ«>å’Œ<åç§°>æ˜¯ä¸€ä¸€å¯¹åº”çš„ï¼Œåªå¤„ç†ä¸¤è€…ä¹‹ä¸€å³å¯
+		//<ç”Ÿæˆè½¯ä»¶>æ²¡æœ‰å¯¹åº”
+		//æœªå¤„ç†:å›¾æ¡ˆã€å›¾ç‰‡ã€æ¸å˜
+		//æœªå¤„ç†:å‰ç«¯ç®­å¤´ã€åç«¯ç®­å¤´
+		//æœªå¤„ç†ï¼šé”å®šçºµæ¨ªæ¯”ã€ç›¸å¯¹åŸå§‹æ¯”ä¾‹ã€æ‰“å°å¯¹è±¡ã€Webæ–‡å­—
+		else if (qName.equals("å›¾:çº¿é¢œè‰²") || qName.equals("å›¾:åç§°") || qName.equals("å›¾:é¢œè‰²")
+				|| qName.equals("å›¾:çº¿å‹") || qName.equals("å›¾:çº¿ç²—ç»†") || qName.equals("å›¾:å®½åº¦")
+				|| qName.equals("å›¾:é«˜åº¦") || qName.equals("å›¾:æ—‹è½¬è§’åº¦") || qName.equals("å›¾:X-ç¼©æ”¾æ¯”ä¾‹")
+				|| qName.equals("å›¾:Y-ç¼©æ”¾æ¯”ä¾‹") || qName.equals("å›¾:é€æ˜åº¦")) {
 			_need_to_store_text = true;
 		}
-		else if (qName.equals("Í¼:ÎÄ±¾ÄÚÈİ")) {	
-			if (atts.getValue("Í¼:ÎÄ±¾¿ò") != null && atts.getValue("Í¼:ÎÄ±¾¿ò").equals("true")) {
-				_drawing_name = "draw:frame";   //ODFÖĞ¿ò¶ÔÏóÎª<draw:text-box>£¬ÊÇ<draw:frame>µÄ×ÓÔªËØ
+		else if (qName.equals("å›¾:æ–‡æœ¬å†…å®¹")) {
+			if (atts.getValue("å›¾:æ–‡æœ¬æ¡†") != null && atts.getValue("å›¾:æ–‡æœ¬æ¡†").equals("true")) {
+				_drawing_name = "draw:frame";   //ODFä¸­æ¡†å¯¹è±¡ä¸º<draw:text-box>ï¼Œæ˜¯<draw:frame>çš„å­å…ƒç´ 
 				_is_text_box = true;
 				_drawing_text += "<draw:text-box";
-				if (atts.getValue("Í¼:ºóÒ»Á´½Ó") != null)
-					_drawing_text += (" draw:chain-next-name=\"" + atts.getValue("Í¼:ºóÒ»Á´½Ó") + "\"");
+				if (atts.getValue("å›¾:åä¸€é“¾æ¥") != null)
+					_drawing_text += (" draw:chain-next-name=\"" + atts.getValue("å›¾:åä¸€é“¾æ¥") + "\"");
 				_drawing_text += ">";
 			}
 			String attVal = "";
-			if ((attVal=atts.getValue("Í¼:×ó±ß¾à")) != null)
+			if ((attVal=atts.getValue("å›¾:å·¦è¾¹è·")) != null)
 				_graphic_pro += " fo:padding-left=\"" + attVal + Common_Data.get_unit() + "\"";
-			if ((attVal=atts.getValue("Í¼:ÓÒ±ß¾à")) != null)
+			if ((attVal=atts.getValue("å›¾:å³è¾¹è·")) != null)
 				_graphic_pro += " fo:padding-right=\"" + attVal + Common_Data.get_unit() + "\"";
-			if ((attVal=atts.getValue("Í¼:ÉÏ±ß¾à")) != null)
+			if ((attVal=atts.getValue("å›¾:ä¸Šè¾¹è·")) != null)
 				_graphic_pro += " fo:padding-top=\"" + attVal + Common_Data.get_unit() + "\"";
-			if ((attVal=atts.getValue("Í¼:ÏÂ±ß¾à")) != null)
+			if ((attVal=atts.getValue("å›¾:ä¸‹è¾¹è·")) != null)
 				_graphic_pro += " fo:padding-bottom=\"" + attVal + Common_Data.get_unit() + "\"";
-			if (atts.getValue("Í¼:×Ô¶¯»»ĞĞ") != null) {
-				if (atts.getValue("Í¼:×Ô¶¯»»ĞĞ").equals("true")) {
-					_graphic_pro += " fo:wrap-option=\"no-wrap\"";	
+			if (atts.getValue("å›¾:è‡ªåŠ¨æ¢è¡Œ") != null) {
+				if (atts.getValue("å›¾:è‡ªåŠ¨æ¢è¡Œ").equals("true")) {
+					_graphic_pro += " fo:wrap-option=\"no-wrap\"";
 				}
 				else {
 					_graphic_pro += " fo:wrap-option=\"wrap\"";
 				}
 			}
-			if (atts.getValue("Í¼:´óĞ¡ÊÊÓ¦ÎÄ×Ö") != null) {
-				if (atts.getValue("Í¼:´óĞ¡ÊÊÓ¦ÎÄ×Ö").equals("true"))
+			if (atts.getValue("å›¾:å¤§å°é€‚åº”æ–‡å­—") != null) {
+				if (atts.getValue("å›¾:å¤§å°é€‚åº”æ–‡å­—").equals("true"))
 					_graphic_pro += " draw:auto-grow-width=\"ture\" draw:auto-grow-height=\"ture\"";
 				else
 					_graphic_pro += " draw:auto-grow-width=\"false\" draw:auto-grow-height=\"false\"";
 			}
-			
+
 			_text_content_tag = true;
 			Text_Content.process_start(qName,atts);
 		}
-		
-		//<×Ö:ÎÄ×Ö±í>ÔÚODFÖĞÃ»ÓĞ¶ÔÓ¦£¬ËùÒÔ²»´¦Àí
-		else if (qName.equals("×Ö:¶ÎÂä")) {
+
+		//<å­—:æ–‡å­—è¡¨>åœ¨ODFä¸­æ²¡æœ‰å¯¹åº”ï¼Œæ‰€ä»¥ä¸å¤„ç†
+		else if (qName.equals("å­—:æ®µè½")) {
 //			_text_content_tag = true;
 //			Text_Content.process_start(qName,atts);
 		}
-		
-		else if (qName.equals("Í¼:¿ØÖÆµã")) {
+
+		else if (qName.equals("å›¾:æ§åˆ¶ç‚¹")) {
 			//To do.
 		}
-		else if (qName.equals("Í¼:·­×ª")) {
+		else if (qName.equals("å›¾:ç¿»è½¬")) {
 			_overturn_tag = true;
-			String overturn = atts.getValue("Í¼:·½Ïò");
+			String overturn = atts.getValue("å›¾:æ–¹å‘");
 			Object_Set_Data.addDrawingOverturn(_drawing_id,overturn);
 		}
-		else if (qName.equals("Í¼:×éºÏÎ»ÖÃ")) {
-			float svgX = Float.valueOf(atts.getValue("Í¼:x×ø±ê")) * Common_Data.get_graphratio();
-			float svgY = Float.valueOf(atts.getValue("Í¼:y×ø±ê")) * Common_Data.get_graphratio();
+		else if (qName.equals("å›¾:ç»„åˆä½ç½®")) {
+			float svgX = Float.valueOf(atts.getValue("å›¾:xåæ ‡")) * Common_Data.get_graphratio();
+			float svgY = Float.valueOf(atts.getValue("å›¾:yåæ ‡")) * Common_Data.get_graphratio();
 			String unit = Common_Data.get_unit();
 			if (_drawing_name.equals("draw:line")) {
 				if (_overturn_tag)
@@ -168,44 +168,44 @@ public class Drawing {
 			else
 				_drawing_atts += " svg:x=\"" + svgX + unit + "\" svg:y=\"" + svgY + unit + "\"";
 		}
-		else if (qName.equals("Í¼:Í¼Æ¬")) {
-			_bg_img = "<style:background-image xlink:type=\"simple\" xlink:actuate=\"onLoad\""; 
-			_bg_img += " xlink:href=\"" + atts.getValue("Í¼:Í¼ĞÎÒıÓÃ") + "\"";
-			if(atts.getValue("Í¼:Î»ÖÃ") != null)
-				_bg_img += " style:repeat=\"" + atts.getValue("Í¼:Î»ÖÃ") + "\"";
+		else if (qName.equals("å›¾:å›¾ç‰‡")) {
+			_bg_img = "<style:background-image xlink:type=\"simple\" xlink:actuate=\"onLoad\"";
+			_bg_img += " xlink:href=\"" + atts.getValue("å›¾:å›¾å½¢å¼•ç”¨") + "\"";
+			if(atts.getValue("å›¾:ä½ç½®") != null)
+				_bg_img += " style:repeat=\"" + atts.getValue("å›¾:ä½ç½®") + "\"";
 			_bg_img += "/>";
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if (qName.equals("Í¼:Í¼ĞÎ")) {
+		if (qName.equals("å›¾:å›¾å½¢")) {
 			if (_viewBox_tag)
 				_drawing_atts += "  svg:viewBox=\"0 0 " + (_width/Common_Data.get_graphratio()) + " " + (_height/Common_Data.get_graphratio()) + "\"";
-					
+
 			if (_drawing_name.length() == 0)
-				_drawing_name = "draw:custom-shape";   //ÔİÊ±°Ñ²»ÄÜÅĞ¶ÏÃû³ÆµÄ¶¼ÉèÎªÒ»¸ödraw:custom-shape.ÓĞ´ı¸Ä½ø
-			
+				_drawing_name = "draw:custom-shape";   //æš‚æ—¶æŠŠä¸èƒ½åˆ¤æ–­åç§°çš„éƒ½è®¾ä¸ºä¸€ä¸ªdraw:custom-shape.æœ‰å¾…æ”¹è¿›
+
 			if (_is_text_box) {
 				//Temporarily. To be modified.
 				_graphic_pro += " fo:border=\"0.002cm solid #000000\"";
-	
+
 				int i = _drawing_text.indexOf(">");
 				_drawing_text = _drawing_text.substring(0, i) + _textbox_height + _drawing_text.substring(i);
 			}
-			
+
 			if(_draw_type.length() != 0)
 				_draw_type = "<draw:enhanced-geometry draw:type=\"" + _draw_type + "\"/>";
-			
+
 				_drawing_content = "<" + _drawing_name + _drawing_atts + ">" + _drawing_text
 				+ _draw_type +  "</" + _drawing_name + ">";
 
 
-			Object_Set_Data.addDrawing(_drawing_id, _drawing_content);			
-			
+			Object_Set_Data.addDrawing(_drawing_id, _drawing_content);
+
 			_drawing_style += (">" + _graphic_pro + "/>" + _bg_img
 								+ _para_pro + "/>" + _text_pro + "/>" + "</style:style>");
 			Stored_Data.addAutoStylesInContentXml(_drawing_style);
-			
+
 			_drawing_id = "";
 			_drawing_content = "";
 			_drawing_style = "";
@@ -227,7 +227,7 @@ public class Drawing {
 			_overturn_tag = false;
 			_viewBox_tag = false;
 		}
-		else if (qName.equals("Í¼:Ãû³Æ")) {
+		else if (qName.equals("å›¾:åç§°")) {
 			//Many to do...
 			if (_text_node.equals("Rectangle") || _text_node.equals("Rounded Rectangle")) {
 				if (_frame_tag)
@@ -235,7 +235,7 @@ public class Drawing {
 				else if (_g_tag)
 					_drawing_name = "draw:g";
 				else
-					_drawing_name = "draw:rect";   //To do: UOFÖĞÃ»ÓĞÔ²½Ç¾ØĞÎµÄdraw:corner-radiusĞÅÏ¢
+					_drawing_name = "draw:rect";   //To do: UOFä¸­æ²¡æœ‰åœ†è§’çŸ©å½¢çš„draw:corner-radiusä¿¡æ¯
 			}
 			else if (_text_node.equals("Line"))
 				_drawing_name = "draw:line";
@@ -302,20 +302,20 @@ public class Drawing {
 			else if (_text_node.equals("Line")) {
 				_drawing_name = "draw:path";
 			}
-			
+
 			else if (Draw_Type_Table.get_draw_type(_text_node).length() != 0) {
 				_draw_type = Draw_Type_Table.get_draw_type(_text_node);
 			}
-			
+
 			//To do: add other types.
 		}
-		else if (qName.equals("Í¼:ÑÕÉ«")) {
+		else if (qName.equals("å›¾:é¢œè‰²")) {
 			_graphic_pro += (" draw:fill=\"solid\" draw:fill-color=\"" + _text_node + "\"");
 		}
-		else if (qName.equals("Í¼:ÏßÑÕÉ«")) {
+		else if (qName.equals("å›¾:çº¿é¢œè‰²")) {
 			_graphic_pro += (" svg:stroke-color=\"" + _text_node + "\"");
 		}
-		else if (qName.equals("Í¼:ÏßĞÍ")) {
+		else if (qName.equals("å›¾:çº¿å‹")) {
 			if (_text_node.equals("none")) {
 				_graphic_pro += (" draw:stroke=\"none\"");
 			}
@@ -328,28 +328,28 @@ public class Drawing {
 				_graphic_pro += (" draw:stroke=\"dash\"");
 			}
 		}
-		else if (qName.equals("Í¼:Ïß´ÖÏ¸")) {
+		else if (qName.equals("å›¾:çº¿ç²—ç»†")) {
 			_graphic_pro += (" svg:stroke-width=\""
-					+ Float.valueOf(_text_node) * Common_Data.get_graphratio() + Common_Data.get_unit() 
+					+ Float.valueOf(_text_node) * Common_Data.get_graphratio() + Common_Data.get_unit()
 					+ "\"");
 		}
-		else if (qName.equals("Í¼:¿í¶È")) {
+		else if (qName.equals("å›¾:å®½åº¦")) {
 			_width = Float.valueOf(_text_node) * Common_Data.get_graphratio();
 			_drawing_atts += (" svg:width=\"" + _width + Common_Data.get_unit() + "\"");
 		}
-		else if (qName.equals("Í¼:¸ß¶È")) {
+		else if (qName.equals("å›¾:é«˜åº¦")) {
 			_height = Float.valueOf(_text_node) * Common_Data.get_graphratio();
 			_drawing_atts += (" svg:height=\"" + _height + Common_Data.get_unit() + "\"");
 			_textbox_height = " fo:min-height=\"" + _height + Common_Data.get_unit() + "\"";
 		}
-		else if (qName.equals("Í¼:Ğı×ª½Ç¶È")) {
+		else if (qName.equals("å›¾:æ—‹è½¬è§’åº¦")) {
 			_draw_transform += ("rotate(" + _text_node + ")");
 		}
-		else if (qName.equals("Í¼:Í¸Ã÷¶È")) {
+		else if (qName.equals("å›¾:é€æ˜åº¦")) {
 //			_graphic_pro += (" draw:opacity=\"" + _text_node + "\"");
 			_graphic_pro += (" style:background-transparency=\"" + _text_node + "%\"");
 		}
-		else if (qName.equals("Í¼:ÎÄ±¾ÄÚÈİ")){
+		else if (qName.equals("å›¾:æ–‡æœ¬å†…å®¹")){
 			_drawing_text += Text_Content.get_result();
 			_text_content_tag = false;
 			if(_is_text_box)
@@ -357,42 +357,42 @@ public class Drawing {
 		}
 		else if (_text_content_tag)
 			Text_Content.process_end(qName);
-		
-		//Ã¿¸öÔªËØ½áÊøÊ±£¬ÒªÇå¿Õ_text_node²¢ÉèÖÃ_need_to_store_text
-		_text_node = "";   
+
+		//æ¯ä¸ªå…ƒç´ ç»“æŸæ—¶ï¼Œè¦æ¸…ç©º_text_nodeå¹¶è®¾ç½®_need_to_store_text
+		_text_node = "";
 		_need_to_store_text = false;
 	}
-	
-	public static void process_chars(String chs){		
+
+	public static void process_chars(String chs){
 		if (_text_content_tag)
 			Text_Content.process_chars(chs);
-		
+
 		if (_need_to_store_text)
-			_text_node += chs;			
+			_text_node += chs;
 	}
-	
+
 	//UOF uses absolute coors, ODF uses relative coors.
 	private static String calculate_path(String path) {
 		String result = "";
 		String ins = "";
 		float preX = 0, preY = 0;
 		boolean endTag = false;
-		
+
 		while (!endTag) {
 			int index = 2;
 			if (index > path.length())
 				index = path.length();
-			while (index < path.length() 
+			while (index < path.length()
 					&& !(path.charAt(index) == 'm' || path.charAt(index) == 'l' || path.charAt(index) == 'c'
 				|| path.charAt(index) == 'h' || path.charAt(index) == 'z')) {
 				index++;
 			}
 			if (index == path.length()) {
 				endTag = true;
-			}		
-			
+			}
+
 			ins = endTag?path:path.substring(0, index);
-			
+
 			if (ins.startsWith("h") || ins.startsWith("z"))
 				result += ins;
 			else {
@@ -432,7 +432,7 @@ public class Drawing {
 			}
 			if (!endTag)
 				path = path.substring(index);
-			
+
 		}
 		return result;
 	}

@@ -10,39 +10,39 @@ public class Sheet_Table {
 	//the result
 	private static String _result = "";
 	//table name
-	private static String _table_name = "";	
-	//ĞĞ¼ÆÊı£¬ÓÃÓÚÈ¡µÃĞĞµÄstyle-name
-	private static int _row_counter = 0;	
-	//ÁĞ¼ÆÊı£¬ÓÃÓÚÈ¡µÃÁĞµÄstyle-name
-	private static int _col_counter = 0;	
-	//±í¼ÆÊı£¬ÓÃÓÚÈ¡µÃ±íµÄstyle-name
-	private static int _tab_counter = 0;				
-	//µ±Ç°ÁĞºÅ
+	private static String _table_name = "";
+	//è¡Œè®¡æ•°ï¼Œç”¨äºå–å¾—è¡Œçš„style-name
+	private static int _row_counter = 0;
+	//åˆ—è®¡æ•°ï¼Œç”¨äºå–å¾—åˆ—çš„style-name
+	private static int _col_counter = 0;
+	//è¡¨è®¡æ•°ï¼Œç”¨äºå–å¾—è¡¨çš„style-name
+	private static int _tab_counter = 0;
+	//å½“å‰åˆ—å·
 	private static int _cur_col_num = 0;
-	//µ±Ç°ĞĞºÅ
-	private static int _cur_row_num = 0;				
-	//tag for <±í:µ¥Ôª¸ñ>
-	private static boolean _table_cell_tag = false;	
-	//tag for <±í:É¸Ñ¡>
+	//å½“å‰è¡Œå·
+	private static int _cur_row_num = 0;
+	//tag for <è¡¨:å•å…ƒæ ¼>
+	private static boolean _table_cell_tag = false;
+	//tag for <è¡¨:ç­›é€‰>
 	private static boolean _table_filter_tag =false;
 	//tag for filtretiion
-	private static boolean _filter_tag = false;	
+	private static boolean _filter_tag = false;
 	//the max column number
 	private static int _max_col_num = 0;
-	//contains ±í:ÁĞ-ele or not
+	//contains è¡¨:åˆ—-ele or not
 	private static boolean _has_col_ele = false;
-	
+
 	//initialize
 	public static void init(){
 		_row_counter = 0;
 		_col_counter = 0;
 		_tab_counter = 0;
 	}
-	
+
 	public static void set_has_col(boolean bval){
 		_has_col_ele = bval;
 	}
-	
+
 	private static void clear(){
 		_result = "";
 		_table_name = "";
@@ -51,155 +51,155 @@ public class Sheet_Table {
 		_max_col_num = 0;
 		_has_col_ele = false;
 	}
-	
+
 	public static String get_result(){
 		String result = _result;
 		clear();
 		return result;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
 		String ID = "";
-					
+
 		if(_filter_tag){
-			return;		
+			return;
 		}
-		else if(qName.equals("±í:·Ö×é¼¯")||qName.equals("±í:¹¤×÷±íÊôĞÔ")){
+		else if(qName.equals("è¡¨:åˆ†ç»„é›†")||qName.equals("è¡¨:å·¥ä½œè¡¨å±æ€§")){
 			_filter_tag = true;
 		}
-		
+
 		else if(_table_filter_tag){
 			Table_Filter.process_start(qName,atts);
 		}
-		else if(qName.equals("±í:É¸Ñ¡")){
+		else if(qName.equals("è¡¨:ç­›é€‰")){
 			_table_filter_tag = true;
 			Table_Filter.process_start(qName, atts);
 		}
-		
+
 		else if(_table_cell_tag){
 			Table_Cell.process_start(qName,atts);
 		}
-		else if(qName.equals("±í:µ¥Ôª¸ñ")){
+		else if(qName.equals("è¡¨:å•å…ƒæ ¼")){
 			_table_cell_tag = true;
 			Table_Cell.process_start(qName,atts);
 		}
-		
-		else if(qName.equals("±í:¹¤×÷±í")){
+
+		else if(qName.equals("è¡¨:å·¥ä½œè¡¨")){
 			String table = "";
 
 			_tab_counter ++;
-			_table_name = atts.getValue("±í:Ãû³Æ");
+			_table_name = atts.getValue("è¡¨:åç§°");
 			Table_Filter.set_table_id(_table_name);
 			Table_Cell.set_table_name(_table_name);
-			
-			table += "<table:table table:name=\"" + _table_name +"\"";			
+
+			table += "<table:table table:name=\"" + _table_name +"\"";
 			if((ID=Table_Style.get_tab_id(_tab_counter)) != null){
 				table += " table:style-name=\"" + ID + "\"";
 			}
 			table += Name_Expression.get_print_area(_tab_counter-1);
 			_result += table + ">";
-		}	
-		
-		else if(qName.equals("±í:¹¤×÷±íÄÚÈİ")){
+		}
+
+		else if(qName.equals("è¡¨:å·¥ä½œè¡¨å†…å®¹")){
 			String shapes = Table_Shapes.get_table_shapes(_table_name);
-			
+
 			if(shapes != null && !shapes.equals("")){
 				_result += "<table:shapes>" + shapes + "</table:shapes>";
 			}
-			
+
 			if(!_has_col_ele){
-				attVal = atts.getValue("±í:×î´óÁĞ");
+				attVal = atts.getValue("è¡¨:æœ€å¤§åˆ—");
 				_result += empty_default_cols(attVal);
 			}
 		}
-		
-		else if(qName.equals("±í:ÁĞ")){ 
+
+		else if(qName.equals("è¡¨:åˆ—")){
 			_col_counter ++;
 			String column = "";
-			
-			attVal = atts.getValue("±í:ÁĞºÅ");			
+
+			attVal = atts.getValue("è¡¨:åˆ—å·");
 			if(attVal != null){
 				int preColNum = _cur_col_num;
 				_cur_col_num = Integer.parseInt(attVal);
-				
+
 				column += get_empty_col(_cur_col_num - preColNum - 1);
 				while(Spreadsheet_Data.pop_column_start(_cur_col_num)){
 					column += "<table:table-column-group>";
 				}
 			}
 			_max_col_num = _cur_col_num;
-			
+
 			column += "<table:table-column";
 			ID = Table_Column.get_style_id(_col_counter);
 			if(ID != null){
 				column += " table:style-name=\"" + ID + "\"";
 			}
-					
-			if((attVal=atts.getValue("±í:Òş²Ø"))!=null){
+
+			if((attVal=atts.getValue("è¡¨:éšè—"))!=null){
 				if(attVal.equals("true")){
 					column += " table:visibility=\"collapse\"";
 				}
 			}
-			if((attVal=atts.getValue("±í:¿ç¶È")) != null){
+			if((attVal=atts.getValue("è¡¨:è·¨åº¦")) != null){
 				if(Integer.valueOf(attVal) != 0){
 					column += " table:number-columns-repeated=\"" + attVal + "\"";
 				}
 			}
-			
-			String defaultCell = atts.getValue("±í:Ê½ÑùÒıÓÃ");
+
+			String defaultCell = atts.getValue("è¡¨:å¼æ ·å¼•ç”¨");
 			if(defaultCell == null){
 				defaultCell = Table_Cell.in_col_range(_cur_col_num,_table_name);
 				//this "de_Default" cell style exists in styles.xml
-				defaultCell = (defaultCell.equals("")) ? "de_Default" : defaultCell;		
+				defaultCell = (defaultCell.equals("")) ? "de_Default" : defaultCell;
 			}
-			column += " table:default-cell-style-name=\"" + defaultCell + "\"";			
+			column += " table:default-cell-style-name=\"" + defaultCell + "\"";
 			column += "/>";
-			
+
 			_result += column;
 		}
-		
-		else if(qName.equals("±í:ĞĞ")){
+
+		else if(qName.equals("è¡¨:è¡Œ")){
 			String row = "";
 			_row_counter ++;
 			int preRowNum = _cur_row_num;
-			
-			attVal = atts.getValue("±í:ĞĞºÅ");			
+
+			attVal = atts.getValue("è¡¨:è¡Œå·");
 			if(attVal != null){
 				_cur_row_num = Integer.parseInt(attVal);
 			}else{
-				_cur_row_num ++;					//Ä¬ÈÏ¼Ó1
-			}		
+				_cur_row_num ++;					//é»˜è®¤åŠ 1
+			}
 			Table_Cell.see_new_row(_cur_row_num);
-			
+
 			row += get_empty_row(_cur_row_num,preRowNum,_max_col_num);
-			
+
 			while(Spreadsheet_Data.pop_row_start(_cur_row_num)){
 				row += "<table:table-row-group>";
-			}	
-			
+			}
+
 			row += "<table:table-row";
 			ID = Table_Row.get_style_id(_row_counter);
 			ID = (ID==null) ? Table_Row._DE_name : ID;
-			row += " table:style-name=\"" + ID + "\"";		
-			
-			if((attVal=atts.getValue("±í:Òş²Ø"))!=null){
+			row += " table:style-name=\"" + ID + "\"";
+
+			if((attVal=atts.getValue("è¡¨:éšè—"))!=null){
 				if(attVal.equals("true")){
 					row += " table:visibility=\"collapse\"";
 				}
 			}
-			if((attVal=atts.getValue("±í:¿ç¶È"))!=null){
+			if((attVal=atts.getValue("è¡¨:è·¨åº¦"))!=null){
 				//todo
 			}
-			if((attVal=atts.getValue("±í:Ê½ÑùÒıÓÃ"))!=null){
+			if((attVal=atts.getValue("è¡¨:å¼æ ·å¼•ç”¨"))!=null){
 				row += " table:default-cell-style-name=\"" + attVal + "\"";
 			}
 			row += ">";
-			
+
 			_result += row;
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		if(_table_cell_tag){
 			Table_Cell.process_chars(chs);
@@ -208,71 +208,71 @@ public class Sheet_Table {
 			Table_Filter.process_chars(chs);
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("±í:·Ö×é¼¯")||qName.equals("±í:¹¤×÷±íÊôĞÔ")){
+		if(qName.equals("è¡¨:åˆ†ç»„é›†")||qName.equals("è¡¨:å·¥ä½œè¡¨å±æ€§")){
 			_filter_tag = false;
 		}
 		else if(_filter_tag){
 			return ;
 		}
-		
+
 		else if(_table_filter_tag){
 			Table_Filter.process_end(qName);
-			if(qName.equals("±í:É¸Ñ¡")){
+			if(qName.equals("è¡¨:ç­›é€‰")){
 				_table_filter_tag = false;
 			}
 		}
-		
+
 		else if(_table_cell_tag){
 			Table_Cell.process_end(qName);
-			if(qName.equals("±í:µ¥Ôª¸ñ")){
+			if(qName.equals("è¡¨:å•å…ƒæ ¼")){
 				_table_cell_tag = false;
 				_result += Table_Cell.get_result();
 			}
 		}
-		
-		else if(qName.equals("±í:¹¤×÷±í")){
+
+		else if(qName.equals("è¡¨:å·¥ä½œè¡¨")){
 			_result += "</table:table>";
 		}
-		else if(qName.equals("±í:ÁĞ")){
+		else if(qName.equals("è¡¨:åˆ—")){
 			String columnEnd = "";
-			
+
 			while(Spreadsheet_Data.pop_column_end(_cur_col_num)){
 				columnEnd += "</table:table-column-group>";
 			}
 			_result += columnEnd;
 		}
-		else if(qName.equals("±í:ĞĞ")){
+		else if(qName.equals("è¡¨:è¡Œ")){
 			String rowEnd = "";
 			int num = _max_col_num - Table_Cell.get_col_num();
-			
+
 			rowEnd += get_empty_cell(num) + "</table:table-row>";
-			
+
 			while(Spreadsheet_Data.pop_row_end(_cur_row_num)){
 				rowEnd += "</table:table-row-group>";
 			}
 			_result += rowEnd;
 		}
 	}
-	
+
 	private static String get_empty_cell(int num){
 		String emptyCells = "";
-		
+
 		if(num == 1){
 			emptyCells += "<table:table-cell/>";
 		}
 		else if(num > 1){
 			emptyCells += "<table:table-cell table:number-columns-repeated=\"" + num + "\"/>";
 		}
-		
+
 		return emptyCells;
 	}
-	
+
 	private static String get_empty_row(int cur, int pre, int maxCol){
 		int num = cur - pre - 1;
 		String emptyRow = "";
-		
+
 		if(num == 1){
 			emptyRow = "<table:table-row>" + get_empty_cell(maxCol) + "</table:table-row>";
 		}
@@ -281,34 +281,34 @@ public class Sheet_Table {
 			emptyRow += get_empty_cell(maxCol);
 			emptyRow += "</table:table-row>";
 		}
-		
+
 		return emptyRow;
 	}
-	
+
 	private static String get_empty_col(int num){
 		String emptyCol = "";
 		String deStyle = " table:default-cell-style-name=\"de_Default\"";
-		
+
 		if(num == 1){
 			emptyCol = "<table:table-column" + deStyle + "/>";
 		}
 		else if(num > 1){
 			emptyCol = "<table:table-column table:number-columns-repeated=\"" + num + "\"" + deStyle + "/>";
 		}
-		
+
 		return emptyCol;
 	}
-	
+
 	private static String empty_default_cols(String num){
 		String deCols = "";
-		
+
 		if(num == null || num.equals("0")){
 			num = "1";
 		}
 		deCols = "<table:table-column table:style-name=\"" + Table_Column._DE_name + "\""
-				+ " table:number-columns-repeated=\"" + num 
+				+ " table:number-columns-repeated=\"" + num
 				+ "\" table:default-cell-style-name=\"de_Default\"/>";
-		
+
 		return deCols;
 	}
 }

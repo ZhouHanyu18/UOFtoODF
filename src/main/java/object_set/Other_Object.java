@@ -7,80 +7,80 @@ import java.io.*;
 import temp_structs.*;
 
 public class Other_Object {
-	
-	private static String _text_node = "";   //ÓÃÓÚ´æ·ÅÎÄ±¾½ÚµãµÄÄÚÈİ
-	private static boolean _need_to_store_text = false;   //±êÊ¶ÊÇ·ñĞèÒªÈ¡³öÎÄ±¾½ÚµãµÄÖµ
-	
-	private static String _obj_id = "";   //ID£¬ÔÚbodyÖĞÒıÓÃÊ±»áÓÃµ½
+
+	private static String _text_node = "";   //ç”¨äºå­˜æ”¾æ–‡æœ¬èŠ‚ç‚¹çš„å†…å®¹
+	private static boolean _need_to_store_text = false;   //æ ‡è¯†æ˜¯å¦éœ€è¦å–å‡ºæ–‡æœ¬èŠ‚ç‚¹çš„å€¼
+
+	private static String _obj_id = "";   //IDï¼Œåœ¨bodyä¸­å¼•ç”¨æ—¶ä¼šç”¨åˆ°
 	private static String _obj_path = "";
 	private static String _obj_type = "";
-	
-	private static final String _obj_folder = "result/Pictures/";  //¶ÔÏó´æ·ÅµÄÂ·¾¶
-	public Other_Object() {	
-		
+
+	private static final String _obj_folder = "result/Pictures/";  //å¯¹è±¡å­˜æ”¾çš„è·¯å¾„
+	public Other_Object() {
+
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
-		if (qName.equals("uof:ÆäËû¶ÔÏó")) {
-			_obj_id = atts.getValue("uof:±êÊ¶·û");
-			if (atts.getValue("uof:¹«¹²ÀàĞÍ") != null) {
-				_obj_type = "." + atts.getValue("uof:¹«¹²ÀàĞÍ");
+		if (qName.equals("uof:å…¶ä»–å¯¹è±¡")) {
+			_obj_id = atts.getValue("uof:æ ‡è¯†ç¬¦");
+			if (atts.getValue("uof:å…¬å…±ç±»å‹") != null) {
+				_obj_type = "." + atts.getValue("uof:å…¬å…±ç±»å‹");
 				_obj_path = _obj_folder + _obj_id + _obj_type;
 			}
 		}
-		else if (qName.equals("uof:Êı¾İ")) {
+		else if (qName.equals("uof:æ•°æ®")) {
 			_need_to_store_text = true;
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if (qName.equals("uof:ÆäËû¶ÔÏó")) {
+		if (qName.equals("uof:å…¶ä»–å¯¹è±¡")) {
 			String path = "Pictures/" + _obj_id + _obj_type;
-			
+
 			String styles = Stored_Data.getAutoStylesInContentXml();
 			int i = styles.indexOf("\"" + _obj_id + "\"");
 			int j = styles.indexOf(" ",i);
 			styles = styles.substring(0,i + 1) + path + styles.substring(j - 1);
 			Stored_Data.setAutoStylesInContentXml(styles);
-			
-			Object_Set_Data.addOtherObj(_obj_id,path);	
+
+			Object_Set_Data.addOtherObj(_obj_id,path);
 			_obj_id = "";
 			_obj_path = "";
 			_obj_type = "";
 		}
-		else if (qName.equals("uof:Êı¾İ")) {
+		else if (qName.equals("uof:æ•°æ®")) {
 			String base64Str = _text_node;
 			ByteArrayOutputStream f = new ByteArrayOutputStream();
 			File resultFile = new File(_obj_path);
-			
+
 			try {
 				if(!(new File(_obj_folder).isDirectory())) {
 					new File(_obj_folder).mkdir();
 				}
-				
+
 				resultFile.createNewFile();
-				OutputStream _outstream = new FileOutputStream(_obj_path);	
-				
+				OutputStream _outstream = new FileOutputStream(_obj_path);
+
 				byte buf[] = Base64Decoder.base64Dec(base64Str);
-				f.write(buf);	
+				f.write(buf);
 				f.writeTo(_outstream);
 				_outstream.close();
 			} catch (IOException e) {
 				System.err.println(e);
 			}
 		}
-//		else if (qName.equals("uof:Â·¾¶")) {
-//			_obj_content = " xlink:href=\"" + _text_node + "\"";  //Â·¾¶ÔÚODFÖĞÊÇ×÷ÎªÄ³¸öÔªËØµÄÊôĞÔ
+//		else if (qName.equals("uof:è·¯å¾„")) {
+//			_obj_content = " xlink:href=\"" + _text_node + "\"";  //è·¯å¾„åœ¨ODFä¸­æ˜¯ä½œä¸ºæŸä¸ªå…ƒç´ çš„å±æ€§
 //		}
-		
-		//Ã¿¸öÔªËØ½áÊøÊ±£¬ÒªÇå¿Õ_text_node²¢ÉèÖÃ_need_to_store_text
-		_text_node = "";   
+
+		//æ¯ä¸ªå…ƒç´ ç»“æŸæ—¶ï¼Œè¦æ¸…ç©º_text_nodeå¹¶è®¾ç½®_need_to_store_text
+		_text_node = "";
 		_need_to_store_text = false;
 	}
-	
+
 	public static void process_chars(String chs){
 		if (_need_to_store_text) {
-			_text_node += chs;			
+			_text_node += chs;
 		}
 	}
 }

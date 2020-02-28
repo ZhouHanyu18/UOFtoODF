@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Object_Set_Data {
-	//formulaÒªµ¥¶ÀÉú³ÉÎÄ¼ş£¬Òò´Ë²»´æ´¢ÔÚ´Ë
-	private static Map<String,String> 
-		_drawings_map = new HashMap<String,String>();   		//´æ·ÅÍ¼ĞÎ
-	private static Map<String,String> 
-		_other_objs_map = new HashMap<String,String>();   		//´æ·ÅÆäËû¶ÔÏóµÄÂ·¾¶
-	private static Map<String,String> 
-		_drawing_overturn_map = new HashMap<String,String>();   //´æ·ÅÍ¼ĞÎÊÇ·ñÓĞ·­×ª£¬ÔİÊ±Ö»ÓÃÔÚlineµÄÊ×Î²×ø±êÅĞ¶Ï  
+	//formulaè¦å•ç‹¬ç”Ÿæˆæ–‡ä»¶ï¼Œå› æ­¤ä¸å­˜å‚¨åœ¨æ­¤
 	private static Map<String,String>
-		_ref_obj_map = new HashMap<String,String>();   			//´æ·ÅframeÒıÓÃµÄÆäËû¶ÔÏóid
-	
+		_drawings_map = new HashMap<String,String>();   		//å­˜æ”¾å›¾å½¢
+	private static Map<String,String>
+		_other_objs_map = new HashMap<String,String>();   		//å­˜æ”¾å…¶ä»–å¯¹è±¡çš„è·¯å¾„
+	private static Map<String,String>
+		_drawing_overturn_map = new HashMap<String,String>();   //å­˜æ”¾å›¾å½¢æ˜¯å¦æœ‰ç¿»è½¬ï¼Œæš‚æ—¶åªç”¨åœ¨lineçš„é¦–å°¾åæ ‡åˆ¤æ–­
+	private static Map<String,String>
+		_ref_obj_map = new HashMap<String,String>();   			//å­˜æ”¾frameå¼•ç”¨çš„å…¶ä»–å¯¹è±¡id
+
 	//initialize
 	public static void init(){
 		_drawings_map.clear();
@@ -21,35 +21,35 @@ public class Object_Set_Data {
 		_drawing_overturn_map.clear();
 		_ref_obj_map.clear();
 	}
-	
+
 	public static void addDrawing(String ID,String drawing) {
 		_drawings_map.put(ID,drawing);
 	}
-	
+
 	public static String getDrawing(String ID) {
 		return _drawings_map.get(ID);
 	}
-	
+
 	public static void addOtherObj(String ID,String other_obj) {
 		_other_objs_map.put(ID,other_obj);
 	}
-	
+
 	public static String getOtherObj(String ID) {
 		return _other_objs_map.get(ID);
 	}
-	
+
 	public static void addDrawingOverturn(String ID,String overturn) {
 		_drawing_overturn_map.put(ID,overturn);
 	}
-	
+
 	public static String getDrawingOverturn(String ID) {
 		return _drawing_overturn_map.get(ID);
 	}
-	
+
 	public static void addRefObj(String ID,String objID) {
 		_ref_obj_map.put(ID,objID);
 	}
-	
+
 	public static String getRefObj(String ID) {
 		return _ref_obj_map.get(ID);
 	}

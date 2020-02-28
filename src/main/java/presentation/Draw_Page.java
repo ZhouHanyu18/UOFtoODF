@@ -6,96 +6,96 @@ import temp_structs.Common_Data;
 import temp_structs.Object_Set_Data;
 
 /**
- * 
+ *
  * @author xie
  *
  */
 public class Draw_Page {
-	//tag for <Ñİ:»ÃµÆÆ¬±¸×¢>
+	//tag for <æ¼”:å¹»ç¯ç‰‡å¤‡æ³¨>
 	private static boolean _notes_tag = false;
 	//content of <draw:page>
-	private static String _content = ""; 	
+	private static String _content = "";
 	//attributes of <draw:page>
 	private static String _ele_atts = "";
-	//counter for <Ñİ:»ÃµÆÆ¬>
+	//counter for <æ¼”:å¹»ç¯ç‰‡>
 	private static int _dp_counter = 0;
-	//Ñİ:·ÅÓ³¶¯»­
-	private static boolean _animation_tag = false;	
+	//æ¼”:æ”¾æ˜ åŠ¨ç”»
+	private static boolean _animation_tag = false;
 	//type of placeholder
 	private static String _holder_type = "";
-	
-	
+
+
 	//initialize
 	public static void init(){
 		_dp_counter = 0;
 		_holder_type = "";
 	}
-	
+
 	public static String get_holder_type(){
 		return _holder_type;
 	}
-	
+
 	private static void clear(){
 		_content = "";
 		_ele_atts = "";
 	}
-	
+
 	public static String get_result(){
 		String page = "";
-		
+
 		page = "<draw:page" + _ele_atts + ">";
 		page += _content;
 		page += "</draw:page>";
-		
+
 		clear();
 		return page;
 	}
-	
+
 	private static String add_att(String name,String val){
 		return (" " + name + "=\"" + val + "\"");
 	}
 	private static String skip_null(String val){
 		return (val==null) ? "" : val;
 	}
-	public static void process_start(String qName,Attributes atts){	
+	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("Ñİ:»ÃµÆÆ¬±¸×¢")){
+
+		if(qName.equals("æ¼”:å¹»ç¯ç‰‡å¤‡æ³¨")){
 			_notes_tag = true;
-			
+
 			_content += "<presentation:notes>";
 		}
-		
+
 		else if(_animation_tag){
 			Animation.process_start(qName,atts);
 		}
-		else if(qName.equals("Ñİ:»ÃµÆÆ¬")){
-			attVal = atts.getValue("Ñİ:±êÊ¶·û");
+		else if(qName.equals("æ¼”:å¹»ç¯ç‰‡")){
+			attVal = atts.getValue("æ¼”:æ ‡è¯†ç¬¦");
 			if(attVal != null){
 				_ele_atts += add_att("draw:name",attVal);
 			}
-			
+
 			_dp_counter ++;
 			String name = Draw_Page_Style.get_style_name(_dp_counter);
 			if(name != null){
 				_ele_atts += add_att("draw:style-name",name);
 			}
-			
-			attVal = atts.getValue("Ñİ:Ä¸°æÒıÓÃ");
+
+			attVal = atts.getValue("æ¼”:æ¯ç‰ˆå¼•ç”¨");
 			_ele_atts += add_att("draw:master-page-name",attVal);
-			
-			attVal = atts.getValue("Ñİ:Ò³Ãæ°æÊ½ÒıÓÃ");
+
+			attVal = atts.getValue("æ¼”:é¡µé¢ç‰ˆå¼å¼•ç”¨");
 			_ele_atts += add_att("presentation:presentation-page-layout-name",attVal);
 		}
-		else if(qName.equals("uof:Ãªµã")){
+		else if(qName.equals("uof:é”šç‚¹")){
 			String drawAtts = "";
-			
-			String drawID = skip_null(atts.getValue("uof:Í¼ĞÎÒıÓÃ"));
+
+			String drawID = skip_null(atts.getValue("uof:å›¾å½¢å¼•ç”¨"));
 			String drawing = Object_Set_Data.getDrawing(drawID);
-			
-			attVal = skip_null(atts.getValue("uof:Õ¼Î»·û"));
+
+			attVal = skip_null(atts.getValue("uof:å ä½ç¬¦"));
 			_holder_type = Presentation_Page_Layout.conv_PH_type(attVal);
-			
+
 			if(_holder_type.equals("title")){
 				drawAtts += add_att("presentation:style-name","pr_"+Presentation_Style.get_title_name());
 			}
@@ -105,15 +105,15 @@ public class Draw_Page {
 			else if(_holder_type.equals("notes")){
 				drawAtts += add_att("presentation:style-name","pr_"+Presentation_Style.get_notes_name());
 			}
-			
+
 			drawAtts += add_att("draw:layer","layout");
-			
+
 			if (drawing.startsWith("<draw:line")) {
-				float x = Float.valueOf(atts.getValue("uof:x×ø±ê"));
-				float y = Float.valueOf(atts.getValue("uof:y×ø±ê"));
-				float width = Float.valueOf(atts.getValue("uof:¿í¶È"));
-				float height = Float.valueOf(atts.getValue("uof:¸ß¶È"));
-				float x1, y1, x2, y2; 
+				float x = Float.valueOf(atts.getValue("uof:xåæ ‡"));
+				float y = Float.valueOf(atts.getValue("uof:yåæ ‡"));
+				float width = Float.valueOf(atts.getValue("uof:å®½åº¦"));
+				float height = Float.valueOf(atts.getValue("uof:é«˜åº¦"));
+				float x1, y1, x2, y2;
 				if (Object_Set_Data.getDrawingOverturn(drawID) != null) {
 					x1 = x;
 					y1 = y + height;
@@ -132,15 +132,15 @@ public class Draw_Page {
 				drawAtts += add_att("svg:y2",measure_floatval(y2));
 			}
 			else {
-				drawAtts += add_att("svg:x",measure_val(atts.getValue("uof:x×ø±ê")));
-				drawAtts += add_att("svg:y",measure_val(atts.getValue("uof:y×ø±ê")));
+				drawAtts += add_att("svg:x",measure_val(atts.getValue("uof:xåæ ‡")));
+				drawAtts += add_att("svg:y",measure_val(atts.getValue("uof:yåæ ‡")));
 			}
-			
+
 			if (_holder_type.length() != 0) {
 				//drawAtts += add_att("presentation:placeholder","true");
 				drawAtts += add_att("presentation:class",_holder_type);
 			}
-			
+
 			if (drawing.contains("draw:frame")) {
 				int i = drawing.indexOf("<draw:frame");
 				while (i >= 0) {
@@ -161,35 +161,35 @@ public class Draw_Page {
 				int ind = drawing.indexOf(" ");
 				drawing = drawing.substring(0,ind) + drawAtts + drawing.substring(ind);
 			}
-			
+
 			_content += drawing;
 		}
-		else if(qName.equals("Ñİ:·ÅÓ³¶¯»­")){
+		else if(qName.equals("æ¼”:æ”¾æ˜ åŠ¨ç”»")){
 			_animation_tag = true;
 		}
-		
-		else if(qName.equals("Ñİ:ÇĞ»»")){
-			
+
+		else if(qName.equals("æ¼”:åˆ‡æ¢")){
+
 		}
 	}
-	
-	public static void process_chars(String chs){		
+
+	public static void process_chars(String chs){
 		if(_animation_tag){
 			Animation.process_chars(chs);
 		}
 	}
-	
+
 	public static void process_end(String qName){
 		if(_notes_tag){
-			if(qName.equals("Ñİ:»ÃµÆÆ¬±¸×¢")){
+			if(qName.equals("æ¼”:å¹»ç¯ç‰‡å¤‡æ³¨")){
 				_notes_tag = false;
 				_content += "</presentation:notes>";
 			}
 		}
-		else if(qName.equals("Ñİ:»ÃµÆÆ¬")){
+		else if(qName.equals("æ¼”:å¹»ç¯ç‰‡")){
 			//
 		}
-		else if(qName.equals("Ñİ:·ÅÓ³¶¯»­")){
+		else if(qName.equals("æ¼”:æ”¾æ˜ åŠ¨ç”»")){
 			_animation_tag = false;
 			_content += Animation.getResult();
 		}

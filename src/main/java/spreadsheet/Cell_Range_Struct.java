@@ -1,44 +1,44 @@
 package spreadsheet;
 
 /**
- * This struct contains a cell range which is 
+ * This struct contains a cell range which is
  * represented by four Integers. The cell range
  * is belonged to a Validation or a cell-style.
  * @author xie
  *
  */
 public class Cell_Range_Struct {
-	private String _table_name = "";		//¹¤×÷±íÃû
-	
-	private String _valid_name = "";		//Êı¾İÓĞĞ§ĞÔÃû(starts with "VN")
-	private String _style_name = "";		//µ¥Ôª¸ñÊ½ÑùÃû(starts with "SN")
-	
-	private int _col_start = 0;				//¿ªÊ¼µ¥Ôª¸ñ ÁĞºÅ
-	private int _row_start = 0;				//¿ªÊ¼µ¥Ôª¸ñ ĞĞºÅ
-	private int _col_end = 0;				//½áÊøµ¥Ôª¸ñ ÁĞºÅ
-	private int _row_end = 0;				//½áÊøµ¥Ôª¸ñ ĞĞºÅ
-	
+	private String _table_name = "";		//å·¥ä½œè¡¨å
+
+	private String _valid_name = "";		//æ•°æ®æœ‰æ•ˆæ€§å(starts with "VN")
+	private String _style_name = "";		//å•å…ƒæ ¼å¼æ ·å(starts with "SN")
+
+	private int _col_start = 0;				//å¼€å§‹å•å…ƒæ ¼ åˆ—å·
+	private int _row_start = 0;				//å¼€å§‹å•å…ƒæ ¼ è¡Œå·
+	private int _col_end = 0;				//ç»“æŸå•å…ƒæ ¼ åˆ—å·
+	private int _row_end = 0;				//ç»“æŸå•å…ƒæ ¼ è¡Œå·
+
 	public String get_base_address(){
 		String base = "";
-		
+
 		base = _table_name + ".";
 		base += Cell_Address.num_to_uppercase(_col_start);
 		base += (_row_start==0)?1:_row_start;
-		
+
 		return base;
 	}
-	
-	//'¹¤×÷±í1'!$2:$2(Î´´¦Àí)
-	//'¹¤×÷±í1'!$A:$A
-	//'¹¤×÷±í1'!$A$1 or '¹¤×÷±í1'!$A$1:$C$2
+
+	//'å·¥ä½œè¡¨1'!$2:$2(æœªå¤„ç†)
+	//'å·¥ä½œè¡¨1'!$A:$A
+	//'å·¥ä½œè¡¨1'!$A$1 or 'å·¥ä½œè¡¨1'!$A$1:$C$2
 	public void process(String val) throws Exception{
 		int index1, index2, index3;
 		String colName = "";
 		String rowName = "";
 		val.trim();
-		
+
 		_table_name = Cell_Address.get_table_name(val);
-		
+
 		index1 = val.indexOf("$");
 		index2 = val.indexOf("$",index1 + 1);
 		index3 = val.indexOf(":");
@@ -49,10 +49,10 @@ public class Cell_Range_Struct {
 			}
 			return;
 		}
-		
+
 		colName = val.substring(index1 + 1, index2);
 		_col_start = Cell_Address.uppercase_to_num(colName);
-		
+
 		if(!val.contains(":")){
 			rowName = val.substring(index2 + 1);
 			_row_start = Integer.parseInt(rowName);
@@ -63,7 +63,7 @@ public class Cell_Range_Struct {
 			index3 = val.indexOf(":");
 			rowName = val.substring(index2 + 1, index3);
 			_row_start = Integer.parseInt(rowName);
-			
+
 			index1 = val.indexOf("$",index3);
 			index2 = val.indexOf("$",index1 + 1);
 			colName = val.substring(index1 + 1, index2);
@@ -72,32 +72,32 @@ public class Cell_Range_Struct {
 			_row_end = Integer.parseInt(rowName);
 		}
 	}
-	
+
 	public boolean in_range(int col, int row){
-		return (col>=_col_start) && (col<=_col_end) 
+		return (col>=_col_start) && (col<=_col_end)
 			&& (row>=_row_start) && (row<=_row_end);
 	}
-	
+
 	public boolean in_col_range(int col){
 		return (col==_col_start) && (_col_end==0)
 			&&(_row_start==0) && (_row_end==0);
 	}
-	
+
 	public void set_table_name(String name){
 		_table_name = name;
-	}	
+	}
 	public String get_table_name(){
 		return _table_name;
 	}
-	
+
 	//validation name should start with "VN"
 	public void set_valid_name(String name){
 		_valid_name = "VN" + name;
-	}	
+	}
 	public String get_valid_name(){
 		return _valid_name;
 	}
-	
+
 	//cell style name should start with "SN"
 	public void set_style_name(String name){
 		_style_name = "SN" + name;
@@ -105,28 +105,28 @@ public class Cell_Range_Struct {
 	public String get_style_name(){
 		return _style_name;
 	}
-	
+
 	public void set_col_start(int start){
 		_col_start = start;
-	}	
+	}
 	public int get_col_start(){
 		return _col_start;
 	}
-	
+
 	public void set_row_start(int start){
 		_row_start = start;
-	}	
+	}
 	public int get_row_start(){
 		return _row_start;
 	}
-	
+
 	public void set_col_end(int end){
 		_col_end = end;
 	}
 	public int get_col_end(){
 		return _col_end;
 	}
-	
+
 	public void set_row_end(int end){
 		_row_end = end;
 	}

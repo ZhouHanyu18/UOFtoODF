@@ -7,16 +7,16 @@ import style_set.Sent_Style;
 import temp_structs.Stored_Data;
 
 /**
- * Process a few style information existing 
- * inside <×Ö:¶ÎÂä> to create new text-styles.
+ * Process a few style information existing
+ * inside <å­—:æ®µè½> to create new text-styles.
  * @author xie
  *
  */
 public class Text_Pro {
-	//counter of <×Ö:¾äÊôĞÔ>.There may
-	//be more than one in <×Ö:¶ÎÂä>-element.
+	//counter of <å­—:å¥å±æ€§>.There may
+	//be more than one in <å­—:æ®µè½>-element.
 	private static int _counter_of_text = 0;
-	//value of @×Ö:Ê½ÑùÒıÓÃ
+	//value of @å­—:å¼æ ·å¼•ç”¨
 	private static String _style_name = "";
 	//id for generating text style names
 	private static int _text_id = 0;
@@ -26,7 +26,7 @@ public class Text_Pro {
 	//store <counter,text style name>-pairs
 	private static Map<Integer,String>
 		_text_name_map = new TreeMap<Integer,String>();
-	//whether or not this ¶ÎÂäÊôĞÔ is in ½ÚÊôĞÔ
+	//whether or not this æ®µè½å±æ€§ is in èŠ‚å±æ€§
 	private static boolean _is_sec_type = false;
 
 
@@ -38,32 +38,32 @@ public class Text_Pro {
 		_text_pros.clear();
 		_text_name_map.clear();
 	}
-	
+
 	public static void in_sec_type(boolean bval){
 		_is_sec_type = bval;
 	}
-	
+
 	private static void clear(){
 		_style_name = "";
 	}
-	
+
 	//Invoked by First_ConvHandler
 	public static void plus_text_counter(){
 		_counter_of_text ++;
 	}
-	
+
 	//return the style name for the corresponding
 	//<text:span>. Invoked by Text_p
 	public static String get_text_name(int textCounter){
 		return _text_name_map.get(textCounter);
 	}
-	
+
 	//create a new text style and store it.
 	private static void commit_text_style(){
 		String style = "";
 		String name = "";
 		String textPro = Sent_Style.get_text_pro();
-		
+
 		if(textPro.equals(""))		return;
 
 		//if there is a text-pro with the same content
@@ -75,56 +75,56 @@ public class Text_Pro {
 				break;
 			}
 		}
-		
+
 		//else, create a new text style and store it.
 		if(name.equals("")){
 			name = gen_text_id();
 			_text_pros.put(name, textPro + _style_name);
-			
+
 			textPro = "<style:text-properties" + textPro + "/>";
-		
+
 			style = "<style:style style:family=\"text\"";
 			style += " style:name=\"" + name + "\"";
 			if(!_style_name.equals("")){
 				style += " style:parent-style-name=\"" + _style_name + "\"";
 			}
 			style += ">" + textPro + "</style:style>";
-			
+
 			if(_is_sec_type){
 				Stored_Data.addAutoStylesInStylesXml(style);
 			}
 			Stored_Data.addAutoStylesInContentXml(style);
-		}	
+		}
 		_text_name_map.put(_counter_of_text,name);
 
 		clear();
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("×Ö:¾äÊôĞÔ")){
-			attVal = atts.getValue("×Ö:Ê½ÑùÒıÓÃ");
+
+		if(qName.equals("å­—:å¥å±æ€§")){
+			attVal = atts.getValue("å­—:å¼æ ·å¼•ç”¨");
 			_style_name = (attVal==null) ? "" : attVal;
 		}
 		else {
 			Sent_Style.process_start(qName,atts);
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		Sent_Style.process_chars(chs);
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("×Ö:¾äÊôĞÔ")){
+		if(qName.equals("å­—:å¥å±æ€§")){
 			 commit_text_style();
 		 }
 		 else{
 			 Sent_Style.process_end(qName);
 		 }
 	}
-	
+
 	//Generate a name for text style
 	private static String gen_text_id(){
 		_text_id ++;

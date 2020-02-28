@@ -5,20 +5,20 @@ import convertor.IDGenerator;
 import temp_structs.Common_Data;
 import temp_structs.Stored_Data;
 
-//Ìõ¼ş¸ñÊ½»¯
+//æ¡ä»¶æ ¼å¼åŒ–
 public class Style_Map {
 	private static String _chs = "";				//
-	
+
 	private static String _style_name = "";			//
-	private static String _operator = "";			//²Ù×÷Âë
-	private static String _value_one = "";			//±í:µÚÒ»²Ù×÷Êı
-	private static String _value_two = "";			//±í:µÚ¶ş²Ù×÷Êı
-	private static String _apply_style_name = "";	//¸ñÊ½	
-	private static String _cond_type = "";			//Ìõ¼şÀàĞÍformula/cell value
-	
+	private static String _operator = "";			//æ“ä½œç 
+	private static String _value_one = "";			//è¡¨:ç¬¬ä¸€æ“ä½œæ•°
+	private static String _value_two = "";			//è¡¨:ç¬¬äºŒæ“ä½œæ•°
+	private static String _apply_style_name = "";	//æ ¼å¼
+	private static String _cond_type = "";			//æ¡ä»¶ç±»å‹formula/cell value
+
 	private static String _base_address = "";
-	private static String _style_maps = ""; 
-	
+	private static String _style_maps = "";
+
 	private static void clear(){
 		_chs = "";
 		_style_name = "";
@@ -30,46 +30,46 @@ public class Style_Map {
 		_base_address = "";
 		_style_maps = "";
 	}
-	
+
 	private static String get_result(){
 		String rst = "";
-		
+
 		rst += "<style:style style:family=\"table-cell\""
 			+ " style:name=\"" + _style_name + "\">";
 		rst += _style_maps;
 		rst += "</style:style>";
-		
+
 		clear();
 		return rst;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("±í:Ìõ¼ş¸ñÊ½»¯")){
+
+		if(qName.equals("è¡¨:æ¡ä»¶æ ¼å¼åŒ–")){
 			_style_name = IDGenerator.get_cell_style_id();
 		}
-		else if(qName.equals("±í:Ìõ¼ş")){
-			_cond_type = atts.getValue("±í:ÀàĞÍ");
+		else if(qName.equals("è¡¨:æ¡ä»¶")){
+			_cond_type = atts.getValue("è¡¨:ç±»å‹");
 			if(_cond_type == null){
 				_cond_type = "cell value";
 			}
 		}
-		else if(qName.equals("±í:¸ñÊ½")){
-			attVal = atts.getValue("±í:Ê½ÑùÒıÓÃ");
+		else if(qName.equals("è¡¨:æ ¼å¼")){
+			attVal = atts.getValue("è¡¨:å¼æ ·å¼•ç”¨");
 			if(attVal != null){
 				_apply_style_name = attVal;
 			}
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		_chs = chs;
 	}
-	
+
 	public static void process_end(String qName){
 
-		if(qName.equals("±í:ÇøÓò")){		
+		if(qName.equals("è¡¨:åŒºåŸŸ")){
 			Cell_Range_Struct range = new Cell_Range_Struct();
 			try{
 				range.process(_chs);
@@ -77,67 +77,67 @@ public class Style_Map {
 				range = null;
 				System.err.println(e.getMessage());
 			}
-			
+
 			if(range != null){
 				_base_address = range.get_base_address();
 				range.set_style_name(_style_name);
 				Table_Cell.add_cell_range(range);
 			}
 		}
-		else if(qName.equals("±í:²Ù×÷Âë")){
+		else if(qName.equals("è¡¨:æ“ä½œç ")){
 			_operator = _chs;
 		}
-		else if(qName.equals("±í:µÚÒ»²Ù×÷Êı")){
+		else if(qName.equals("è¡¨:ç¬¬ä¸€æ“ä½œæ•°")){
 			_value_one = _chs;
-		}	
-		else if(qName.equals("±í:µÚ¶ş²Ù×÷Êı")){
+		}
+		else if(qName.equals("è¡¨:ç¬¬äºŒæ“ä½œæ•°")){
 			_value_two = _chs;
 		}
-		else if(qName.equals("±í:Ìõ¼ş")){
+		else if(qName.equals("è¡¨:æ¡ä»¶")){
 			String oneMap = "";
-			
+
 			oneMap = "<style:map";
 			oneMap += " style:condition=\"" + get_condition() + "\"";
 			oneMap += " style:apply-style-name=\"" + _apply_style_name + "\"";
 			oneMap += " style:base-cell-address=\"" + _base_address + "\"";
 		    oneMap += "/>";
-			
+
 			_style_maps += oneMap;
 		}
-		else if(qName.equals("±í:Ìõ¼ş¸ñÊ½»¯")){
+		else if(qName.equals("è¡¨:æ¡ä»¶æ ¼å¼åŒ–")){
 			Stored_Data.addAutoStylesInContentXml(get_result());
 		}
 		_chs = "";
 	}
-	
+
 	private static String get_condition(){
 		String cond = "";
-		
+
 		if(_cond_type.equals("cell value")){
 			if(_operator.equals("between")){
-				cond = "cell-content-is-between(" 
-					+ _value_one + "," + _value_two + ")"; 
+				cond = "cell-content-is-between("
+					+ _value_one + "," + _value_two + ")";
 			}
 			else if(_operator.equals("not between")){
 				cond += "cell-content-is-not-between("
 					+ _value_one + "," + _value_two + ")";
 			}
 			else {
-				cond += "cell-content()" 
+				cond += "cell-content()"
 					+ get_op(_operator) + _value_one;
 			}
 		}
 		else if(_cond_type.equals("formula")){
-			cond = "is-true-formula("  
+			cond = "is-true-formula("
 				+ Formula.get_formula(_value_one) + ")";
 		}
-		
+
 		return cond;
 	}
-	
+
 	private static String get_op(String value){
 		String op = "";
-		
+
 		if(value.equals("greater than or equal to")){
 			op = ">=";
 		}

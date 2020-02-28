@@ -16,22 +16,22 @@ import temp_structs.*;
 public class Second_ConvHandler extends DefaultHandler {
 	//
 	private String _file_type = Common_Data.get_file_type();
-	private boolean _meta_tag = false;	
-	private boolean _paragraph_tag = false;	
+	private boolean _meta_tag = false;
+	private boolean _paragraph_tag = false;
 	private boolean _table_tag = false;
-	private Stack<String> _stack = new Stack<String>();	
-	private boolean _draw_page_tag = false;	
+	private Stack<String> _stack = new Stack<String>();
+	private boolean _draw_page_tag = false;
 	private boolean _filter_tag = false;
 	private boolean _sheet_table_tag = false;
 	private boolean _master_pag_tag = false;
-	
+
 	public Second_ConvHandler() {
 
 	}
-	
+
 	private String autostyle_in_styles(){
 		String styles = "";
-		
+
 		if(_file_type.equals("text")){
 			styles += Page_Layout.get_result();
 			styles += Stored_Data.getAutoStylesInStylesXml();
@@ -44,13 +44,13 @@ public class Second_ConvHandler extends DefaultHandler {
 			styles += Master_Pane.get_dp_styles();
 			styles += Stored_Data.getAutoStylesInStylesXml();
 		}
-		
+
 		return styles;
 	}
-	
+
 	private String master_styles(){
 		String ms = "";
-		
+
 		if (_file_type.equals("presentation")){
 			ms += Master_Pane.get_result();
 		}
@@ -60,14 +60,14 @@ public class Second_ConvHandler extends DefaultHandler {
 		else if(_file_type.equals("text")){
 			ms += Master_Page.get_result();
 		}
-		
+
 		return ms;
 	}
-	
+
 	public void startDocument() throws SAXException {
 		Text_p.restart();
-		
-		//Êä³östyles.xml
+
+		//è¾“å‡ºstyles.xml
 		String styles = Font_Set.get_result();
 		styles += "<office:styles>";
 		styles += Stored_Data.getStylesInStylesXml();
@@ -81,8 +81,8 @@ public class Second_ConvHandler extends DefaultHandler {
 		styles += "</office:master-styles>";
 		styles += "</office:document-styles>";
 		Results_Writer.processStyleResult(styles);
-		
-		//Êä³öcontent.xmlµÄstyle²¿·Ö
+
+		//è¾“å‡ºcontent.xmlçš„styleéƒ¨åˆ†
 		String content = "";
 		content += Font_Set.get_result();
 		content += "<office:automatic-styles>";
@@ -95,45 +95,45 @@ public class Second_ConvHandler extends DefaultHandler {
 		content += Stored_Data.getCellStyleSet();
 		content += "</office:automatic-styles>";
 		Results_Writer.processContentResult(content);
-		
+
 		//
 		Results_Writer.processContentResult("<office:body>");
 	}
-	
+
 	public void endDocument() throws SAXException {
 		//
 		Results_Writer.processContentResult("</office:body>");
 		Results_Writer.processContentResult("</office:document-content>");
-		
-		//Êä³ömeta.xml
+
+		//è¾“å‡ºmeta.xml
 		Results_Writer.processMetaResult("</office:document-meta>");
 	}
-	
-	public void startElement(String namespaceURI, String localName, 
+
+	public void startElement(String namespaceURI, String localName,
 			String qName, Attributes atts) throws SAXException {
 		String result = "";
 
 		Convertor_UOF_To_ODF.write_source_ta("parsing <" + qName + ">...\n");
-		
-		if(qName.equals("×Ö:¶ÎÂäÊôĞÔ")){
+
+		if(qName.equals("å­—:æ®µè½å±æ€§")){
 			Text_p.plus_para_counter();
 		}
-		else if(qName.equals("×Ö:¾äÊôĞÔ")){
+		else if(qName.equals("å­—:å¥å±æ€§")){
 			Text_p.plus_text_counter();
 		}
-		
+
 		if(_filter_tag){
 			return ;
 		}
-		else if(qName.equals("uof:Á´½Ó¼¯")||qName.equals("uof:¶ÔÏó¼¯")
-			||qName.equals("uof:Ê½Ñù¼¯")||qName.equals("×Ö:·Ö½Ú")
-			||qName.equals("×Ö:¹«ÓÃ´¦Àí¹æÔò")){
+		else if(qName.equals("uof:é“¾æ¥é›†")||qName.equals("uof:å¯¹è±¡é›†")
+			||qName.equals("uof:å¼æ ·é›†")||qName.equals("å­—:åˆ†èŠ‚")
+			||qName.equals("å­—:å…¬ç”¨å¤„ç†è§„åˆ™")){
 			_filter_tag = true;
 		}
 		else if(_meta_tag){
 			Meta.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:ÔªÊı¾İ")){
+		else if(qName.equals("uof:å…ƒæ•°æ®")){
 			_meta_tag=true;
 			Meta.process_start(qName,atts);
 		}
@@ -146,32 +146,32 @@ public class Second_ConvHandler extends DefaultHandler {
 				_stack.push(qName);
 				Text_p.process_start(qName,atts);
 			}
-			else if(qName.equals("×Ö:¶ÎÂä")){
+			else if(qName.equals("å­—:æ®µè½")){
 				_stack.push(qName);
 				_paragraph_tag = true;
 				Text_p.process_start(qName,atts);
 			}
-			else if(qName.equals("×Ö:ÎÄ×Ö±í")){
+			else if(qName.equals("å­—:æ–‡å­—è¡¨")){
 				_stack.push(qName);
 				_table_tag = true;
 				Text_Table.process_start(qName,atts);
 			}
-			else if(qName.equals("uof:ÎÄ×Ö´¦Àí")){
+			else if(qName.equals("uof:æ–‡å­—å¤„ç†")){
 				result += "<office:text>";				//office-text-content-prelude
 				result += Text_Data.getTrackedChanges();
 				result += Text_Field.create_seq_decls();
 			}
 		}
-		
+
 		else if(_file_type.equals("spreadsheet")){
 			if(_sheet_table_tag){
 				Sheet_Table.process_start(qName,atts);
 			}
-			else if(qName.equals("±í:¹¤×÷±í")){
+			else if(qName.equals("è¡¨:å·¥ä½œè¡¨")){
 				_sheet_table_tag = true;
 				Sheet_Table.process_start(qName,atts);
 			}
-			else if(qName.equals("uof:µç×Ó±í¸ñ")){
+			else if(qName.equals("uof:ç”µå­è¡¨æ ¼")){
 				result += "<office:spreadsheet>";		//office-spreadsheet-content-prelude
 				//<table:calculation-settings>
 				result += Calculation_Setting.get_result();
@@ -179,41 +179,41 @@ public class Second_ConvHandler extends DefaultHandler {
 				result += Content_Validation.get_result();
 			}
 		}
-		
+
 		else if(_file_type.equals("presentation")){
 			if(_draw_page_tag){
 				Draw_Page.process_start(qName,atts);
 			}
-			else if(qName.equals("Ñİ:»ÃµÆÆ¬") && !_master_pag_tag){
+			else if(qName.equals("æ¼”:å¹»ç¯ç‰‡") && !_master_pag_tag){
 				_draw_page_tag = true;
 				Draw_Page.process_start(qName,atts);
 			}
-			else if(qName.equals("uof:ÑİÊ¾ÎÄ¸å")){
+			else if(qName.equals("uof:æ¼”ç¤ºæ–‡ç¨¿")){
 				result += "<office:presentation>";		//office-presentation-content-prelude
 			}
-			else if (qName.equals("Ñİ:Ä¸°æ¼¯")) {
+			else if (qName.equals("æ¼”:æ¯ç‰ˆé›†")) {
 				_master_pag_tag = true;
 			}
 		}
-		
+
 		if(result.length()!=0) Results_Writer.processContentResult(result);
 	}
-	
+
 	public void endElement(String namespaceURI, String localName, String qName)
 	throws SAXException {
-		String result = "";	
-		
+		String result = "";
+
 		Convertor_UOF_To_ODF.write_source_ta("parsing <" + qName + ">...\n");
-		
-		if(qName.equals("uof:Á´½Ó¼¯")||qName.equals("uof:¶ÔÏó¼¯")
-		   ||qName.equals("uof:Ê½Ñù¼¯")||qName.equals("×Ö:·Ö½Ú")
-		   ||qName.equals("×Ö:¹«ÓÃ´¦Àí¹æÔò")){
+
+		if(qName.equals("uof:é“¾æ¥é›†")||qName.equals("uof:å¯¹è±¡é›†")
+		   ||qName.equals("uof:å¼æ ·é›†")||qName.equals("å­—:åˆ†èŠ‚")
+		   ||qName.equals("å­—:å…¬ç”¨å¤„ç†è§„åˆ™")){
 			_filter_tag = false;
 		}
 		else if(_filter_tag){
 			return;
 		}
-		else if(qName.equals("uof:ÔªÊı¾İ")){
+		else if(qName.equals("uof:å…ƒæ•°æ®")){
 			_meta_tag=false;
 			Meta.process_end(qName);
 		}
@@ -237,35 +237,35 @@ public class Second_ConvHandler extends DefaultHandler {
 					result = Text_Table.get_result();
 				}
 			}
-			else if(qName.equals("uof:ÎÄ×Ö´¦Àí")){	//office-text-content-epilogue											
+			else if(qName.equals("uof:æ–‡å­—å¤„ç†")){	//office-text-content-epilogue
 				result += "</office:text>";
 			}
 		}
 
 		else if(_file_type.equals("spreadsheet")){
-			
-			if(qName.equals("±í:¹¤×÷±í")){
+
+			if(qName.equals("è¡¨:å·¥ä½œè¡¨")){
 				_sheet_table_tag=false;
 				Sheet_Table.process_end(qName);
-				result += Sheet_Table.get_result();			
+				result += Sheet_Table.get_result();
 			}
 			else if(_sheet_table_tag){
 				Sheet_Table.process_end(qName);
 			}
-			else if(qName.equals("uof:µç×Ó±í¸ñ")){	//office-spreadsheet-content-epilogue	
+			else if(qName.equals("uof:ç”µå­è¡¨æ ¼")){	//office-spreadsheet-content-epilogue
 				//<table:named-expressions>
-				result += Name_Expression.get_result();	
+				result += Name_Expression.get_result();
 				//<table:database-ranges>
-				result += Table_Filter.get_result();		
+				result += Table_Filter.get_result();
 				result += "</office:spreadsheet>";
 			}
 		}
-		
+
 		else if(_file_type.equals("presentation")){
-			if (qName.equals("Ñİ:Ä¸°æ¼¯")) {
+			if (qName.equals("æ¼”:æ¯ç‰ˆé›†")) {
 				_master_pag_tag = false;
 			}
-			else if(qName.equals("Ñİ:»ÃµÆÆ¬") && !_master_pag_tag){
+			else if(qName.equals("æ¼”:å¹»ç¯ç‰‡") && !_master_pag_tag){
 				_draw_page_tag = false;
 				Draw_Page.process_end(qName);
 				result += Draw_Page.get_result();
@@ -273,25 +273,25 @@ public class Second_ConvHandler extends DefaultHandler {
 			else if(_draw_page_tag){
 				Draw_Page.process_end(qName);
 			}
-			else if(qName.equals("uof:ÑİÊ¾ÎÄ¸å")){	//office-presentation-content-epilogue
+			else if(qName.equals("uof:æ¼”ç¤ºæ–‡ç¨¿")){	//office-presentation-content-epilogue
 				//presentation:settings
-					result += Presentation_Setting.get_result();				
+					result += Presentation_Setting.get_result();
 					result += "</office:presentation>";
-			}	
+			}
 		}
-			
+
 		if(result.length()!=0)	Results_Writer.processContentResult(result);
 	}
-	
+
 	public void characters(char[] ch, int start, int length)
 	throws SAXException  {
 		String chs = new String(ch, start, length);
-		
+
 		chs = chs.replaceAll("&", Common_Data.ANDTAG);
 		chs = chs.replaceAll("<", Common_Data.LTAG);
 
 		if(_filter_tag || chs.equals("")) 	return;
-		
+
 		if(_paragraph_tag){
 			Text_p.process_chars(chs);
 		}
@@ -309,17 +309,17 @@ public class Second_ConvHandler extends DefaultHandler {
 		}
 	}
 
-	public void error(SAXParseException exception) 
+	public void error(SAXParseException exception)
 	{
 		System.err.println("Error parsing the file: "+exception.getMessage());
 	}
-	
-	public void warning(SAXParseException exception) 
+
+	public void warning(SAXParseException exception)
 	{
 		System.err.println("Warning parsing the file: "+exception.getMessage());
 	}
-	
-	public void fatalError(SAXParseException exception) 
+
+	public void fatalError(SAXParseException exception)
 	{
 		System.err.println("Fatal error parsing the file: "+exception.getMessage());
 		System.err.println("Cannot continue.");

@@ -4,14 +4,14 @@ package temp_structs;
 public class Stored_Data {
 	//
 	private static String _cellStyle_set = "";
-	//Ó¦·Åµ½styles.xmlµÄ<office:styles>ÀïÈ¥µÄstyles
-	private static String _styles_in_stylexml = "";  
-	//Ó¦·Åµ½content.xmlÀïÈ¥µÄauto-styles
-	private static String _autostyles_in_contentxml = ""; 
-	//Ó¦·Åµ½styles.xmlÀïÈ¥µÄauto-styles
+	//åº”æ”¾åˆ°styles.xmlçš„<office:styles>é‡ŒåŽ»çš„styles
+	private static String _styles_in_stylexml = "";
+	//åº”æ”¾åˆ°content.xmlé‡ŒåŽ»çš„auto-styles
+	private static String _autostyles_in_contentxml = "";
+	//åº”æ”¾åˆ°styles.xmlé‡ŒåŽ»çš„auto-styles
 	private static String _autostyles_in_stylesxml = "";
 
-	
+
 	//initialize
 	public static void init(){
 		_cellStyle_set = "";
@@ -19,7 +19,7 @@ public class Stored_Data {
 		_autostyles_in_contentxml = "";
 		_autostyles_in_stylesxml = "";
 	}
-	
+
 	public static void addCellStyle(String style){
 		_cellStyle_set += style;
 	}
@@ -27,14 +27,14 @@ public class Stored_Data {
 		return _cellStyle_set;
 	}
 //*********************************
-		
-//	*********************************	
+
+//	*********************************
 	public static void addStylesInStylesXml(String style) {
 		_styles_in_stylexml += style;
 	}
 	public static String getStylesInStylesXml() {
 		String defaults = "";
-		
+
 		if(Common_Data.get_file_type().equals("text")){
 			defaults += Default_Styles._paragraph;
 		}
@@ -44,19 +44,19 @@ public class Stored_Data {
 			defaults += Default_Styles._table_cell;
 			defaults += Default_Styles._de_table_cell;
 		}
-		
+
 		return defaults + _styles_in_stylexml;
 	}
 //	*********************************
-	
-//	*********************************	
+
+//	*********************************
 	public static void addAutoStylesInContentXml(String style) {
 		_autostyles_in_contentxml += style;
 	}
 	public static String getAutoStylesInContentXml() {
 		return _autostyles_in_contentxml;
 	}
-	
+
 	public static void setAutoStylesInContentXml(String str) {
 		_autostyles_in_contentxml = str;
 	}
@@ -65,7 +65,7 @@ public class Stored_Data {
 	public static void addAutoStylesInStylesXml(String style){
 		_autostyles_in_stylesxml += style;
 	}
-	
+
 	public static String getAutoStylesInStylesXml(){
 		return _autostyles_in_stylesxml;
 	}

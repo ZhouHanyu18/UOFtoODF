@@ -4,9 +4,9 @@ import org.xml.sax.Attributes;
 import temp_structs.Common_Data;
 
 /**
- * Process the conversion from <±í:Êı¾İÓĞĞ§ĞÔ>
+ * Process the conversion from <è¡¨:æ•°æ®æœ‰æ•ˆæ€§>
  * to <table:content-validation>
- * 
+ *
  * @author xie
  *
  */
@@ -14,20 +14,20 @@ public class Content_Validation {
 	//the result
 	private static String _result = "";
 	//
-	private static String _chs = "";	
+	private static String _chs = "";
 	//used for generating validation name
-	private static int _valid_id = 0;	
+	private static int _valid_id = 0;
 	//validation name
-	private static String _valid_name = "";	
+	private static String _valid_name = "";
 	//attributes for <table:content-validation>
-	private static String _valid_atts = "";	
-	private static String _check_type = "";			//Ğ£ÑéÀàĞÍ
-	private static String _operator = "";			//²Ù×÷Âë
-	private static String _value_one = "";			//±í:µÚÒ»²Ù×÷Êı
-	private static String _value_two = "";			//±í:µÚ¶ş²Ù×÷Êı
-	private static String _help_message = "";		//ÊäÈëÌáÊ¾
-	private static String _error_message = "";		//´íÎóÌáÊ¾
-	
+	private static String _valid_atts = "";
+	private static String _check_type = "";			//æ ¡éªŒç±»å‹
+	private static String _operator = "";			//æ“ä½œç 
+	private static String _value_one = "";			//è¡¨:ç¬¬ä¸€æ“ä½œæ•°
+	private static String _value_two = "";			//è¡¨:ç¬¬äºŒæ“ä½œæ•°
+	private static String _help_message = "";		//è¾“å…¥æç¤º
+	private static String _error_message = "";		//é”™è¯¯æç¤º
+
 	private static void clear(){
 		_chs = "";
 		_valid_atts = "";
@@ -42,113 +42,113 @@ public class Content_Validation {
 	//Get one <table:content-validation> element
 	private static String get_one_validation(){
 		String oneValid = "";
-		
-		oneValid = "<table:content-validation table:name=\"" + _valid_name + "\"" + _valid_atts;		
+
+		oneValid = "<table:content-validation table:name=\"" + _valid_name + "\"" + _valid_atts;
 		if(!get_condition().equals("")){
 			oneValid += " table:condition=\"" + get_condition() + "\"";
 		}
 		oneValid += ">";
-		
+
 		oneValid += _help_message + _error_message;
 		oneValid += "</table:content-validation>";
-		
+
 		clear();
 		return oneValid;
 	}
-	
+
 	//return <table:content-validations>
 	public static String get_result(){
 		String rst = "";
-		
+
 		if(!_result.equals("")){
 			rst = "<table:content-validations>" + _result + "</table:content-validations>";
 			_result = "";
 		}
-		
+
 		return rst;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("±í:Êı¾İÓĞĞ§ĞÔ¼¯")){
+
+		if(qName.equals("è¡¨:æ•°æ®æœ‰æ•ˆæ€§é›†")){
 			//todo
-		}	
-		else if(qName.equals("±í:Êı¾İÓĞĞ§ĞÔ")){
+		}
+		else if(qName.equals("è¡¨:æ•°æ®æœ‰æ•ˆæ€§")){
 			_valid_id ++;
 			_valid_name = "Val" + _valid_id;
 		}
-		else if(qName.equals("±í:ºöÂÔ¿Õ¸ñ")){
-			if((attVal=atts.getValue("±í:Öµ"))!=null){		
+		else if(qName.equals("è¡¨:å¿½ç•¥ç©ºæ ¼")){
+			if((attVal=atts.getValue("è¡¨:å€¼"))!=null){
 				_valid_atts += " table:allow-empty-cell=\"" + attVal + "\"";
 			}
-		}		
-		else if(qName.equals("±í:ÏÂÀ­¼ıÍ·")){
-			if((attVal=atts.getValue("±í:Öµ"))!=null){
-				if(attVal.equals("false")){		
+		}
+		else if(qName.equals("è¡¨:ä¸‹æ‹‰ç®­å¤´")){
+			if((attVal=atts.getValue("è¡¨:å€¼"))!=null){
+				if(attVal.equals("false")){
 					_valid_atts += " table:display-list=\"none\"";
 				}
 				else{
-					_valid_atts += " table:display-list=\"sort-ascending\"";	
+					_valid_atts += " table:display-list=\"sort-ascending\"";
 				}
 			}
-		}		
-		else if(qName.equals("±í:ÊäÈëÌáÊ¾")){
-			
+		}
+		else if(qName.equals("è¡¨:è¾“å…¥æç¤º")){
+
 			_help_message +="<table:help-message";
-			
-			if((attVal=atts.getValue("±í:ÏÔÊ¾"))!=null){
+
+			if((attVal=atts.getValue("è¡¨:æ˜¾ç¤º"))!=null){
 				_help_message += " table:display=\"" + attVal + "\"";
 			}
-			if((attVal=atts.getValue("±í:±êÌâ"))!=null){	
+			if((attVal=atts.getValue("è¡¨:æ ‡é¢˜"))!=null){
 				_help_message += " table:title=\"" + attVal + "\"";
 			}
 			_help_message += ">";
-			
-			if((attVal=atts.getValue("±í:ÄÚÈİ"))!=null){	
+
+			if((attVal=atts.getValue("è¡¨:å†…å®¹"))!=null){
 				_help_message += "<text:p>" + attVal + "</text:p>";
 			}
-			
+
 			_help_message +="</table:help-message>";
 		}
-		
-		if(qName.equals("±í:´íÎóÌáÊ¾")){
-			
+
+		if(qName.equals("è¡¨:é”™è¯¯æç¤º")){
+
 			_error_message += "<table:error-message";
-			
-			if((attVal=atts.getValue("±í:ÏÔÊ¾"))!=null){
+
+			if((attVal=atts.getValue("è¡¨:æ˜¾ç¤º"))!=null){
 				_error_message += " table:display=\"" + attVal + "\"";
 			}
-			if((attVal=atts.getValue("±í:±êÌâ"))!=null){	
+			if((attVal=atts.getValue("è¡¨:æ ‡é¢˜"))!=null){
 				_error_message += " table:title=\"" + attVal + "\"";
 			}
-			if((attVal=atts.getValue("±í:ÀàĞÍ"))!=null){
-				if(attVal.equals("ÖÕÖ¹")){
+			if((attVal=atts.getValue("è¡¨:ç±»å‹"))!=null){
+				if(attVal.equals("ç»ˆæ­¢")){
 					_error_message += " table:message-type=\"stop\"";
 				}
-				else if(attVal.equals("¾¯¸æ")){
+				else if(attVal.equals("è­¦å‘Š")){
 					_error_message += " table:message-type=\"warning\"";
 				}
-				else if(attVal.equals("ĞÅÏ¢")){
+				else if(attVal.equals("ä¿¡æ¯")){
 					_error_message += " table:message-type=\"information\"";
 				}
 			}
 			_error_message += ">";
-			
-			if((attVal=atts.getValue("±í:ÄÚÈİ"))!=null){	
+
+			if((attVal=atts.getValue("è¡¨:å†…å®¹"))!=null){
 				_error_message += "<text:p>" + attVal + "</text:p>";
 			}
 			_error_message += "</table:error-message>";
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		_chs += chs;
 	}
-	
+
 	public static void process_end(String qName){
 
-		if(qName.equals("±í:ÇøÓò")){				
+		if(qName.equals("è¡¨:åŒºåŸŸ")){
 			Cell_Range_Struct range = new Cell_Range_Struct();
 			try{
 				range.process(_chs);
@@ -156,41 +156,41 @@ public class Content_Validation {
 				range = null;
 				System.err.println(e.getMessage());
 			}
-			
-			if(range != null){	
+
+			if(range != null){
 				range.set_valid_name(_valid_name);
 				Table_Cell.add_cell_range(range);
 				_valid_atts +=" table:base-cell-address=\"" + range.get_base_address() + "\"";
 			}
 		}
-		else if(qName.equals("±í:²Ù×÷Âë")){
+		else if(qName.equals("è¡¨:æ“ä½œç ")){
 			_operator = _chs;
 		}
-		else if(qName.equals("±í:µÚÒ»²Ù×÷Êı")){
+		else if(qName.equals("è¡¨:ç¬¬ä¸€æ“ä½œæ•°")){
 			_value_one = _chs;
-		}	
-		else if(qName.equals("±í:µÚ¶ş²Ù×÷Êı")){
+		}
+		else if(qName.equals("è¡¨:ç¬¬äºŒæ“ä½œæ•°")){
 			_value_two = _chs;
 		}
-		else if(qName.equals("±í:Ğ£ÑéÀàĞÍ")){
+		else if(qName.equals("è¡¨:æ ¡éªŒç±»å‹")){
 			_check_type = _chs.trim();
 		}
-		else if(qName.equals("±í:Êı¾İÓĞĞ§ĞÔ")){		
-			_result += get_one_validation();	
-		}	
-		else if(qName.equals("±í:Êı¾İÓĞĞ§ĞÔ¼¯")){
+		else if(qName.equals("è¡¨:æ•°æ®æœ‰æ•ˆæ€§")){
+			_result += get_one_validation();
+		}
+		else if(qName.equals("è¡¨:æ•°æ®æœ‰æ•ˆæ€§é›†")){
 			//todo
 		}
 
 		_chs = "";
 	}
-	
+
 	private static String get_condition(){
 		String cond = "";
 		String checkStyle = get_check_style(_check_type);
-		
+
 		if(_check_type.equals(""))	return "";
-		
+
 		if(_check_type.equals("list")){
 			cond = "oooc:cell-content-is-in-list(" + _value_one + ")";
 		}
@@ -205,9 +205,9 @@ public class Content_Validation {
 				cond = "oooc:cell-content-text-length-is-not-between(" + _value_one + "," + _value_two + ")";
 			}
 		}
-		else if(!checkStyle.equals("")){		
+		else if(!checkStyle.equals("")){
 			if(!get_op(_operator).equals("")){
-				cond += "cell-content()" + get_op(_operator) + _value_one; 
+				cond += "cell-content()" + get_op(_operator) + _value_one;
 			}
 			else if(_operator.equals("between")){
 				cond += "cell-content-is-between(" + _value_one + "," + _value_two + ")";
@@ -215,18 +215,18 @@ public class Content_Validation {
 			else if(_operator.equals("not between")){
 				cond += "cell-content-text-length-is-not-between(" + _value_one + "," + _value_two + ")";
 			}
-			
+
 			if(!cond.equals("")){
 				cond = checkStyle + " and " + cond;
 			}
 		}
-		
+
 		return cond;
 	}
-		
+
 	private static String get_check_style(String value){
 		String trueFunction = "";
-		
+
 		if(value.equals("whole number")){
 			trueFunction = "oooc:cell-content-is-whole-number()";
 		}
@@ -242,13 +242,13 @@ public class Content_Validation {
 		else if(value.equals("any value")){
 			trueFunction = "oooc:cell-content-is-text()";
 		}
-		
+
 		return trueFunction;
 	}
-	
+
 	private static String get_op(String value){
 		String op = "";
-		
+
 		if(value.equals("greater than or equal to")){
 			op = ">=";
 		}

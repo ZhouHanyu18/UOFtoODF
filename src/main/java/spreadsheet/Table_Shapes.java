@@ -13,22 +13,22 @@ public class Table_Shapes {
 	private static boolean _rect_in_anno = false;
 	//store the shapes with their corresponding table
 	private static Map<String,String> _shapes_map = new TreeMap<String,String>();
-	
-	
+
+
 	//initialize
 	public static void init(){
 		_shapes_map.clear();
 	}
-	
+
 	//set table name
 	public static void set_table_id(String id){
 		_table_id = id;
 	}
-	
+
 	//add one shape(or chart) to the map
 	public static void add_one_shape(String shape){
 		String shps = "";
-		
+
 		shps = _shapes_map.get(_table_id);
 		if(shps == null){
 			shps = shape;
@@ -36,31 +36,31 @@ public class Table_Shapes {
 		else {
 			shps += shape;
 		}
-		
+
 		_shapes_map.put(_table_id,shps);
 	}
-	
+
 	public static String get_table_shapes(String tableID){
 		return _shapes_map.get(tableID);
 	}
-	
-	public static void process_start(String qName,Attributes atts){		
-		if(qName.equals("±í:Åú×¢")){
+
+	public static void process_start(String qName,Attributes atts){
+		if(qName.equals("è¡¨:æ‰¹æ³¨")){
 			_rect_in_anno = true;
 		}
-		
-		else if(qName.equals("uof:Ãªµã")){
+
+		else if(qName.equals("uof:é”šç‚¹")){
 			String drawAtts = "";
-			
-			String drawID = atts.getValue("uof:Í¼ÐÎÒýÓÃ");
+
+			String drawID = atts.getValue("uof:å›¾å½¢å¼•ç”¨");
 			String drawing = Object_Set_Data.getDrawing(drawID);
-			
+
 			if (drawing.startsWith("<draw:line")) {
-				float x = Float.valueOf(atts.getValue("uof:x×ø±ê"));
-				float y = Float.valueOf(atts.getValue("uof:y×ø±ê"));
-				float width = Float.valueOf(atts.getValue("uof:¿í¶È"));
-				float height = Float.valueOf(atts.getValue("uof:¸ß¶È"));
-				float x1, y1, x2, y2; 
+				float x = Float.valueOf(atts.getValue("uof:xåæ ‡"));
+				float y = Float.valueOf(atts.getValue("uof:yåæ ‡"));
+				float width = Float.valueOf(atts.getValue("uof:å®½åº¦"));
+				float height = Float.valueOf(atts.getValue("uof:é«˜åº¦"));
+				float x1, y1, x2, y2;
 				if (Object_Set_Data.getDrawingOverturn(drawID) != null) {
 					x1 = x;
 					y1 = y + height;
@@ -79,10 +79,10 @@ public class Table_Shapes {
 				drawAtts += add_att("svg:y2",measure_floatval(y2));
 			}
 			else {
-				drawAtts += add_att("svg:x",measure_val(atts.getValue("uof:x×ø±ê")));
-				drawAtts += add_att("svg:y",measure_val(atts.getValue("uof:y×ø±ê")));
+				drawAtts += add_att("svg:x",measure_val(atts.getValue("uof:xåæ ‡")));
+				drawAtts += add_att("svg:y",measure_val(atts.getValue("uof:yåæ ‡")));
 			}
-			
+
 			if (drawing.contains("draw:frame")) {
 				int i = drawing.indexOf("<draw:frame");
 				while (i >= 0) {
@@ -103,7 +103,7 @@ public class Table_Shapes {
 				int ind = drawing.indexOf(" ");
 				drawing = drawing.substring(0,ind) + drawAtts + drawing.substring(ind);
 			}
-			
+
 			if(_rect_in_anno){
 				drawing = drawing.replace("<draw:rect","<office:annotation");
 				drawing = drawing.replace("</draw:rect>","</office:annotation>");
@@ -114,13 +114,13 @@ public class Table_Shapes {
 			}
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("±í:Åú×¢")){
+		if(qName.equals("è¡¨:æ‰¹æ³¨")){
 			_rect_in_anno = false;
 		}
 	}
-	
+
 	private static String add_att(String name,String val){
 		return (" " + name + "=\"" + val + "\"");
 	}

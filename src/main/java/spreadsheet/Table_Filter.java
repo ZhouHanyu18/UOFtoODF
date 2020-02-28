@@ -14,16 +14,16 @@ public class Table_Filter {
 	//
 	private static String _field_num = "";
 	//and/or
-	private static String _condition_type = "";	
+	private static String _condition_type = "";
 	//
 	private static String _operator_type = "";
 	//
-	private static String _operand = "";	
+	private static String _operand = "";
 	//
 	private static boolean _is_advanced = false;
-	
-	
-	
+
+
+
 	private static void clear(){
 		_table_name = "";
 		_chs = "";
@@ -35,11 +35,11 @@ public class Table_Filter {
 		_operand = "";
 		_is_advanced = false;
 	}
-	
+
 	//Return the result
 	public static String get_result(){
 		String result = "";
-		
+
 		if(!_is_advanced && !_filter_conditions.equals("")){
 			result += "<table:database-range";
 			result += " table:target-range-address=\"" + _target_range + "\"";
@@ -49,34 +49,34 @@ public class Table_Filter {
 			result += "</table:filter-and></table:filter>";
 			result += "</table:database-range>";
 		}
-		
+
 		clear();
 		return result;
 	}
-	
+
 	public static void set_table_id(String id){
 		_table_name = id;
 	}
-	
-	public static void process_start(String qName,Attributes atts){		
+
+	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("±í:É¸Ñ¡")){
-			if((attVal=atts.getValue("±í:ÀàĞÍ"))!=null){
+
+		if(qName.equals("è¡¨:ç­›é€‰")){
+			if((attVal=atts.getValue("è¡¨:ç±»å‹"))!=null){
 				_is_advanced = (attVal.equals("advance"))?true:false;
 			}
 		}
-		
-		else if(qName.equals("±í:Ìõ¼ş")){
-			_field_num = atts.getValue("±í:ÁĞºÅ");
+
+		else if(qName.equals("è¡¨:æ¡ä»¶")){
+			_field_num = atts.getValue("è¡¨:åˆ—å·");
 		}
-		
-		else if(qName.equals("±í:×Ô¶¨Òå")){
-			attVal = atts.getValue("±í:ÀàĞÍ");		
+
+		else if(qName.equals("è¡¨:è‡ªå®šä¹‰")){
+			attVal = atts.getValue("è¡¨:ç±»å‹");
 			if(attVal != null){
 				_condition_type = attVal;
 			}
-			
+
 			if(_condition_type.equals("or")){
 				_filter_conditions += "<table:filter-or>";
 			}
@@ -84,45 +84,45 @@ public class Table_Filter {
 				_filter_conditions += "<table:filter-and>";
 			}
 		}
-		else if(qName.equals("±í:ÆÕÍ¨")){			
-			if((attVal=atts.getValue("±í:ÀàĞÍ"))!=null){
+		else if(qName.equals("è¡¨:æ™®é€š")){
+			if((attVal=atts.getValue("è¡¨:ç±»å‹"))!=null){
 				_operator_type = conv_operator_type(attVal);
 			}
-			if((attVal=atts.getValue("±í:Öµ"))!=null){
+			if((attVal=atts.getValue("è¡¨:å€¼"))!=null){
 				_operand = attVal;
-			}	
-			
+			}
+
 			String oneCondition = "";
-			oneCondition += "<table:filter-condition"; 
+			oneCondition += "<table:filter-condition";
 			oneCondition += " table:field-number=\"" + _field_num + "\"";
 			oneCondition += " table:operator=\"" + _operator_type + "\"";
 			oneCondition += " table:value=\"" + _operand + "\"";
 			oneCondition += "/>";
 			_filter_conditions += oneCondition;
 		}
-		
-		else if(qName.equals("±í:Ìõ¼şÇøÓò")){
+
+		else if(qName.equals("è¡¨:æ¡ä»¶åŒºåŸŸ")){
 			//todo
 		}
-		
-		else if(qName.equals("±í:½á¹ûÇøÓò")){
+
+		else if(qName.equals("è¡¨:ç»“æœåŒºåŸŸ")){
 			//todo
 		}
-	}  
-	
+	}
+
 	public static void process_chars(String chs){
 		_chs = chs;
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("±í:É¸Ñ¡")){
+		if(qName.equals("è¡¨:ç­›é€‰")){
 			//todo
 		}
-		else if(qName.equals("±í:·¶Î§")){
-			_target_range = 
+		else if(qName.equals("è¡¨:èŒƒå›´")){
+			_target_range =
 				Cell_Address.get_cell_range(_chs,_table_name);
 		}
-		else if(qName.equals("±í:×Ô¶¨Òå")){
+		else if(qName.equals("è¡¨:è‡ªå®šä¹‰")){
 			if(_condition_type.equals("or")){
 				_filter_conditions += "</table:filter-or>";
 			}
@@ -131,23 +131,23 @@ public class Table_Filter {
 			}
 			_condition_type = "";
 		}
-		else if(qName.equals("±í:Ìõ¼şÇøÓò")){
-			//todo
-		}	
-		else if(qName.equals("±í:½á¹ûÇøÓò")){
+		else if(qName.equals("è¡¨:æ¡ä»¶åŒºåŸŸ")){
 			//todo
 		}
-		
-		else if(qName.equals("±í:²Ù×÷Âë")){
+		else if(qName.equals("è¡¨:ç»“æœåŒºåŸŸ")){
+			//todo
+		}
+
+		else if(qName.equals("è¡¨:æ“ä½œç ")){
 			_operator_type = conv_operator_type(_chs);
 		}
-		
-		else if(qName.equals("±í:Öµ")){	
+
+		else if(qName.equals("è¡¨:å€¼")){
 			_operand = _chs;
 		}
-		else if(qName.equals("±í:²Ù×÷Ìõ¼ş")){
+		else if(qName.equals("è¡¨:æ“ä½œæ¡ä»¶")){
 			String oneCondition = "";
-			
+
 			if(!_operator_type.equals("")){
 				oneCondition += "<table:filter-condition";
 				oneCondition += " table:field-number=\"" + _field_num + "\"";
@@ -157,13 +157,13 @@ public class Table_Filter {
 				_filter_conditions += oneCondition;
 			}
 		}
-		
+
 		_chs = "";
 	}
-	
+
 	private static String conv_operator_type(String val){
 		String convVal = "";
-		
+
 		if(val.equals("value")){
 			convVal = "empty";
 		}
@@ -185,7 +185,7 @@ public class Table_Filter {
 		else if(val.equals("bottomitem")){
 			convVal = "bottom values";
 		}
-		
+
 		else if(val.equals("equal to")){
 			convVal = "=";
 		}
@@ -204,7 +204,7 @@ public class Table_Filter {
 		else if(val.equals("greater than or equal to")){
 			convVal = ">=";
 		}
-		
+
 		return convVal;
 	}
 }

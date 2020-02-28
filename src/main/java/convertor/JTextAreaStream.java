@@ -4,14 +4,14 @@ import java.io.OutputStream;
 import javax.swing.JTextArea;
 
 /**
- * ÖØ¶¨ÏòÒ»¸ö±ê×¼Êä³öÁ÷(System.out/System.err)µ½Ò»¸öJTextAreaÖĞ.
- * 
+ * é‡å®šå‘ä¸€ä¸ªæ ‡å‡†è¾“å‡ºæµ(System.out/System.err)åˆ°ä¸€ä¸ªJTextAreaä¸­.
+ *
  * @author xie
  */
 public class JTextAreaStream extends OutputStream {
 	  private JTextArea ta;
 
-	  
+
 	  public JTextAreaStream(JTextArea ta) {
 	    this.ta = ta;
 	  }

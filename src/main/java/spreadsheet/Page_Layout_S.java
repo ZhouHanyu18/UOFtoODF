@@ -5,7 +5,7 @@ import style_set.Common_Pro;
 import text.Text_Content;
 
 /**
- * 
+ *
  * @author xie
  *
  */
@@ -13,7 +13,7 @@ public class Page_Layout_S extends Common_Pro{
 	//
 	private static String _chs = "";
 	//page-layout properties
-	private static String _pl_pros = ""; 
+	private static String _pl_pros = "";
 	//@style:name
 	private static String _id = "";
 	//<style:page-layout>
@@ -28,8 +28,8 @@ public class Page_Layout_S extends Common_Pro{
 	private static String _master_page = "";
 	//tag for text content
 	private static boolean _text_content_tag = false;
-	
-	
+
+
 	//initialize
 	public static void init(){
 		_pl_pros = "";
@@ -39,63 +39,63 @@ public class Page_Layout_S extends Common_Pro{
 		_master_page = "";
 		_position = "";
 	}
-	
+
 	public static String get_page_layout(){
 		return _page_layout;
 	}
-	
+
 	public static String get_master_page(){
 		return _master_page;
 	}
-	
+
 	private static String get_one_PL(){
 		String str = "";
-		
+
 		str = "<style:page-layout style:name=\"" + _id + "\">";
-		str += "<style:page-layout-properties" + _pl_pros + "/>";	
+		str += "<style:page-layout-properties" + _pl_pros + "/>";
 		str += "</style:page-layout>";
-		
+
 		_pl_pros = "";
-		
+
 		return str;
 	}
-	
+
 	private static String get_one_MP(){
 		String str = "";
-		
+
 		str = "<style:master-page style:name=\"Default\" style:page-layout-name=\"" + _id + "\">";
 		str += "<style:header>" + _style_header + "</style:header>";
 		str += "<style:footer>" + _style_footer + "</style:footer>";
 		str += "</style:master-page>";
-		
+
 		_style_footer = "";
 		_style_header = "";
-		
+
 		return str;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
-		if(qName.equals("±Ì:“≥√Ê…Ë÷√")){
-			_id = atts.getValue("±Ì:√˚≥∆");
+		if(qName.equals("Ë°®:È°µÈù¢ËÆæÁΩÆ")){
+			_id = atts.getValue("Ë°®:ÂêçÁß∞");
 		}
-		else if(qName.equals("±Ì:÷Ω’≈")){
+		else if(qName.equals("Ë°®:Á∫∏Âº†")){
 			_pl_pros += get_page(atts);
-		}		
-		else if(qName.equals("±Ì:“≥±ﬂæ‡")){
+		}
+		else if(qName.equals("Ë°®:È°µËæπË∑ù")){
 			_pl_pros += get_margins(atts);
-		}		
+		}
 		else if(_text_content_tag){
 			Text_Content.process_start(qName,atts);
 		}
-		else if(qName.equals("±Ì:“≥√º“≥Ω≈")){
+		else if(qName.equals("Ë°®:È°µÁúâÈ°µËÑö")){
 			_text_content_tag = true;
-			
-			if(atts.getValue("±Ì:Œª÷√") != null){
-				_position = atts.getValue("±Ì:Œª÷√");
+
+			if(atts.getValue("Ë°®:‰ΩçÁΩÆ") != null){
+				_position = atts.getValue("Ë°®:‰ΩçÁΩÆ");
 			}
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		if(_text_content_tag){
 			Text_Content.process_chars(chs);
@@ -103,20 +103,20 @@ public class Page_Layout_S extends Common_Pro{
 			_chs = chs;
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("±Ì:÷Ω’≈∑ΩœÚ")){
+		if(qName.equals("Ë°®:Á∫∏Âº†ÊñπÂêë")){
 			_pl_pros += " style:print-orientation=\"" + _chs + "\"";
 		}
-		else if(qName.equals("±Ì:Àı∑≈")){
+		else if(qName.equals("Ë°®:Áº©Êîæ")){
 			_pl_pros += " style:scale-to=\"" + _chs + "%\"";
 		}
 		else if(_text_content_tag){
 			Text_Content.process_end(qName);
-			
-			if(qName.equals("±Ì:“≥√º“≥Ω≈")){
+
+			if(qName.equals("Ë°®:È°µÁúâÈ°µËÑö")){
 				_text_content_tag = false;
-				
+
 				if(_position.contains("footer")){
 					_style_footer = style_region(Text_Content.get_result(),_position);
 				}
@@ -125,21 +125,21 @@ public class Page_Layout_S extends Common_Pro{
 				}
 			}
 		}
-		else if(qName.equals("±Ì:“≥√Ê…Ë÷√")){
+		else if(qName.equals("Ë°®:È°µÈù¢ËÆæÁΩÆ")){
 			if(_page_layout.equals("")){
 				_page_layout = get_one_PL();
 			}
-			
+
 			if(_master_page.equals("")){
 				_master_page = get_one_MP();
 			}
 		}
 		_chs = "";
 	}
-	
+
 	private static String style_region(String content,String position){
 		String regionEle = "style:region-center";
-		
+
 		if(position.contains("left")){
 			regionEle = "style:region-left";
 		}
@@ -149,7 +149,7 @@ public class Page_Layout_S extends Common_Pro{
 		else if(position.contains("right")){
 			regionEle = "style:region-right";
 		}
-		
+
 		return "<" + regionEle + ">" + content + "</" + regionEle + ">";
 	}
 }

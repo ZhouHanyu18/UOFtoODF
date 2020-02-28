@@ -6,9 +6,9 @@ import org.xml.sax.Attributes;
 
 /**
  * To deal with <text:list>, we store in a map
- * its style-name and list-level taking from 
- * <×Ö:×Ô¶¯±àºÅĞÅÏ¢> for every paragraph.
- * 
+ * its style-name and list-level taking from
+ * <å­—:è‡ªåŠ¨ç¼–å·ä¿¡æ¯> for every paragraph.
+ *
  * @author xie
  *
  */
@@ -19,8 +19,8 @@ public class List_Para {
 	//for corresponding paragraph.
 	private static Map<Integer,List_Struct>
 		ls_map = new TreeMap<Integer,List_Struct>();
-	
-		
+
+
 	//initialize
 	public static void init(){
 		_counter_of_para = 0;
@@ -33,16 +33,16 @@ public class List_Para {
 		String startEle = "";
 		List_Struct preLs = ls_map.get(counter-1);
 		List_Struct curLs = ls_map.get(counter);
-		
+
 		String curName = (curLs==null) ? "" : curLs.get_list_name();
 		String preName = (preLs==null) ? "" : preLs.get_list_name();
 		int curLevel = (curLs==null) ? -1 : curLs.get_list_level();
 		int preLevel = (preLs==null) ? -1 : preLs.get_list_level();
 		int repeat = curLevel - preLevel;
-		
+
 		if(curLs!=null && !curName.equals("")){
 			if(preLs==null || !preName.equals(curName)){
-				startEle = "<text:list text:style-name=\"" 
+				startEle = "<text:list text:style-name=\""
 							+ curName + "\"><text:list-item>";
 				while(--repeat > 0){
 					startEle += "<text:list><text:list-item>";
@@ -60,23 +60,23 @@ public class List_Para {
 				startEle = "<text:list-item>";
 			}
 		}
-		
+
 		return startEle;
 	}
-	
+
 	//Get end element name of <text:list> for corresponding
 	//paragraph specified by the counter.
 	public static String get_list_end(int counter){
 		String endEle = "";
 		List_Struct nextLs = ls_map.get(counter+1);
 		List_Struct curLs = ls_map.get(counter);
-		
+
 		String curName = (curLs==null) ? "" : curLs.get_list_name();
 		String nextName = (nextLs==null) ? "" : nextLs.get_list_name();
 		int curLevel = (curLs==null) ? -1 : curLs.get_list_level();
 		int nextLevel = (nextLs==null) ? -1 : nextLs.get_list_level();
 		int repeat = curLevel - nextLevel;
-		
+
 		if(curLs!=null && !curName.equals("")){
 			if(nextLs==null || !nextName.equals(curName)){
 				while(repeat-- > 0){
@@ -96,33 +96,33 @@ public class List_Para {
 				endEle += "</text:list-item>";
 			}
 		}
-		
+
 		return endEle;
 	}
-	
+
 	//Add infomation of <text:list> for every paragraph
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("×Ö:¶ÎÂä")){
+
+		if(qName.equals("å­—:æ®µè½")){
 			_counter_of_para ++;
 		}
-		
-		else if(qName.equals("×Ö:×Ô¶¯±àºÅĞÅÏ¢")){
+
+		else if(qName.equals("å­—:è‡ªåŠ¨ç¼–å·ä¿¡æ¯")){
 			List_Struct ls = new List_Struct();
-			
+
 			//Style name of <text:list>
-			attVal = atts.getValue("×Ö:±àºÅÒıÓÃ");
+			attVal = atts.getValue("å­—:ç¼–å·å¼•ç”¨");
 			attVal = (attVal==null) ? "" : attVal;
 			ls.set_list_name(attVal);
-			
+
 			//text:list-level
-			attVal = atts.getValue("×Ö:±àºÅ¼¶±ğ");
+			attVal = atts.getValue("å­—:ç¼–å·çº§åˆ«");
 			attVal = (attVal==null) ? "0" : attVal;
 			int level = Integer.parseInt(attVal);
 			ls.set_list_level(level);
-			
+
 			ls_map.put(_counter_of_para, ls);
-		}	
+		}
 	}
 }

@@ -5,26 +5,26 @@ import org.xml.sax.Attributes;
 
 public class Text_Content {
 	//the result
-	private static String _result = ""; 	
+	private static String _result = "";
 	//tag for <text:p>
 	private static boolean _para_tag = false;
 	//tag for <table:table>
 	private static boolean _table_tag = false;
 	//stack for dealing with nesting
-	private static Stack<String> _stack = new Stack<String>(); 
-	
+	private static Stack<String> _stack = new Stack<String>();
+
 	private static void clear(){
-		_result = ""; 
+		_result = "";
 	}
-	
+
 	public static String get_result(){
 		String str = _result;
 		clear();
-		
+
 		return str;
 	}
-	
-	public static void process_start(String qName,Attributes atts){		
+
+	public static void process_start(String qName,Attributes atts){
 		if(_para_tag){
 			_stack.push(qName);
 			Text_p.process_start(qName,atts);
@@ -33,18 +33,18 @@ public class Text_Content {
 			_stack.push(qName);
 			Text_Table.process_start(qName,atts);
 		}
-		else if(qName.equals("×Ö:¶ÎÂä")){
+		else if(qName.equals("å­—:æ®µè½")){
 			_stack.push(qName);
-			_para_tag = true;	
+			_para_tag = true;
 			Text_p.process_start(qName,atts);
 		}
-		else if(qName.equals("×Ö:ÎÄ×Ö±í")){
+		else if(qName.equals("å­—:æ–‡å­—è¡¨")){
 			_stack.push(qName);
 			_table_tag = true;
 			Text_Table.process_start(qName,atts);
-		}	
+		}
 	}
-	
+
 	public static void process_chars(String chs){
 		if(_para_tag){
 			Text_p.process_chars(chs);
@@ -53,8 +53,8 @@ public class Text_Content {
 			Text_Table.process_chars(chs);
 		}
 	}
-	
-	//´¦ÀíÔªËØ½áÊø±êÇ©
+
+	//å¤„ç†å…ƒç´ ç»“æŸæ ‡ç­¾
 	public static void process_end(String qName){
 		if(_table_tag){
 			Text_Table.process_end(qName);
@@ -63,7 +63,7 @@ public class Text_Content {
 				_table_tag = false;
 				_result += Text_Table.get_result();
 			}
-		}						
+		}
 		else if(_para_tag){
 			Text_p.process_end(qName);
 			_stack.pop();

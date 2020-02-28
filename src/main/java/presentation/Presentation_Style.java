@@ -8,7 +8,7 @@ import style_set.Para_Style;
 import temp_structs.Stored_Data;
 
 /**
- * 
+ *
  * @author xie
  *
  */
@@ -35,8 +35,8 @@ public class Presentation_Style {
 	private static String _list_style_name = "Pr_List";
 	//store the style names and their corresponding outline level
 	private static Map<String,Integer> _ps_level_map = new TreeMap<String,Integer>();
-	
-	
+
+
 	//initialize
 	public static void init(){
 		_ps_level_map.clear();
@@ -62,39 +62,39 @@ public class Presentation_Style {
 	public static Integer get_ps_level(String styleName){
 		return _ps_level_map.get(styleName);
 	}
-	
+
 	private static String get_one_style(){
 		String style = "";
-		
-		style = "<style:style style:name=\"" 
+
+		style = "<style:style style:name=\""
 			+ _style_name + "\" style:family=\"presentation\">";
 		style += Para_Style.get_para_pro();
 		style += "</style:style>";
-		
+
 		return style;
 	}
-	
+
 	public static String get_result(){
 		String rst = "";
-		
+
 		rst = _result;
 		_result = "";
-		
+
 		return rst;
 	}
-	
-	public static void process_start(String qName,Attributes atts){	
-		if(qName.equals("uof:¶ÎÂäÊ½Ñù")){
+
+	public static void process_start(String qName,Attributes atts){
+		if(qName.equals("uof:æ®µè½å¼æ ·")){
 			_filter_tag = false;
-			_type = atts.getValue("×Ö:Ãû³Æ");
+			_type = atts.getValue("å­—:åç§°");
 			if(_type == null){
 				_type = "";
 			}
 			if(!_type.equals("slide") && !_type.equals("notes")){
 				_filter_tag = true;
 			}
-			
-			_style_name = atts.getValue("×Ö:±êÊ¶·û");
+
+			_style_name = atts.getValue("å­—:æ ‡è¯†ç¬¦");
 		}
 		else if(_filter_tag){
 			return ;
@@ -103,31 +103,31 @@ public class Presentation_Style {
 			Para_Style.process_start(qName,atts);
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		if(_filter_tag)		return ;
-		
+
 		Para_Style.process_chars(chs);
 		_chs = chs;
 	}
-	
+
 	public static void process_end(String qName){
-		
-		if(qName.equals("Ñİ:ÎÄ±¾Ê½Ñù¼¯")){
+
+		if(qName.equals("æ¼”:æ–‡æœ¬å¼æ ·é›†")){
 			Stored_Data.addStylesInStylesXml(get_result());
 			Stored_Data.addAutoStylesInStylesXml(content_style());
 			Stored_Data.addAutoStylesInContentXml(content_style());
 			Stored_Data.addAutoStylesInContentXml(pr_list_style());
 		}
-		
+
 		else if(_filter_tag){
 			return ;
 		}
-		
-		else if(qName.equals("uof:¶ÎÂäÊ½Ñù")){
+
+		else if(qName.equals("uof:æ®µè½å¼æ ·")){
 			_result += get_one_style();
 		}
-		else if(qName.equals("×Ö:´ó¸Ù¼¶±ğ")){
+		else if(qName.equals("å­—:å¤§çº²çº§åˆ«")){
 			if(_type.equals("notes")){
 				if(_chs.equals("1")){
 					_notes_name = _style_name;
@@ -151,10 +151,10 @@ public class Presentation_Style {
 			Para_Style.process_end(qName);
 		}
 	}
-	
+
 	private static String content_style(){
 		String style = "";
-		
+
 		//title
 		style += "<style:style"
 			  + " style:name=\"" + "pr_" + _title_name + "\""
@@ -176,51 +176,51 @@ public class Presentation_Style {
 			  + " style:parent-style-name=\"" + _notes_name + "\""
 			  + ">" + "<style:graphic-properties/>"
 			  + "</style:style>";
-			  
+
 		return style;
 	}
-	
+
 	private static String pr_list_style(){
-		String list = 
+		String list =
 			"<text:list-style style:name=\"" + _list_style_name + "\">" +
-				"<text:list-level-style-bullet text:level=\"1\" text:bullet-char=\"¡ñ\">" +
+				"<text:list-level-style-bullet text:level=\"1\" text:bullet-char=\"â—\">" +
 					"<style:list-level-properties text:space-before=\"0.3cm\" text:min-label-width=\"0.9cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"45%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"2\" text:bullet-char=\"¨C\">" +
+				"<text:list-level-style-bullet text:level=\"2\" text:bullet-char=\"â€“\">" +
 					"<style:list-level-properties text:space-before=\"1.6cm\" text:min-label-width=\"0.8cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"75%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"3\" text:bullet-char=\"¡ñ\">" +
+				"<text:list-level-style-bullet text:level=\"3\" text:bullet-char=\"â—\">" +
 					"<style:list-level-properties text:space-before=\"3cm\" text:min-label-width=\"0.6cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"45%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"4\" text:bullet-char=\"¨C\">" +
+				"<text:list-level-style-bullet text:level=\"4\" text:bullet-char=\"â€“\">" +
 					"<style:list-level-properties text:space-before=\"4.2cm\" text:min-label-width=\"0.6cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"75%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"5\" text:bullet-char=\"¡ñ\">" +
+				"<text:list-level-style-bullet text:level=\"5\" text:bullet-char=\"â—\">" +
 					"<style:list-level-properties text:space-before=\"5.4cm\" text:min-label-width=\"0.6cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"45%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"6\" text:bullet-char=\"¡ñ\">" +
+				"<text:list-level-style-bullet text:level=\"6\" text:bullet-char=\"â—\">" +
 					"<style:list-level-properties text:space-before=\"6.6cm\" text:min-label-width=\"0.6cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"45%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"7\" text:bullet-char=\"¡ñ\">" +
+				"<text:list-level-style-bullet text:level=\"7\" text:bullet-char=\"â—\">" +
 					"<style:list-level-properties text:space-before=\"7.8cm\" text:min-label-width=\"0.6cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"45%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"8\" text:bullet-char=\"¡ñ\">" +
+				"<text:list-level-style-bullet text:level=\"8\" text:bullet-char=\"â—\">" +
 					"<style:list-level-properties text:space-before=\"9cm\" text:min-label-width=\"0.6cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"45%\"/>" +
 				"</text:list-level-style-bullet>" +
-				"<text:list-level-style-bullet text:level=\"9\" text:bullet-char=\"¡ñ\">" +
+				"<text:list-level-style-bullet text:level=\"9\" text:bullet-char=\"â—\">" +
 					"<style:list-level-properties text:space-before=\"10.2cm\" text:min-label-width=\"0.6cm\"/>" +
 					"<style:text-properties fo:font-family=\"StarSymbol\" style:use-window-font-color=\"true\" fo:font-size=\"45%\"/>" +
 				"</text:list-level-style-bullet>" +
 			"</text:list-style>";
-		
+
 		return list;
 	}
 }

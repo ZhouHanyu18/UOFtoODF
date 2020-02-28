@@ -4,28 +4,28 @@ import org.xml.sax.Attributes;
 
 public class Formula {
 
-	private static String _text_node = "";   //ÓÃÓÚ´æ·ÅÎÄ±¾½ÚµãµÄÄÚÈİ
-	private static boolean _need_to_store_text = false;   //±êÊ¶ÊÇ·ñĞèÒªÈ¡³öÎÄ±¾½ÚµãµÄÖµ
-	
+	private static String _text_node = "";   //ç”¨äºå­˜æ”¾æ–‡æœ¬èŠ‚ç‚¹çš„å†…å®¹
+	private static boolean _need_to_store_text = false;   //æ ‡è¯†æ˜¯å¦éœ€è¦å–å‡ºæ–‡æœ¬èŠ‚ç‚¹çš„å€¼
+
 	public Formula() {
-		
+
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		//To do.
 	}
-	
+
 	public static void process_end(String qName){
 		//To do.
-		
-		//Ã¿¸öÔªËØ½áÊøÊ±£¬ÒªÇå¿Õ_text_node²¢ÉèÖÃ_need_to_store_text
-		_text_node = "";   
+
+		//æ¯ä¸ªå…ƒç´ ç»“æŸæ—¶ï¼Œè¦æ¸…ç©º_text_nodeå¹¶è®¾ç½®_need_to_store_text
+		_text_node = "";
 		_need_to_store_text = false;
 	}
-	
+
 	public static void process_chars(String chs){
 		if (_need_to_store_text) {
-			_text_node += chs;			
+			_text_node += chs;
 		}
 	}
 }

@@ -5,124 +5,124 @@ import temp_structs.Common_Data;
 
 public class Common_Pro {
 	   private static boolean _double_tag = false;
-	   
-	//´¦ÀíÖ½ÕÅµÄÊôĞÔ
+
+	//å¤„ç†çº¸å¼ çš„å±æ€§
 	protected static String get_page(Attributes atts){
 		String str = "";
 		String attVal = "";
-		
-		if((attVal=atts.getValue("uof:¿í¶È"))!=null){
+
+		if((attVal=atts.getValue("uof:å®½åº¦"))!=null){
 			str += " fo:page-width=\"" + attVal + Common_Data.get_unit() + "\"";
 		}
-		if((attVal=atts.getValue("uof:¸ß¶È"))!=null){
+		if((attVal=atts.getValue("uof:é«˜åº¦"))!=null){
 			str += " fo:page-height=\"" + attVal + Common_Data.get_unit() + "\"";
 		}
-		if((attVal=atts.getValue("uof:Ö½ĞÍ"))!=null){
+		if((attVal=atts.getValue("uof:çº¸å‹"))!=null){
 			str += " style:paper-tray-name=\"" + attVal + "\"";
-		}
-		
-		return str;
-	}
-	
-	//´¦ÀíÒ³±ß¾àµÄÊôĞÔ
-	protected static String get_margins(Attributes atts){
-		String str = "";
-		String att_val = "";
-		
-		if((att_val=atts.getValue("uof:ÉÏ"))!=null){
-			str += " fo:margin-top=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		if((att_val=atts.getValue("uof:ÏÂ"))!=null){
-			str += " fo:margin-bottom=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		if((att_val=atts.getValue("uof:×ó"))!=null){
-			str += " fo:margin-left=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		if((att_val=atts.getValue("uof:ÓÒ"))!=null){
-			str += " fo:margin-right=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		return str;
-	}
-	
-	//´¦Àí µ¥Ôª¸ñ±ß¾à µÄ×ÓÔªËØ¼°ÆäÊôĞÔ
-	protected static String get_padding(Attributes atts){
-		String str = "";
-		String att_val = "";
-		
-		if((att_val=atts.getValue("×Ö:ÉÏ"))!=null){
-			str += " fo:padding-top=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		if((att_val=atts.getValue("×Ö:ÏÂ"))!=null){
-			str += " fo:padding-bottom=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		if((att_val=atts.getValue("×Ö:×ó"))!=null){
-			str += " fo:padding-left=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		if((att_val=atts.getValue("×Ö:ÓÒ"))!=null){
-			str += " fo:padding-right=\"" + att_val + Common_Data.get_unit() + "\"";
-		}
-		return str;
-	}
-	
-	//´¦Àí ±ß¿ò µÄ×ÓÔªËØ¼°ÆäÊôĞÔ
-	protected static String get_borders(String qName, Attributes atts){
-		String str = "";
-		
-		if(qName.equals("uof:×ó")){
-			str += " fo:border-left=\"" + get_border_pro(atts) + "\""; 
-		}
-		if(qName.equals("uof:ÉÏ")){
-			str += " fo:border-top=\"" + get_border_pro(atts) + "\""; 
-		}
-		if(qName.equals("uof:ÓÒ")){
-			str += " fo:border-right=\"" + get_border_pro(atts) + "\""; 
-		}
-		if(qName.equals("uof:ÏÂ")){
-			str += " fo:border-bottom=\"" + get_border_pro(atts) + "\""; 
-		}
-		if(qName.equals("uof:¶Ô½ÇÏß1")){
-			str += " style:diagonal-tl-br=\"" + get_border_pro(atts) + "\""; 
- 
-		}
-		if(qName.equals("uof:¶Ô½ÇÏß2")){
-			str += " style:diagonal-bl-tr=\"" + get_border_pro(atts) + "\""; 
 		}
 
 		return str;
 	}
-	
+
+	//å¤„ç†é¡µè¾¹è·çš„å±æ€§
+	protected static String get_margins(Attributes atts){
+		String str = "";
+		String att_val = "";
+
+		if((att_val=atts.getValue("uof:ä¸Š"))!=null){
+			str += " fo:margin-top=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		if((att_val=atts.getValue("uof:ä¸‹"))!=null){
+			str += " fo:margin-bottom=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		if((att_val=atts.getValue("uof:å·¦"))!=null){
+			str += " fo:margin-left=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		if((att_val=atts.getValue("uof:å³"))!=null){
+			str += " fo:margin-right=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		return str;
+	}
+
+	//å¤„ç† å•å…ƒæ ¼è¾¹è· çš„å­å…ƒç´ åŠå…¶å±æ€§
+	protected static String get_padding(Attributes atts){
+		String str = "";
+		String att_val = "";
+
+		if((att_val=atts.getValue("å­—:ä¸Š"))!=null){
+			str += " fo:padding-top=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		if((att_val=atts.getValue("å­—:ä¸‹"))!=null){
+			str += " fo:padding-bottom=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		if((att_val=atts.getValue("å­—:å·¦"))!=null){
+			str += " fo:padding-left=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		if((att_val=atts.getValue("å­—:å³"))!=null){
+			str += " fo:padding-right=\"" + att_val + Common_Data.get_unit() + "\"";
+		}
+		return str;
+	}
+
+	//å¤„ç† è¾¹æ¡† çš„å­å…ƒç´ åŠå…¶å±æ€§
+	protected static String get_borders(String qName, Attributes atts){
+		String str = "";
+
+		if(qName.equals("uof:å·¦")){
+			str += " fo:border-left=\"" + get_border_pro(atts) + "\"";
+		}
+		if(qName.equals("uof:ä¸Š")){
+			str += " fo:border-top=\"" + get_border_pro(atts) + "\"";
+		}
+		if(qName.equals("uof:å³")){
+			str += " fo:border-right=\"" + get_border_pro(atts) + "\"";
+		}
+		if(qName.equals("uof:ä¸‹")){
+			str += " fo:border-bottom=\"" + get_border_pro(atts) + "\"";
+		}
+		if(qName.equals("uof:å¯¹è§’çº¿1")){
+			str += " style:diagonal-tl-br=\"" + get_border_pro(atts) + "\"";
+
+		}
+		if(qName.equals("uof:å¯¹è§’çº¿2")){
+			str += " style:diagonal-bl-tr=\"" + get_border_pro(atts) + "\"";
+		}
+
+		return str;
+	}
+
 	private static String get_border_pro(Attributes atts){
 		String rst = "";
 		String attVal = "";
 		String width = "";
 		String type = "";
 		String color = "";
-		
-		if((attVal=atts.getValue("uof:¿í¶È"))!=null){
+
+		if((attVal=atts.getValue("uof:å®½åº¦"))!=null){
 			width = attVal + Common_Data.get_unit();
 		}
-		if((attVal=atts.getValue("uof:ÀàĞÍ"))!=null){
+		if((attVal=atts.getValue("uof:ç±»å‹"))!=null){
 			type = border_style(attVal);
 			_double_tag = attVal.equals("double");
 		}
-		if((attVal=atts.getValue("uof:ÑÕÉ«"))!=null){
+		if((attVal=atts.getValue("uof:é¢œè‰²"))!=null){
 			color = attVal.equals("auto") ? "#000000" : attVal;
 		}
-		
-		if((attVal=atts.getValue("uof:ÀàĞÍ"))!=null){
+
+		if((attVal=atts.getValue("uof:ç±»å‹"))!=null){
 			if(attVal.equals("none")){
 				rst = "none";
 			}else{
 				rst = width + " " + type + " " + color + " ";
 			}
 		}
-		
+
 		return rst;
 	}
-	
+
 	private static String border_style(String val){
 		String sty = "";
-		
+
 		if(val.contains("dash")){
 			sty = "dashed";
 		}
@@ -135,28 +135,28 @@ public class Common_Pro {
 		else {
 			sty = "solid";
 		}
-		
+
 		return sty;
 	}
-	
+
 	//If the line type is double, the attribute
 	//@style:border-line-width should be returned
 	protected static String get_double_line_width(){
 		String line = "";
-		
+
 		if(_double_tag){
-			line = " style:border-line-width=" 
+			line = " style:border-line-width="
 					+ "\"0.088cm 0.035cm 0.035cm\"";
 			_double_tag = false;
 		}
-		
+
 		return line;
 	}
-	
+
 	//Convert num-format from UOF to ODF
 	public static String conv_num_format(String val){
 		String format = "1";
-		
+
 		if (val.equals("decimal")){
 			format = "1";
 		}
@@ -173,25 +173,25 @@ public class Common_Pro {
 			format = "A";
 		}
 		else if (val.equals("ideograph-zodiac")){
-			format = "×Ó, ³ó, Òú, ...";
+			format = "å­, ä¸‘, å¯…, ...";
 		}
 		else if(val.equals("chinese-counting")){
-			format = "Ò», ¶ş, Èı, ...";
+			format = "ä¸€, äºŒ, ä¸‰, ...";
 		}
 		else if(val.equals("chinese-legal-simplified")){
-			format = "Ò¼, ·¡, Èş, ...";
+			format = "å£¹, è´°, å, ...";
 		}
 		else if(val.equals("ideograph-traditional")){
-			format = "¼×, ÒÒ, ±û, ...";
+			format = "ç”², ä¹™, ä¸™, ...";
 		}
 		else if(val.equals("decimal-enclosed-circle-chinese")){
-			format = "¢Ù, ¢Ú, ¢Û, ...";
+			format = "â‘ , â‘¡, â‘¢, ...";
 		}
 		else if(val.equals("decimal-full-width")){
-			format = "£±, £², £³, ...";
+			format = "ï¼‘, ï¼’, ï¼“, ...";
 		}
 		//to be continued.
-		
-		return format;		
+
+		return format;
 	}
 }

@@ -10,11 +10,11 @@ import temp_structs.Common_Data;
 public class Chart {
 
 	private static String _ID = "";
-	private static String _text_node = "";   //ÓÃÓÚ´æ·ÅÎÄ±¾½ÚµãµÄÄÚÈİ
-	private static boolean _need_to_store_text = false;   //±êÊ¶ÊÇ·ñĞèÒªÈ¡³öÎÄ±¾½ÚµãµÄÖµ
-	
+	private static String _text_node = "";   //ç”¨äºå­˜æ”¾æ–‡æœ¬èŠ‚ç‚¹çš„å†…å®¹
+	private static boolean _need_to_store_text = false;   //æ ‡è¯†æ˜¯å¦éœ€è¦å–å‡ºæ–‡æœ¬èŠ‚ç‚¹çš„å€¼
+
 	private static String _content = "";
-	
+
 	private static final String _content_begin = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
 			"<office:document-content" +
 			" xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
@@ -41,10 +41,10 @@ public class Chart {
 			" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"" +
 			" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" +
 			" office:version=\"1.0\">";
-	
+
 	private static String _auto_style = "";
 	private static String _body = "<office:body><office:chart>";
-	private static String _main_title = "";   
+	private static String _main_title = "";
 	private static String _x_title = "";
 	private static String _y_title = "";
 	private static String _legend = "";
@@ -57,28 +57,28 @@ public class Chart {
 	private static String _y_cates = "";
 	private static Map<String,String> _data_series_map = new HashMap<String,String>();
 	private static String _series_source = "";
-	
-	//ÓÃÓÚ<draw:frame>
-	private static float _svgX = 0;   
+
+	//ç”¨äº<draw:frame>
+	private static float _svgX = 0;
 	private static float _svgY = 0;
-	private static float _width = 0;   
+	private static float _width = 0;
 	private static float _height = 0;
 	private static String _cellRange = "";
-	
-	//ÒÔÏÂÓÃÓÚ´¦Àístyle
+
+	//ä»¥ä¸‹ç”¨äºå¤„ç†style
 	private static final String _style_prefix = "ch";
 	private static int _style_num = 0;
 	private static String _current_chart_pro = "";
 	private static String _current_graphic_pro = "";
 	private static String _current_para_pro = "";
 	private static String _current_text_pro = "";
-	
+
 	private static String _plot_chart_pro = "";
-	
-	private static boolean _is_in_text = false;   //±êÊ¶ÊÇ·ñÎ»ÓÚ<×ÖÌå>ÔªËØÄÚ
-	
+
+	private static boolean _is_in_text = false;   //æ ‡è¯†æ˜¯å¦ä½äº<å­—ä½“>å…ƒç´ å†…
+
 	private static double _axis_interval_major = 0;
-	
+
 	private static boolean _3D = false;
 	private static boolean _vertical = false;
 	private static boolean _pie_offset = false;
@@ -86,11 +86,11 @@ public class Chart {
 	private static boolean _percentage = false;
 	private static boolean _symbol = false;
 	private static boolean _lines = false;
-	
+
 	private static boolean _serie_proc_tag = false;
-	
+
 	private static String _plotstyle = "";
-	
+
 /*  Do not need style.xml
  	private static final String _style_xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
 			"<office:document-styles" +
@@ -114,12 +114,12 @@ public class Chart {
 			" office:version=\"1.0\">" +
 			"<office:styles/>" +
 			"</office:document-styles>";*/
-	
+
 	private static void addStyle() {
 		_auto_style += "<style:style style:name=\"" + _style_prefix + _style_num + "\" style:family=\"chart\">";
-		
+
 		_auto_style += "<style:chart-properties" + _current_chart_pro + "/>";
-		
+
 		if (_current_graphic_pro.length() != 0)
 			_auto_style += "<style:graphic-properties" + _current_graphic_pro + "/>";
 		if (_current_para_pro.length() != 0)
@@ -127,178 +127,178 @@ public class Chart {
 		if (_current_text_pro.length() != 0)
 			_auto_style += "<style:text-properties" + _current_text_pro + "/>";
 		_auto_style += "</style:style>";
-		
+
 		_current_chart_pro = "";
 		_current_graphic_pro = "";
 		_current_para_pro = "";
-		_current_text_pro = "";	
+		_current_text_pro = "";
 	}
-	
+
 	public static void processStart(String qName,Attributes atts){
 		String value = "";
-		
+
 		if (_is_in_text)
 			Sent_Style.process_start(qName,atts);
-		
-		else if (qName.equals("±í:Í¼±í")) {
+
+		else if (qName.equals("è¡¨:å›¾è¡¨")) {
 			_style_num ++;
-			
-			_svgX = Float.valueOf(atts.getValue("±í:x×ø±ê"));
-			_svgY = Float.valueOf(atts.getValue("±í:y×ø±ê"));
-			_width = Float.valueOf(atts.getValue("±í:¿í¶È"));
-			_height = Float.valueOf(atts.getValue("±í:¸ß¶È")); 
-			
-			String type = atts.getValue("±í:ÀàĞÍ");
-			String subtype = atts.getValue("±í:×ÓÀàĞÍ");
+
+			_svgX = Float.valueOf(atts.getValue("è¡¨:xåæ ‡"));
+			_svgY = Float.valueOf(atts.getValue("è¡¨:yåæ ‡"));
+			_width = Float.valueOf(atts.getValue("è¡¨:å®½åº¦"));
+			_height = Float.valueOf(atts.getValue("è¡¨:é«˜åº¦"));
+
+			String type = atts.getValue("è¡¨:ç±»å‹");
+			String subtype = atts.getValue("è¡¨:å­ç±»å‹");
 			String chartClass = getClass(type, subtype);
-			
+
 			_body += "<chart:chart svg:width=\"" + measure_floatval(_width) + "\" svg:height=\""
 			+ measure_floatval(_height) + "\" chart:class=\"" + chartClass
 			+ "\" chart:style-name=\"" + _style_prefix + _style_num + "\">";
 		}
-		else if (qName.equals("±í:±ß¿ò")) {
+		else if (qName.equals("è¡¨:è¾¹æ¡†")) {
 			_current_para_pro += " fo:border=\"";
-			if (atts.getValue("±í:¿í¶È") != null)
-				_current_para_pro += atts.getValue("±í:¿í¶È") + " ";
-			_current_para_pro += atts.getValue("uof:ÀàĞÍ");   //ODFÖĞ±ß¿òÊÇ·ñ¿ÉÒÔÖ»ÓĞÀàĞÍ£¿
-			if (atts.getValue("±í:ÑÕÉ«") != null)
-				_current_para_pro += " " + atts.getValue("±í:ÑÕÉ«");
+			if (atts.getValue("è¡¨:å®½åº¦") != null)
+				_current_para_pro += atts.getValue("è¡¨:å®½åº¦") + " ";
+			_current_para_pro += atts.getValue("uof:ç±»å‹");   //ODFä¸­è¾¹æ¡†æ˜¯å¦å¯ä»¥åªæœ‰ç±»å‹ï¼Ÿ
+			if (atts.getValue("è¡¨:é¢œè‰²") != null)
+				_current_para_pro += " " + atts.getValue("è¡¨:é¢œè‰²");
 			_current_para_pro += "\"";
 		}
-		else if (qName.equals("±í:Ìî³ä")) {
-			//Î´ÕÒµ½¶ÔÓ¦
+		else if (qName.equals("è¡¨:å¡«å……")) {
+			//æœªæ‰¾åˆ°å¯¹åº”
 		}
-		else if (qName.equals("±í:×ÖÌå")) {
-			if (atts.getValue("±í:Ê½ÑùÒıÓÃ") != null) {
-				/* _current_text_pro += */    //ÒıÓÃµÄÓ¦¸ÃÊÇÒ»¸ö¾äÊ½Ñù£¬Òò´Ë¾äÊ½Ñù²»½öÒª´æµ½styleÖĞ£¬Ò²Òªµ¥¶À´æµ½Ò»¸öMapÖĞ
+		else if (qName.equals("è¡¨:å­—ä½“")) {
+			if (atts.getValue("è¡¨:å¼æ ·å¼•ç”¨") != null) {
+				/* _current_text_pro += */    //å¼•ç”¨çš„åº”è¯¥æ˜¯ä¸€ä¸ªå¥å¼æ ·ï¼Œå› æ­¤å¥å¼æ ·ä¸ä»…è¦å­˜åˆ°styleä¸­ï¼Œä¹Ÿè¦å•ç‹¬å­˜åˆ°ä¸€ä¸ªMapä¸­
 			}
 			_is_in_text = true;
 		}
-		else if (qName.equals("±í:»æÍ¼Çø")) {
+		else if (qName.equals("è¡¨:ç»˜å›¾åŒº")) {
 			_style_num ++;
 			_plotstyle = "style:name=\"" + _style_prefix + _style_num + "\"";
 			_plot_area_begin += " chart:style-name=\"" + _style_prefix + _style_num + "\"";;
 			_current_chart_pro += _plot_chart_pro;
 			_plot_chart_pro = "";
 		}
-		else if (qName.equals("±í:·ÖÀàÖá")) {
+		else if (qName.equals("è¡¨:åˆ†ç±»è½´")) {
 			_style_num ++;
 			_x_axis = "<chart:axis chart:dimension=\"x\" chart:name=\"primary-x\" chart:style-name=\"" + _style_prefix + _style_num + "\">";
-			
-			if (atts.getValue("±í:Ö÷¿Ì¶ÈÀàĞÍ") != null) {
-				if (atts.getValue("±í:Ö÷¿Ì¶ÈÀàĞÍ").equals("inside"))
+
+			if (atts.getValue("è¡¨:ä¸»åˆ»åº¦ç±»å‹") != null) {
+				if (atts.getValue("è¡¨:ä¸»åˆ»åº¦ç±»å‹").equals("inside"))
 					_current_chart_pro += " chart:tick-marks-major-inner=\"true\"";
 				else
 					_current_chart_pro += " chart:tick-marks-major-outer=\"true\"";
 			}
-			if (atts.getValue("±í:´Î¿Ì¶ÈÀàĞÍ") != null) {
-				if (atts.getValue("±í:´Î¿Ì¶ÈÀàĞÍ").equals("inside"))
+			if (atts.getValue("è¡¨:æ¬¡åˆ»åº¦ç±»å‹") != null) {
+				if (atts.getValue("è¡¨:æ¬¡åˆ»åº¦ç±»å‹").equals("inside"))
 					_current_chart_pro += " chart:tick-marks-minor-inner=\"true\"";
 				else
 					_current_chart_pro += " chart:tick-marks-minor-outer=\"true\"";
 			}
 		}
-		else if (qName.equals("±í:ÊıÖµÖá")) {
+		else if (qName.equals("è¡¨:æ•°å€¼è½´")) {
 			_style_num ++;
 			_y_axis = "<chart:axis chart:dimension=\"y\"  chart:name=\"primary-y\" chart:style-name=\"" + _style_prefix + _style_num + "\">";
-			
-			if (atts.getValue("±í:Ö÷¿Ì¶ÈÀàĞÍ") != null) {
-				if (atts.getValue("±í:Ö÷¿Ì¶ÈÀàĞÍ").equals("inside"))
+
+			if (atts.getValue("è¡¨:ä¸»åˆ»åº¦ç±»å‹") != null) {
+				if (atts.getValue("è¡¨:ä¸»åˆ»åº¦ç±»å‹").equals("inside"))
 					_current_chart_pro += " chart:tick-marks-major-inner=\"true\"";
 				else
 					_current_chart_pro += " chart:tick-marks-major-outer=\"true\"";
 			}
-			if (atts.getValue("±í:´Î¿Ì¶ÈÀàĞÍ") != null) {
-				if (atts.getValue("±í:´Î¿Ì¶ÈÀàĞÍ").equals("inside"))
+			if (atts.getValue("è¡¨:æ¬¡åˆ»åº¦ç±»å‹") != null) {
+				if (atts.getValue("è¡¨:æ¬¡åˆ»åº¦ç±»å‹").equals("inside"))
 					_current_chart_pro += " chart:tick-marks-minor-inner=\"true\"";
 				else
 					_current_chart_pro += " chart:tick-marks-minor-outer=\"true\"";
 			}
 		}
-		else if (qName.equals("±í:ÏßĞÍ")) {
-			value = atts.getValue("±í:ÀàĞÍ");
+		else if (qName.equals("è¡¨:çº¿å‹")) {
+			value = atts.getValue("è¡¨:ç±»å‹");
 			if (value.equals("single"))
 				_current_graphic_pro += " draw:stroke=\"solid\"";
-			else if (value.equals("dash") /*|| value.equals("")*/)   //To do :ÆäËûµÄÒ»Ğ©ÖµÒ²¿ÉÒÔ¶ÔÓ¦µ½dash
+			else if (value.equals("dash") /*|| value.equals("")*/)   //To do :å…¶ä»–çš„ä¸€äº›å€¼ä¹Ÿå¯ä»¥å¯¹åº”åˆ°dash
 				_current_graphic_pro += " draw:stroke=\"dash\"";
 			else
 				_current_graphic_pro += " draw:stroke=\"none\"";
-			
-			if ((value = atts.getValue("±í:ÑÕÉ«")) != null)
+
+			if ((value = atts.getValue("è¡¨:é¢œè‰²")) != null)
 				_current_graphic_pro += " svg:stroke-color=\"" + value + "\"";
-			if ((value = atts.getValue("±í:¿í¶È")) != null)
+			if ((value = atts.getValue("è¡¨:å®½åº¦")) != null)
 				_current_graphic_pro += " svg:stroke-width=\"" + value + "\"";
 		}
-		else if (qName.equals("±í:ÊıÖµ")) {
-			if ((value = atts.getValue("±í:Á´½Óµ½Ô´")) != null)
+		else if (qName.equals("è¡¨:æ•°å€¼")) {
+			if ((value = atts.getValue("è¡¨:é“¾æ¥åˆ°æº")) != null)
 				_current_chart_pro += " chart:link-data-style-to-source=\"" + value+ "\"";
-			if ((value = atts.getValue("±í:·ÖÀàÃû³Æ")) != null) {
-				//To do.½Ï¸´ÔÓ
+			if ((value = atts.getValue("è¡¨:åˆ†ç±»åç§°")) != null) {
+				//To do.è¾ƒå¤æ‚
 			}
 		}
-		else if (qName.equals("±í:Íø¸ñÏß")) {
+		else if (qName.equals("è¡¨:ç½‘æ ¼çº¿")) {
 			_style_num ++;
-			
-			if ((value = atts.getValue("±í:ÀàĞÍ")) != null) {
+
+			if ((value = atts.getValue("è¡¨:ç±»å‹")) != null) {
 				if (value.equals("single"))
 					_current_graphic_pro += " draw:stroke=\"solid\"";
-				else if (value.equals("dash") /*|| value.equals("")*/)   //To do :ÆäËûµÄÒ»Ğ©ÖµÒ²¿ÉÒÔ¶ÔÓ¦µ½dash
+				else if (value.equals("dash") /*|| value.equals("")*/)   //To do :å…¶ä»–çš„ä¸€äº›å€¼ä¹Ÿå¯ä»¥å¯¹åº”åˆ°dash
 					_current_graphic_pro += " draw:stroke=\"dash\"";
 				else
 					_current_graphic_pro += " draw:stroke=\"none\"";
 			}
-			
-			if ((value = atts.getValue("±í:ÑÕÉ«")) != null)
+
+			if ((value = atts.getValue("è¡¨:é¢œè‰²")) != null)
 				_current_graphic_pro += " svg:stroke-color=\"" + value + "\"";
-			if ((value = atts.getValue("±í:¿í¶È")) != null)
+			if ((value = atts.getValue("è¡¨:å®½åº¦")) != null)
 				_current_graphic_pro += " svg:stroke-width=\"" + value + "\"";
-			if ((value = atts.getValue("±í:Î»ÖÃ")) != null) {
+			if ((value = atts.getValue("è¡¨:ä½ç½®")) != null) {
 				if (value.equals("category axis"))
 					_x_grid = "<chart:grid chart:class=\"major\" chart:style-name=\"" + _style_prefix + _style_num + "\"/>";
 				if (value.equals("value axis"))
 					_y_grid = "<chart:grid chart:class=\"major\" chart:style-name=\"" + _style_prefix + _style_num + "\"/>";
 			}
 		}
-		else if (qName.equals("±í:×îĞ¡Öµ") || qName.equals("±í:×î´óÖµ") || qName.equals("±í:Ö÷µ¥Î»")
-				|| qName.equals("±í:´Îµ¥Î»") || qName.equals("±í:ÎÄ×Ö·½Ïò") ||qName.equals("±í:Ğı×ª½Ç¶È")
-				|| qName.equals("±í:Ë®Æ½¶ÔÆë·½Ê½") || qName.equals("±í:´¹Ö±¶ÔÆë·½Ê½") || qName.equals("±í:Ëõ½ø")
-				|| qName.equals("±í:ÎÄ×ÖĞı×ª½Ç¶È")) {
+		else if (qName.equals("è¡¨:æœ€å°å€¼") || qName.equals("è¡¨:æœ€å¤§å€¼") || qName.equals("è¡¨:ä¸»å•ä½")
+				|| qName.equals("è¡¨:æ¬¡å•ä½") || qName.equals("è¡¨:æ–‡å­—æ–¹å‘") ||qName.equals("è¡¨:æ—‹è½¬è§’åº¦")
+				|| qName.equals("è¡¨:æ°´å¹³å¯¹é½æ–¹å¼") || qName.equals("è¡¨:å‚ç›´å¯¹é½æ–¹å¼") || qName.equals("è¡¨:ç¼©è¿›")
+				|| qName.equals("è¡¨:æ–‡å­—æ—‹è½¬è§’åº¦")) {
 			_need_to_store_text = true;
 		}
-		else if (qName.equals("±í:×Ô¶¯»»ĞĞ")) {
-			if (atts.getValue("±í:Öµ").equals("true"))
+		else if (qName.equals("è¡¨:è‡ªåŠ¨æ¢è¡Œ")) {
+			if (atts.getValue("è¡¨:å€¼").equals("true"))
 				_current_graphic_pro += " fo:wrap-option=\"wrap\"";
 			else
 				_current_graphic_pro += " fo:wrap-option=\"no-wrap\"";
 		}
-		else if (qName.equals("±í:¶ÔÊı")) {
-			if (atts.getValue("±í:Öµ").equals("true"))
+		else if (qName.equals("è¡¨:å¯¹æ•°")) {
+			if (atts.getValue("è¡¨:å€¼").equals("true"))
 				_current_chart_pro += " chart:axis-logarithmic=\"true\"";
 			else
 				_current_chart_pro += " chart:axis-logarithmic=\"false\"";
 		}
-		else if (qName.equals("±í:ÏÔÊ¾±êÖ¾")) {
-			if ((value = atts.getValue("±í:ÏµÁĞÃû")) != null) {
+		else if (qName.equals("è¡¨:æ˜¾ç¤ºæ ‡å¿—")) {
+			if ((value = atts.getValue("è¡¨:ç³»åˆ—å")) != null) {
 				if (value.equals("1"))
 					_current_chart_pro += " chart:data-label-text=\"true\"";
 				else
 					_current_chart_pro += " chart:data-label-text=\"false\"";
 			}
-			if (atts.getValue("±í:ÊıÖµ") != null && atts.getValue("±í:ÊıÖµ").equals("1"))
+			if (atts.getValue("è¡¨:æ•°å€¼") != null && atts.getValue("è¡¨:æ•°å€¼").equals("1"))
 				_current_chart_pro += " chart:data-label-number=\"value\"";
-			if (atts.getValue("±í:°Ù·ÖÊı") != null && atts.getValue("±í:°Ù·ÖÊı").equals("1"))
+			if (atts.getValue("è¡¨:ç™¾åˆ†æ•°") != null && atts.getValue("è¡¨:ç™¾åˆ†æ•°").equals("1"))
 				_current_chart_pro += " chart:data-label-number=\"percentage\"";
-			if ((value = atts.getValue("±í:Í¼Àı±êÖ¾")) != null) {
+			if ((value = atts.getValue("è¡¨:å›¾ä¾‹æ ‡å¿—")) != null) {
 				if (value.equals("1"))
 					_current_chart_pro += " chart:data-label-symbol=\"true\"";
 				else
 					_current_chart_pro += " chart:data-label-symbol=\"false\"";
 			}
 		}
-		else if (qName.equals("±í:Í¼Àı")) {
+		else if (qName.equals("è¡¨:å›¾ä¾‹")) {
 			_style_num ++;
 			_legend += "<chart:legend";
-			if ((value = atts.getValue("±í:Î»ÖÃ")) != null) {
+			if ((value = atts.getValue("è¡¨:ä½ç½®")) != null) {
 				_legend += " chart:legend-position=\"";
 				if (value.equals("left"))
 					_legend += "start\"";
@@ -308,56 +308,56 @@ public class Chart {
 					_legend += "top\"";
 				else if (value.equals("bottom"))
 					_legend += "bottom\"";
-				/*corner¿ÉÄÜ¶ÔÓ¦µ½ËÄ¸öÖµ£¬ÎŞ·¨´¦Àí
+				/*cornerå¯èƒ½å¯¹åº”åˆ°å››ä¸ªå€¼ï¼Œæ— æ³•å¤„ç†
 				else if (value.equals("corner"))*/
 			}
 			_legend +=  " chart:style-name=\"" + _style_prefix + _style_num + "\"/>";
 		}
-		else if (qName.equals("±í:Êı¾İÏµÁĞ")) {
+		else if (qName.equals("è¡¨:æ•°æ®ç³»åˆ—")) {
 			_style_num ++;
 			String serie = "<chart:series chart:style-name=\"" + _style_prefix + _style_num + "\">";
-			String serie_id = atts.getValue("±í:ÏµÁĞ");
+			String serie_id = atts.getValue("è¡¨:ç³»åˆ—");
 			_data_series_map.put(serie_id,serie);
 		}
-		else if (qName.equals("±í:Êı¾İµã")) {   //"µãºÅ"ÊôĞÔÓÃ²»ÉÏ
+		else if (qName.equals("è¡¨:æ•°æ®ç‚¹")) {   //"ç‚¹å·"å±æ€§ç”¨ä¸ä¸Š
 			_style_num ++;
 			String data_point = "<chart:data-point chart:style-name=\"" + _style_prefix + _style_num + "\"/>";
-			String serie_id = atts.getValue("±í:ÏµÁĞ");
+			String serie_id = atts.getValue("è¡¨:ç³»åˆ—");
 			_data_series_map.get(serie_id).concat(data_point);
 		}
-		else if (qName.equals("±í:Êı¾İÔ´")) {
-			if (atts.getValue("±í:Êı¾İÇøÓò") != null) {
-				String area = atts.getValue("±í:Êı¾İÇøÓò");
+		else if (qName.equals("è¡¨:æ•°æ®æº")) {
+			if (atts.getValue("è¡¨:æ•°æ®åŒºåŸŸ") != null) {
+				String area = atts.getValue("è¡¨:æ•°æ®åŒºåŸŸ");
 				int i = area.indexOf("'", 2);
 				area = area.substring(1, i) + "." + area.substring(i+2).replace(":", ":.");
 				_plot_area_begin += " table:cell-range-address=\"" + area + "\"";
 			}
-			if ((value = atts.getValue("±í:ÏµÁĞ²úÉú")) != null) {
+			if ((value = atts.getValue("è¡¨:ç³»åˆ—äº§ç”Ÿ")) != null) {
 				_series_source = value;
 				String series = "";
-				if(value.equals("col")) 
+				if(value.equals("col"))
 					series += " chart:series-source=\"columns\"";
-				else 
+				else
 					series += " chart:series-source=\"rows\"";
-				
+
 				int i = _auto_style.indexOf(_plotstyle);
 				i = _auto_style.indexOf("style:chart-properties", i);
 				i += 22;
 				_auto_style = _auto_style.substring(0, i) + series + _auto_style.substring(i);
 			}
 		}
-		else if (qName.equals("±í:ÏµÁĞ")) {
+		else if (qName.equals("è¡¨:ç³»åˆ—")) {
 			if (_serie_proc_tag)
 				return;
 			String labels = "";
 			boolean xLabel = false, yLabel = false;
-			if ((value = atts.getValue("±í:ÏµÁĞÃû")) != null && value.length() > 0) {
+			if ((value = atts.getValue("è¡¨:ç³»åˆ—å")) != null && value.length() > 0) {
 				if(_series_source.equals("col"))
 					yLabel = true;
 				else
 					xLabel = true;
 			}
-			if ((value = atts.getValue("±í:·ÖÀàÃû")) != null && value.length() > 0) {
+			if ((value = atts.getValue("è¡¨:åˆ†ç±»å")) != null && value.length() > 0) {
 				if(_series_source.equals("col"))
 					xLabel = true;
 				else
@@ -375,20 +375,20 @@ public class Chart {
 				else
 					labels = "none";
 			}
-			
-			_plot_area_begin += " chart:data-source-has-labels=\"" + labels + "\""; 	
+
+			_plot_area_begin += " chart:data-source-has-labels=\"" + labels + "\"";
 			_series_source = "";
 			_serie_proc_tag = true;
 		}
-		else if (qName.equals("±í:±êÌâ")) {
+		else if (qName.equals("è¡¨:æ ‡é¢˜")) {
 			_style_num ++;
-			
+
 			String title = "<chart:title chart:style-name=\"" + _style_prefix + _style_num + "\">";
-			if (atts.getValue("±í:Ãû³Æ") != null)
-				title += "<text:p>" + atts.getValue("±í:Ãû³Æ") + "</text:p>";
+			if (atts.getValue("è¡¨:åç§°") != null)
+				title += "<text:p>" + atts.getValue("è¡¨:åç§°") + "</text:p>";
 			title += "</chart:title>";
-			
-			String pos = atts.getValue("±í:Î»ÖÃ");
+
+			String pos = atts.getValue("è¡¨:ä½ç½®");
 			if (pos.equals("chart"))
 				_main_title = title;
 			else if (pos.equals("category axis"))
@@ -397,36 +397,36 @@ public class Chart {
 				_y_title = title;
 		}
 	}
-	
-	public static void processEnd(String qName){		
+
+	public static void processEnd(String qName){
 		if (_is_in_text) {
 			Sent_Style.process_end(qName);
-			if (qName.equals("±í:×ÖÌå")) {
-				_current_text_pro += Sent_Style.get_text_pro();      //È¡³ötext-proµÄÊôĞÔÁĞ±í
+			if (qName.equals("è¡¨:å­—ä½“")) {
+				_current_text_pro += Sent_Style.get_text_pro();      //å–å‡ºtext-proçš„å±æ€§åˆ—è¡¨
 				_is_in_text = false;
 			}
 		}
-		else if (qName.equals("±í:Í¼±í")) {
+		else if (qName.equals("è¡¨:å›¾è¡¨")) {
 			String data_series = "";
 			Collection<String> dataSeries = _data_series_map.values();
 			for (Iterator iterator = dataSeries.iterator(); iterator.hasNext(); ) {
 				data_series += (String)iterator.next() + "</chart:series>";
 			}
-			
+
 			if (_x_axis.length() == 0)
 				_x_axis = "<chart:axis chart:dimension=\"x\" chart:name=\"primary-x\">";
 			if (_y_axis.length() == 0)
 				_y_axis = "<chart:axis chart:dimension=\"y\" chart:name=\"primary-y\">";
-			
-			_body += _main_title + _legend + _plot_area_begin + ">" 
-			+ _x_axis + _x_title + _x_cates + _x_grid + "</chart:axis>" 
+
+			_body += _main_title + _legend + _plot_area_begin + ">"
+			+ _x_axis + _x_title + _x_cates + _x_grid + "</chart:axis>"
 			+ _y_axis + _y_title + _y_cates + _y_grid + "</chart:axis>"
 			+ data_series + "</chart:plot-area>" + "</chart:chart></office:chart></office:body>";
-			
-			_content = _content_begin 
-			+ "<office:automatic-styles>" +_auto_style + "</office:automatic-styles>" 
+
+			_content = _content_begin
+			+ "<office:automatic-styles>" +_auto_style + "</office:automatic-styles>"
 			+ _body + "</office:document-content>";
-			
+
 			_auto_style = "";
 			_body = "<office:body><office:chart>";
 			_main_title = "";
@@ -437,35 +437,35 @@ public class Chart {
 			_data_series_map = new HashMap<String,String>();
 			_style_num = 0;
 		}
-		else if (qName.equals("±í:Í¼±íÇø") || qName.equals("±í:»æÍ¼Çø") || qName.equals("±í:·ÖÀàÖá")
-				|| qName.equals("±í:ÊıÖµÖá") || qName.equals("±í:Í¼Àı") || qName.equals("±í:Êı¾İÏµÁĞ")
-				|| qName.equals("±í:Êı¾İµã") || qName.equals("±í:Íø¸ñÏß") || qName.equals("±í:±êÌâ")) {
+		else if (qName.equals("è¡¨:å›¾è¡¨åŒº") || qName.equals("è¡¨:ç»˜å›¾åŒº") || qName.equals("è¡¨:åˆ†ç±»è½´")
+				|| qName.equals("è¡¨:æ•°å€¼è½´") || qName.equals("è¡¨:å›¾ä¾‹") || qName.equals("è¡¨:æ•°æ®ç³»åˆ—")
+				|| qName.equals("è¡¨:æ•°æ®ç‚¹") || qName.equals("è¡¨:ç½‘æ ¼çº¿") || qName.equals("è¡¨:æ ‡é¢˜")) {
 			addStyle();
 		}
-		else if (qName.equals("±í:×îĞ¡Öµ")) {
+		else if (qName.equals("è¡¨:æœ€å°å€¼")) {
 			_current_chart_pro += " chart:minimun=\"" + _text_node + "\"";
 		}
-		else if (qName.equals("±í:×î´óÖµ")) {
+		else if (qName.equals("è¡¨:æœ€å¤§å€¼")) {
 			_current_chart_pro += " chart:maximun=\"" + _text_node + "\"";
 		}
-		else if (qName.equals("±í:Ö÷µ¥Î»")) {
+		else if (qName.equals("è¡¨:ä¸»å•ä½")) {
 			_current_chart_pro += " chart:axis-interval-major=\"" + _text_node + "\"";
 			_axis_interval_major = Double.valueOf(_text_node);
 		}
-		else if (qName.equals("±í:´Îµ¥Î»")) {
+		else if (qName.equals("è¡¨:æ¬¡å•ä½")) {
 			int divisor = (int)Math.floor(_axis_interval_major/Double.valueOf(_text_node));
 			_current_chart_pro += " chart:axis-interval-minor-divisor=\"" + divisor + "\"";
 		}
-		else if (qName.equals("±í:ÎÄ×Ö·½Ïò")) {
+		else if (qName.equals("è¡¨:æ–‡å­—æ–¹å‘")) {
 			if (_text_node.equals("horizontal"))
 				_current_chart_pro += " style:direction=\"ltr\"";
 			else
-				_current_chart_pro += " style:direction=\"ttb\"";;	
+				_current_chart_pro += " style:direction=\"ttb\"";;
 		}
-		else if (qName.equals("±í:Ğı×ª½Ç¶È") || qName.equals("±í:ÎÄ×ÖĞı×ª½Ç¶È")) {  //Ğı×ª½Ç¶ÈÓĞÍ¬ÑùµÄÎÊÌâ
+		else if (qName.equals("è¡¨:æ—‹è½¬è§’åº¦") || qName.equals("è¡¨:æ–‡å­—æ—‹è½¬è§’åº¦")) {  //æ—‹è½¬è§’åº¦æœ‰åŒæ ·çš„é—®é¢˜
 			_current_text_pro += " style:rotation-angle=\"" + _text_node + "\"";
 		}
-		else if (qName.equals("±í:Ë®Æ½¶ÔÆë·½Ê½")) {
+		else if (qName.equals("è¡¨:æ°´å¹³å¯¹é½æ–¹å¼")) {
 			_current_para_pro += " fo:text-align=\"";
 			if (_text_node.equals("left") || _text_node.equals("right")
 					|| _text_node.equals("center"))
@@ -473,41 +473,41 @@ public class Chart {
 			else if (_text_node.equals("justified"))
 				_current_para_pro += "justify";
 			else
-				_current_para_pro += "auto";   //ÆäÓàÇé¿öÈ«ÉèÎªauto
+				_current_para_pro += "auto";   //å…¶ä½™æƒ…å†µå…¨è®¾ä¸ºauto
 			_current_para_pro += "\"";
 		}
-		else if (qName.equals("±í:´¹Ö±¶ÔÆë·½Ê½")) {
+		else if (qName.equals("è¡¨:å‚ç›´å¯¹é½æ–¹å¼")) {
 			_current_para_pro += " fo:vertical-align=\"";
 			if (_text_node.equals("top") || _text_node.equals("bottom"))
 				_current_para_pro += _text_node;
 			else if (_text_node.equals("center"))
 				_current_para_pro += "middle";
 			else
-				_current_para_pro += "auto";   //ÆäÓàÇé¿öÈ«ÉèÎªauto
+				_current_para_pro += "auto";   //å…¶ä½™æƒ…å†µå…¨è®¾ä¸ºauto
 			_current_para_pro += "\"";
 		}
-		else if (qName.equals("±í:Ëõ½ø")) {   //To do:Ëõ½øµÄÈ¡ÖµÒª½øÒ»²½¿¼ÂÇ
+		else if (qName.equals("è¡¨:ç¼©è¿›")) {   //To do:ç¼©è¿›çš„å–å€¼è¦è¿›ä¸€æ­¥è€ƒè™‘
 			_current_para_pro += " fo:text-indent=\"" + _text_node + "\"";;
 		}
-		else if (qName.equals("±í:Êı¾İÔ´")) {
+		else if (qName.equals("è¡¨:æ•°æ®æº")) {
 			_serie_proc_tag = false;
 		}
-		
-		//Ã¿¸öÔªËØ½áÊøÊ±£¬ÒªÇå¿Õ_text_node²¢ÉèÖÃ_need_to_store_text
-		_text_node = "";   
+
+		//æ¯ä¸ªå…ƒç´ ç»“æŸæ—¶ï¼Œè¦æ¸…ç©º_text_nodeå¹¶è®¾ç½®_need_to_store_text
+		_text_node = "";
 		_need_to_store_text = false;
 	}
-	
+
 	public static void process_chars(String chs)
 	throws SAXException  {
 		if (_is_in_text)
 			Sent_Style.process_chars(chs);
-		
+
 		if (_need_to_store_text) {
-			_text_node += chs;			
-		}		
+			_text_node += chs;
+		}
 	}
-	
+
 	public static String getChartFrame(){
 		String svgX = measure_floatval(_svgX);
 		String svgY = measure_floatval(_svgY);
@@ -516,63 +516,63 @@ public class Chart {
 		String chartFrame = "<draw:frame svg:width=\"" + width + "\" svg:height=\"" + height
 		+ "\" svg:x=\"" + svgX + "\" svg:y=\"" + svgY + "\"><draw:object draw:notify-on-update-of-ranges=\""
 		+ _cellRange + "\" xlink:href=\"./" + _ID + "\" xlink:type=\"simple\" xlink:show=\"embed\" xlink:actuate=\"onLoad\"/></draw:frame>";
-		
-		_svgX = 0;   
+
+		_svgX = 0;
 		_svgY = 0;
-		_width = 0;   
+		_width = 0;
 		_height = 0;
 		_cellRange = "";
 		_ID = "";
-		
+
 		return chartFrame;
 	}
-	
+
 	private static String measure_floatval(float val){
 		return val * Common_Data.get_graphratio() + Common_Data.get_unit();
 	}
-	
+
 	public static void set_ID(String ID) {
 		_ID = ID;
 	}
-	
+
 	public static String get_content() {
 		String content = _content;
 		_content = "";
 		return content;
 	}
-	
+
 	private static String getClass(String type, String subtype) {
 		String chartClass = "";
-		
+
 		if (subtype.contains("3D")) {
-			_3D = true;	
+			_3D = true;
 		}
-		
+
 		if (subtype.contains("marker")) {
-			_symbol = true;	
+			_symbol = true;
 		}
-		
+
 		if (subtype.contains("scatter_line")) {
-			_lines = true;	
+			_lines = true;
 		}
-		
+
 		if (subtype.contains("100%")) {
-			_percentage = true;	
+			_percentage = true;
 		}
 		else if (subtype.contains("stacked") || subtype.contains("stcked")) {
-			_stacked = true;	
+			_stacked = true;
 		}
-		
+
 		if (subtype.equals("pie_exploded")) {
-			_pie_offset = true;	
+			_pie_offset = true;
 		}
-		
+
 		if (type.equals("column")) {
 			if (subtype.equals("column_stacked_3D") || subtype.equals("column_100%_stacked_3D")
 					|| subtype.equals("column_clustered_3D") || subtype.equals("column_stacked")
 					|| subtype.equals("column_100%_stacked") || subtype.equals("column_clustered")) {
 				chartClass = "chart:bar";
-			}		
+			}
 			else if (subtype.equals("doughnut_standard"))
 				chartClass = "chart:ring";
 			else if (subtype.contains("area"))
@@ -591,7 +591,7 @@ public class Chart {
 			chartClass = "chart:line";
 		}
 		//To do. chart:stock. EIOffice bug.
-		
+
 		_plot_chart_pro += _3D?" chart:three-dimensional=\"true\"":" chart:three-dimensional=\"false\"";
 		_plot_chart_pro += _symbol?" chart:symbol-type=\"automatic\"":" chart:symbol-type=\"none\"";
 		_plot_chart_pro += _lines?" chart:lines=\"true\"":" chart:lines=\"false\"";
@@ -599,7 +599,7 @@ public class Chart {
 		_plot_chart_pro += _stacked?" chart:stacked=\"true\"":"";
 		_plot_chart_pro += _pie_offset?" chart:pie-offset=\"10\"":"";
 		_plot_chart_pro += _vertical?" chart:vertical=\"true\"":" chart:vertical=\"false\"";
-		
+
 		_3D = false;
 		_vertical = false;
 		_pie_offset = false;
@@ -607,8 +607,8 @@ public class Chart {
 		_percentage = false;
 		_symbol = false;
 		_lines = false;
-		
+
 		return chartClass;
 	}
-	
+
 }

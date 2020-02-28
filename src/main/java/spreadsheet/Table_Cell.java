@@ -10,31 +10,31 @@ import text.HyperLink;
 import style_set.Date_Time;
 
 public class Table_Cell {
-	private static String _chs = "";	
+	private static String _chs = "";
 	//name of current table
 	private static String _table_name = "";
-	//ÉÏÒ»¸öµ¥Ôª¸ñÁĞºÅ
+	//ä¸Šä¸€ä¸ªå•å…ƒæ ¼åˆ—å·
 	private static int _pre_col_num = 0;
-	//ÁĞºÅ
-	private static int _col_num = 0;			
-	//ĞĞºÅ
+	//åˆ—å·
+	private static int _col_num = 0;
+	//è¡Œå·
 	private static int _row_num = 0;
 	//attributes needed by <table:cell>
-	private static String _cell_atts = "";	
+	private static String _cell_atts = "";
 	//formula
 	private static String _formula = "";
 	//The data type of this cell
-	private static String _value_type = "";		
+	private static String _value_type = "";
 	//content of cell without tag
-	private static String _cell_data = "";		
+	private static String _cell_data = "";
 	//content of cell with complete needed tag
 	private static String _para_data = "";
 	//Style name of <text:span>
-	private static String _span_style = "";	
+	private static String _span_style = "";
 	//empty table cells
-	private static String _empty_cell = "";	
-	//Tag for <×Ö:ÎÄ±¾´®>
-	private static boolean _span_tag = false;	
+	private static String _empty_cell = "";
+	//Tag for <å­—:æ–‡æœ¬ä¸²>
+	private static boolean _span_tag = false;
 	//hyperlink in table
 	private static String _link_ref = "";
 	//annotation in table
@@ -42,13 +42,13 @@ public class Table_Cell {
 	//
 	private static ArrayList<Cell_Range_Struct>
 		_cell_valids = new ArrayList<Cell_Range_Struct>();
-	
-		
+
+
 	//initialize
 	public static void init(){
-		_cell_valids.clear();	
+		_cell_valids.clear();
 	}
-	
+
 	private static void clear(){
 		_cell_atts = "";
 		_formula = "";
@@ -60,24 +60,24 @@ public class Table_Cell {
 		_link_ref = "";
 		_annotation = "";
 	}
-	
+
 	public static String get_result(){
 		String cell = "";
 		double digits = 0;
-		
+
 		try{
 			digits = Double.parseDouble(_cell_data);
 		}catch(Exception e){
 			digits = 0;
 		}
-		
+
 		if(_formula.length()!=0){
 			_cell_atts += " table:formula=\"" + _formula + "\"";
 		}
 		if(_value_type.length()!=0){
 			_cell_atts += " office:value-type=\"" + _value_type + "\"";
 		}
-		
+
 		if(_value_type.equals("float")){
 			_cell_atts += " office:value=\"" + _cell_data + "\"";
 		}
@@ -87,7 +87,7 @@ public class Table_Cell {
 		else if(_value_type.equals("time")){
 			_cell_atts += " office:time-value=\"" + Date_Time.convert_time(digits) + "\"";
 		}
-		
+
 		cell += _empty_cell;
 
 		String linkAtt = HyperLink.get_link_atts(_link_ref);
@@ -98,36 +98,36 @@ public class Table_Cell {
 			cell += "<table:table-cell" + _cell_atts + "/>";
 		}
 		else {
-			cell += "<table:table-cell" + _cell_atts + ">";	
+			cell += "<table:table-cell" + _cell_atts + ">";
 			cell += _annotation;
 			cell += "<text:p>" + _para_data + "</text:p>";
 			cell += "</table:table-cell>";
-		}	
-		
+		}
+
 		clear();
 		return cell;
 	}
-	
+
 	public static void see_new_row(int rowNum){
 		_pre_col_num = 0;
 		_col_num = 0;
 		_row_num = rowNum;
 	}
-	
+
 	public static int get_col_num(){
 		return _col_num;
 	}
-	
+
 	public static void add_cell_range(Cell_Range_Struct valid){
 		_cell_valids.add(valid);
 	}
-	
+
 	//Given the cell address, decide which cell range
 	//the address is in. Return the validation name or
 	//cell style name the cell range belongs to.
 	private static String in_cell_range(int col, int row){
 		String name = "";
-		
+
 		for(Iterator<Cell_Range_Struct> it = _cell_valids.iterator(); it.hasNext();){
 			Cell_Range_Struct v = it.next();
 			if(v.get_table_name().equals(_table_name) && v.in_range(col, row)){
@@ -137,60 +137,60 @@ public class Table_Cell {
 				}
 				break;
 			}
-		}	
+		}
 		return name;
 	}
-	
+
 	//Given the column num, decide which cell range
 	//the address is in. Return the validation name or
 	//cell style name the cell range belongs to.
 	public static String in_col_range(int col, String tableName){
 		String name = "";
-		
+
 		for(Iterator<Cell_Range_Struct> it = _cell_valids.iterator(); it.hasNext();){
 			Cell_Range_Struct v = it.next();
-			
+
 			if(v.get_table_name().equals(tableName) && v.in_col_range(col)){
-				name = v.get_style_name();				
+				name = v.get_style_name();
 				//"SN" is not needed here
-				name = name.substring(2);					
+				name = name.substring(2);
 				break;
 			}
-		}	
+		}
 		return name;
 	}
-	
+
 	public static void set_table_name(String name){
 		_table_name = name;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("±í:µ¥Ôª¸ñ")){
+
+		if(qName.equals("è¡¨:å•å…ƒæ ¼")){
 			boolean isSet = false;
 			String attName = "";
-			
-			if((attVal=atts.getValue("±í:ÁĞºÅ"))!=null){
+
+			if((attVal=atts.getValue("è¡¨:åˆ—å·"))!=null){
 				_col_num = Integer.parseInt(attVal);
 			}
 			else{
 				_col_num ++;
 			}
 
-			attName = in_cell_range(_col_num, _row_num);	
+			attName = in_cell_range(_col_num, _row_num);
 			isSet = attName.startsWith("SN");
 			if(!attName.equals("")){
 				_cell_atts += VN_or_SN_att(attName);
 			}
-			
+
 			if(_col_num > (_pre_col_num + 1)){
 				int empCount = 0;
-				
+
 				for(int i = _pre_col_num+1; i < _col_num; i++){
 					attName = in_cell_range(i, _row_num);
 					isSet = attName.startsWith("SN");
-					
+
 					if(!attName.equals("")){
 						_empty_cell += print_empty_cells(empCount);
 						_empty_cell += "<table:table-cell" + VN_or_SN_att(attName) + "/>";
@@ -199,67 +199,67 @@ public class Table_Cell {
 						empCount ++;
 					}
 				}
-				
+
 				_empty_cell += print_empty_cells(empCount);
 			}
-			
-			if((attVal=atts.getValue("±í:Ê½ÑùÒıÓÃ"))!=null && !isSet){
+
+			if((attVal=atts.getValue("è¡¨:å¼æ ·å¼•ç”¨"))!=null && !isSet){
 				_cell_atts += " table:style-name=\"" + attVal + "\"";
 			}
-			if((attVal=atts.getValue("±í:ºÏ²¢ÁĞÊı"))!=null){
+			if((attVal=atts.getValue("è¡¨:åˆå¹¶åˆ—æ•°"))!=null){
 				_cell_atts += " table:number-columns-spanned=\"" + attVal + "\"";
 			}
-			if((attVal=atts.getValue("±í:ºÏ²¢ĞĞÊı"))!=null){
+			if((attVal=atts.getValue("è¡¨:åˆå¹¶è¡Œæ•°"))!=null){
 				_cell_atts += " table:number-rows-spanned=\"" + attVal + "\"";
 			}
-			if((attVal=atts.getValue("±í:³¬Á´½ÓÒıÓÃ"))!=null){
+			if((attVal=atts.getValue("è¡¨:è¶…é“¾æ¥å¼•ç”¨"))!=null){
 				_link_ref = attVal;
 			}
-			
+
 			_pre_col_num = _col_num;
 		}
-		
-		else if(qName.equals("±í:Êı¾İ")){	
-			attVal=atts.getValue("±í:Êı¾İÀàĞÍ");
-			
+
+		else if(qName.equals("è¡¨:æ•°æ®")){
+			attVal=atts.getValue("è¡¨:æ•°æ®ç±»å‹");
+
 			if(_value_type.equals("") && attVal != null){
 				_value_type = attVal;
-			}			
+			}
 			_value_type = conv_value_type(_value_type);
 		}
-		
-		else if(qName.equals("×Ö:ÎÄ±¾´®")){
+
+		else if(qName.equals("å­—:æ–‡æœ¬ä¸²")){
 			_span_tag = true;
 		}
-		
-		else if(qName.equals("×Ö:¾äÊôĞÔ")){
-			if((attVal=atts.getValue("×Ö:Ê½ÑùÒıÓÃ"))!=null){
+
+		else if(qName.equals("å­—:å¥å±æ€§")){
+			if((attVal=atts.getValue("å­—:å¼æ ·å¼•ç”¨"))!=null){
 				_span_style = attVal;
 			}
 		}
-		
-		else if(qName.equals("×Ö:ÇøÓò¿ªÊ¼")){
-			attVal = atts.getValue("×Ö:±êÊ¶·û");
+
+		else if(qName.equals("å­—:åŒºåŸŸå¼€å§‹")){
+			attVal = atts.getValue("å­—:æ ‡è¯†ç¬¦");
 			_para_data += "<text:a" + HyperLink.get_link_atts(attVal) + ">";
 		}
-		
-		else if(qName.equals("×Ö:ÇøÓò½áÊø")){
+
+		else if(qName.equals("å­—:åŒºåŸŸç»“æŸ")){
 			_para_data += "</text:a>";
 		}
-		
-		else if(qName.equals("uof:Ãªµã")){	//shapes in annotation
-			if((attVal=atts.getValue("uof:Í¼ĞÎÒıÓÃ")) != null){
+
+		else if(qName.equals("uof:é”šç‚¹")){	//shapes in annotation
+			if((attVal=atts.getValue("uof:å›¾å½¢å¼•ç”¨")) != null){
 				if(Object_Set_Data.getDrawing(attVal) != null){
 					_annotation = Object_Set_Data.getDrawing(attVal);
 				}
 			}
 		}
 	}
-	
-	public static void process_chars(String chs){	
+
+	public static void process_chars(String chs){
 		if(_span_tag){
 			_cell_data = chs;
-			
+
 			if(!_span_style.equals("")){
 				_para_data += "<text:span text:style-name=\"" + _span_style + "\">" ;
 				_para_data += chs + "</text:span>";
@@ -271,36 +271,36 @@ public class Table_Cell {
 			_chs = chs;
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("±í:¹«Ê½")){
+		if(qName.equals("è¡¨:å…¬å¼")){
 			_formula = "oooc:" + Formula.get_formula(_chs.trim());
 		}
-		
-		else if(qName.equals("×Ö:ÎÄ±¾´®")){
+
+		else if(qName.equals("å­—:æ–‡æœ¬ä¸²")){
 			_span_tag = false;
 		}
-		
+
 		_chs = "";
 	}
-	
-	//return the attribute 
+
+	//return the attribute
 	private static String VN_or_SN_att(String name){
 		String att = "";
-		
+
 		if(name.startsWith("VN")){
 			att = " table:content-validation-name=\"" + name.substring(2) + "\"";
 		}
 		else if(name.startsWith("SN")){
 			att = " table:style-name=\"" + name.substring(2) + "\"";
 		}
-		
+
 		return att;
 	}
-	
+
 	private static String print_empty_cells(int count){
 		String emptys = "";
-		
+
 		if(count == 1){
 			emptys = "<table:table-cell/>";
 		}
@@ -309,13 +309,13 @@ public class Table_Cell {
 			emptys += " table:number-columns-repeated=\"" + count + "\"";
 			emptys += "/>";
 		}
-		
+
 		return emptys;
 	}
-	
+
 	private static String conv_value_type(String oldType){
 		String newType = "string";
-		
+
 		if(oldType.equals("text")){
 			newType = "string";
 		}
@@ -329,7 +329,7 @@ public class Table_Cell {
 			newType = "currency";
 		}
 		else if(oldType.equals("date")){
-			newType =  "date";	
+			newType =  "date";
 		}
 		else if(oldType.equals("boolean")){
 			newType = "boolean";
@@ -337,7 +337,7 @@ public class Table_Cell {
 		else if(oldType.equals("time")){
 			newType = "time";
 		}
-		
+
 		return newType;
 	}
 }

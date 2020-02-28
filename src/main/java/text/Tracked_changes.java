@@ -4,31 +4,31 @@ import org.xml.sax.Attributes;
 import temp_structs.Text_Data;
 
 public class Tracked_changes {
-	
-	//´¦Àí¾ßÌåµÄ×ª»¯²¢±£´æ½á¹û
+
+	//å¤„ç†å…·ä½“çš„è½¬åŒ–å¹¶ä¿å­˜ç»“æœ
 	public static void process(String qName,Attributes atts){
-		
-		if(qName.equals("×Ö:ĞŞ¶©ĞÅÏ¢")){		
-			String id = atts.getValue("×Ö:±êÊ¶·û");
-			
+
+		if(qName.equals("å­—:ä¿®è®¢ä¿¡æ¯")){
+			String id = atts.getValue("å­—:æ ‡è¯†ç¬¦");
+
 			Text_Data.addTrackedInfo(id,getChange_info(atts));
 		}
 	}
-	
+
 	private static String getChange_info(Attributes atts){
 		String str = "";
 		String att_val = "";
-		
+
 		str += "<office:change-info>";
-		if((att_val=atts.getValue("×Ö:×÷Õß"))!= null){
+		if((att_val=atts.getValue("å­—:ä½œè€…"))!= null){
 			str += "<dc:creator>" + Text_Data.getUser(att_val) + "</dc:creator>";
 		}
-		
-		if((att_val=atts.getValue("×Ö:ÈÕÆÚ"))!= null){
+
+		if((att_val=atts.getValue("å­—:æ—¥æœŸ"))!= null){
 			str += "<dc:date>" + att_val + "</dc:date>";
 		}
 		str += "</office:change-info>";
-		
+
 		return str;
 	}
 }

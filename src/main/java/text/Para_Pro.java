@@ -7,16 +7,16 @@ import style_set.Para_Style;
 import temp_structs.Stored_Data;
 
 /**
- * Process a few style information existing 
- * inside <×Ö:¶ÎÂä> to create new paragraph-
+ * Process a few style information existing
+ * inside <å­—:æ®µè½> to create new paragraph-
  * styles.
  * @author xie
  *
  */
 public class Para_Pro {
-	//counter of <×Ö:¶ÎÂäÊôĞÔ>
+	//counter of <å­—:æ®µè½å±æ€§>
 	private static int _counter_of_para = 0;
-	//value of @×Ö:Ê½ÑùÒıÓÃ
+	//value of @å­—:å¼æ ·å¼•ç”¨
 	private static String _style_name = "";
 	//id for generating paragraph style names
 	private static int _para_id = 0;
@@ -26,7 +26,7 @@ public class Para_Pro {
 	//store <counter,paragraph style name>-pairs
 	private static Map<Integer,String>
 		_para_name_map = new TreeMap<Integer,String>();
-	//whether or not this ¶ÎÂäÊôĞÔ is in ½ÚÊôĞÔ
+	//whether or not this æ®µè½å±æ€§ is in èŠ‚å±æ€§
 	private static boolean _is_sec_type = false;
 
 
@@ -39,15 +39,15 @@ public class Para_Pro {
 		_para_name_map.clear();
 		_is_sec_type = false;
 	}
-	
+
 	public static void in_sec_type(boolean bval){
 		_is_sec_type = bval;
 	}
-	
+
 	private static void clear(){
 		_style_name = "";
 	}
-	
+
 	//Invoked by First_ConvHandler
 	public static void plus_para_counter(){
 		_counter_of_para ++;
@@ -58,19 +58,19 @@ public class Para_Pro {
 	public static String get_para_name(int paraCounter){
 		return _para_name_map.get(paraCounter);
 	}
-	
+
 	//create a new paragraph style and store it.
 	private static void commit_para_style(){
 		String style = "";
 		String name = "";
 		String paraPro = Para_Style.get_para_pro();
-		
+
 		if(paraPro.equals(""))	return;
-		
+
 		//if there is a para-pro with the same content, return its name
 		for(Iterator<String> it=_para_pros.keySet().iterator(); it.hasNext();){
 			String tmpName = it.next();
-			
+
 			if(_para_pros.get(tmpName).equals(paraPro + _style_name)){
 				name = tmpName;
 				break;
@@ -81,50 +81,50 @@ public class Para_Pro {
 		if(name.equals("")){
 			name = gen_para_id();
 			_para_pros.put(name, paraPro + _style_name);
-			
+
 			style = "<style:style style:family=\"paragraph\"";
 			style += " style:name=\"" + name + "\"";
 			if(!_style_name.equals("")){
 				style += " style:parent-style-name=\"" + _style_name + "\"";
 			}
 			style += ">" + paraPro + "</style:style>";
-			
+
 			if(_is_sec_type){
 				Stored_Data.addAutoStylesInStylesXml(style);
 			}
 			Stored_Data.addAutoStylesInContentXml(style);
 		}
 		_para_name_map.put(_counter_of_para,name);
-		
+
 		clear();
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
 
-		if(qName.equals("×Ö:¶ÎÂäÊôĞÔ")){		
-			attVal = atts.getValue("×Ö:Ê½ÑùÒıÓÃ");
+		if(qName.equals("å­—:æ®µè½å±æ€§")){
+			attVal = atts.getValue("å­—:å¼æ ·å¼•ç”¨");
 			_style_name = (attVal==null) ? "" : attVal;
 		}
-		
+
 		else {
 			Para_Style.process_start(qName,atts);
 		}
 	}
-	
-	public static void process_chars(String chs){		
+
+	public static void process_chars(String chs){
 		Para_Style.process_chars(chs);
 	}
-	
+
 	public static void process_end(String qName){
-		 if(qName.equals("×Ö:¶ÎÂäÊôĞÔ")){
+		 if(qName.equals("å­—:æ®µè½å±æ€§")){
 			commit_para_style();
 		 }
 		 else {
 			 Para_Style.process_end(qName);
 		 }
 	}
-	
+
 	//Gennerate a name for paragraph style
 	private static String gen_para_id(){
 		_para_id ++;

@@ -6,25 +6,25 @@ import presentation.Presentation_Style;
 import temp_structs.Common_Data;
 
 public class Style_Set {
-	//uof:×ÖÌå¼¯
+	//uof:å­—ä½“é›†
 	private static boolean _font_set_tag = false;
-	//uof:×Ô¶¯±àºÅ¼¯
+	//uof:è‡ªåŠ¨ç¼–å·é›†
 	private static boolean _autonum_set_tag = false;
-	//uof:¾äÊ½Ñù
+	//uof:å¥å¼æ ·
 	private static boolean _sent_style_tag = false;
-	//uof:¶ÎÂäÊ½Ñù
+	//uof:æ®µè½å¼æ ·
 	private static boolean _para_style_tag = false;
-	//uof:ÎÄ×Ö±íÊ½Ñù
+	//uof:æ–‡å­—è¡¨å¼æ ·
 	private static boolean _table_style_tag = false;
-	//uof:µ¥Ôª¸ñÊ½Ñù
+	//uof:å•å…ƒæ ¼å¼æ ·
 	private static boolean _cell_style_tag = false;
-	//uof:¶ÎÂäÊ½Ñù(presentation)
+	//uof:æ®µè½å¼æ ·(presentation)
 	private static boolean _present_style_tag = false;
-	
-	
-	public Style_Set() {	
+
+
+	public Style_Set() {
 	}
-	
+
 	public static void process_start(String qName,Attributes atts) {
 		if (_font_set_tag){
 			Font_Set.process_start(qName,atts);
@@ -47,23 +47,23 @@ public class Style_Set {
 		else if (_present_style_tag){
 			Presentation_Style.process_start(qName,atts);
 		}
-		
-		else if(qName.equals("uof:×ÖÌå¼¯")) {
+
+		else if(qName.equals("uof:å­—ä½“é›†")) {
 			_font_set_tag = true;
 			Font_Set.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:×Ô¶¯±àºÅ¼¯")) {
+		else if(qName.equals("uof:è‡ªåŠ¨ç¼–å·é›†")) {
 			_autonum_set_tag = true;
 			AutoNum_Set.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:¾äÊ½Ñù")) {
+		else if(qName.equals("uof:å¥å¼æ ·")) {
 			_sent_style_tag = true;
 			Sent_Style.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:¶ÎÂäÊ½Ñù")) {
-			String type = atts.getValue("×Ö:Ãû³Æ");
-			
-			if(Common_Data.get_file_type().equals("presentation") 
+		else if(qName.equals("uof:æ®µè½å¼æ ·")) {
+			String type = atts.getValue("å­—:åç§°");
+
+			if(Common_Data.get_file_type().equals("presentation")
 					&& type != null && type.equals("notes")){
 				_present_style_tag = true;
 				Presentation_Style.process_start(qName,atts);
@@ -73,16 +73,16 @@ public class Style_Set {
 				Para_Style.process_start(qName,atts);
 			}
 		}
-		else if(qName.equals("uof:ÎÄ×Ö±íÊ½Ñù")) {
+		else if(qName.equals("uof:æ–‡å­—è¡¨å¼æ ·")) {
 			_table_style_tag = true;
 			Table_Style.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:µ¥Ôª¸ñÊ½Ñù")) {
+		else if(qName.equals("uof:å•å…ƒæ ¼å¼æ ·")) {
 			_cell_style_tag = true;
 			Cell_Style.process_start(qName,atts);
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		if (_autonum_set_tag){
 			AutoNum_Set.process_chars(chs);
@@ -103,47 +103,47 @@ public class Style_Set {
 			Presentation_Style.process_chars(chs);
 		}
 	}
-	
+
 	public static void process_end(String qName){
 		if (_font_set_tag){
 			Font_Set.process_end(qName);
-			if(qName.equals("uof:×ÖÌå¼¯")) {
+			if(qName.equals("uof:å­—ä½“é›†")) {
 				_font_set_tag = false;
 			}
 		}
 		else if (_autonum_set_tag){
 			AutoNum_Set.process_end(qName);
-			if(qName.equals("uof:×Ô¶¯±àºÅ¼¯")) {
+			if(qName.equals("uof:è‡ªåŠ¨ç¼–å·é›†")) {
 				_autonum_set_tag = false;
 			}
 		}
 		else if (_sent_style_tag){
 			Sent_Style.process_end(qName);
-			if(qName.equals("uof:¾äÊ½Ñù")) {
+			if(qName.equals("uof:å¥å¼æ ·")) {
 				_sent_style_tag = false;
 			}
 		}
 		else if (_para_style_tag){
 			Para_Style.process_end(qName);
-			if(qName.equals("uof:¶ÎÂäÊ½Ñù")) {
+			if(qName.equals("uof:æ®µè½å¼æ ·")) {
 				_para_style_tag = false;
 			}
 		}
 		else if (_table_style_tag){
 			Table_Style.process_end(qName);
-			if(qName.equals("uof:ÎÄ×Ö±íÊ½Ñù")) {
+			if(qName.equals("uof:æ–‡å­—è¡¨å¼æ ·")) {
 				_table_style_tag = false;
 			}
 		}
 		else if (_cell_style_tag){
 			Cell_Style.process_end(qName);
-			if(qName.equals("uof:µ¥Ôª¸ñÊ½Ñù")) {
+			if(qName.equals("uof:å•å…ƒæ ¼å¼æ ·")) {
 				_cell_style_tag = false;
 			}
 		}
 		else if (_present_style_tag){
 			Presentation_Style.process_end(qName);
-			if(qName.equals("uof:¶ÎÂäÊ½Ñù")) {
+			if(qName.equals("uof:æ®µè½å¼æ ·")) {
 				_present_style_tag = false;
 			}
 		}

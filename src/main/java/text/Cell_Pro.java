@@ -6,30 +6,30 @@ import java.util.*;
 
 import style_set.Common_Pro;
 
-//´¦Àí<×Ö:µ¥Ôª¸ñÊôĞÔÀàĞÍ>
-//Æä×ÓÔªËØ£º¿í¶È µ¥Ôª¸ñ±ß¾à ±ß¿ò Ìî³ä ´¹Ö±¶ÔÆë·½Ê½ ¿çĞĞ ¿çÁĞ ×Ô¶¯»»ĞĞ ÊÊÓ¦ÎÄ×Ö
-//ÆäÖĞ£¬¿í¶È ¿çĞĞ ¿çÁĞ ×Ô¶¯»»ĞĞ Ã»ÓĞ¶ÔÓ¦
+//å¤„ç†<å­—:å•å…ƒæ ¼å±æ€§ç±»å‹>
+//å…¶å­å…ƒç´ ï¼šå®½åº¦ å•å…ƒæ ¼è¾¹è· è¾¹æ¡† å¡«å…… å‚ç›´å¯¹é½æ–¹å¼ è·¨è¡Œ è·¨åˆ— è‡ªåŠ¨æ¢è¡Œ é€‚åº”æ–‡å­—
+//å…¶ä¸­ï¼Œå®½åº¦ è·¨è¡Œ è·¨åˆ— è‡ªåŠ¨æ¢è¡Œ æ²¡æœ‰å¯¹åº”
 public class Cell_Pro extends Common_Pro{
-	private static String _chs = "";	
+	private static String _chs = "";
 	//
-	private static String _cell_pro = ""; 
+	private static String _cell_pro = "";
 	//table:number-columns-spanned
-	private static String _cols_spanned = "";	
+	private static String _cols_spanned = "";
 	//table:number-rows-spanned
 	private static String _rows_spanned = "";
 	//
 	private static int _cell_style_id = 0;
 	//This counter will be increased by 1
-	//when it sees a new <×Ö:µ¥Ôª¸ñÊôĞÔ>
+	//when it sees a new <å­—:å•å…ƒæ ¼å±æ€§>
 	private static int _cell_counter = 0;
-	//Each <×Ö:µ¥Ôª¸ñÊôĞÔ>-ele associates with a style name
+	//Each <å­—:å•å…ƒæ ¼å±æ€§>-ele associates with a style name
 	//of table-cell <style:style>.
-	private static Map<Integer,String > 
+	private static Map<Integer,String >
 		_style_name_map = new HashMap<Integer,String>();
 	//
-	private static ArrayList<Cell_Pro_Struct> 
+	private static ArrayList<Cell_Pro_Struct>
 		_cell_pro_list = new ArrayList<Cell_Pro_Struct>();
-	
+
 	//initialize
 	public static void init(){
 		_cell_counter = 0;
@@ -37,61 +37,61 @@ public class Cell_Pro extends Common_Pro{
 		_style_name_map.clear();
 		_cell_pro_list.clear();
 	}
-	
+
 	private static void clear(){
 		_chs = "";
 		_cols_spanned = "";
 		_rows_spanned = "";
 		_cell_pro = "";
 	}
-	
+
 	//return @style:name/@table:number-columns-spanned/
-	//@table:number-rows-spanned attributes if it has	
+	//@table:number-rows-spanned attributes if it has
 	public static String get_atts(int proNum){
 		String name = _style_name_map.get(proNum);
-		
+
 		if(name == null){
 			name = "";
 		}
 		return name;
 	}
-	
+
 	//If there is a Cell_Pro_Struct of the list has
 	//a same content with cellPro, then return its
 	//style name, else return "".
 	private static String in_list(Cell_Pro_Struct cellPro){
 		String styleName = "";
-		
+
 		for(Iterator<Cell_Pro_Struct> it=_cell_pro_list.iterator(); it.hasNext();){
 			Cell_Pro_Struct cps = it.next();
 			if(cps.equals_to(cellPro)){
 				styleName = cps.get_style_name();
 			}
 		}
-		
+
 		return styleName;
 	}
-	
+
 	public static String get_result(){
 		String rst = "";
 		String styleName = "";
 		Cell_Pro_Struct proStr = new Cell_Pro_Struct();
-		
+
 		proStr.set_cell_pro(_cell_pro);
 		styleName = in_list(proStr);
-		
+
 		//Add a new Cell_Pro_Struct to the list
 		if(styleName.equals("")){
 			styleName = gen_cell_styleID();
 			proStr.set_style_name(styleName);
 			_cell_pro_list.add(proStr);
-			//Create cell-style	
+			//Create cell-style
 			rst += "<style:style style:family=\"table-cell\"";
-			rst += " style:name=\"" + styleName + "\"" + ">";		
+			rst += " style:name=\"" + styleName + "\"" + ">";
 			rst += "<style:table-cell-properties" + _cell_pro + "/>";
 			rst += "</style:style>";
 		}
-		
+
 		//put a map entry to the map
 		String attsAndCols = " table:style-name=\"" + styleName + "\"";
 		if(!_cols_spanned.equals("")){
@@ -103,71 +103,71 @@ public class Cell_Pro extends Common_Pro{
 		//columns spanned
 		attsAndCols += "|" + _cols_spanned;
 		_style_name_map.put(_cell_counter,attsAndCols);
-		
+
 		clear();
 		return rst;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("×Ö:µ¥Ôª¸ñÊôĞÔ")){
+
+		if(qName.equals("å­—:å•å…ƒæ ¼å±æ€§")){
 			_cell_counter ++;
 		}
-		else if(qName.equals("×Ö:µ¥Ôª¸ñ±ß¾à")){
+		else if(qName.equals("å­—:å•å…ƒæ ¼è¾¹è·")){
 			_cell_pro += get_padding(atts);
 		}
-		else if(qName.equals("uof:ÉÏ")||qName.equals("uof:ÏÂ")    //±ß¿òµÄ×ÓÔªËØ
-			  ||qName.equals("uof:×ó")||qName.equals("uof:ÓÒ")){
-			_cell_pro += get_borders(qName, atts);	  
+		else if(qName.equals("uof:ä¸Š")||qName.equals("uof:ä¸‹")    //è¾¹æ¡†çš„å­å…ƒç´ 
+			  ||qName.equals("uof:å·¦")||qName.equals("uof:å³")){
+			_cell_pro += get_borders(qName, atts);
 		}
-		else if(qName.equals("×Ö:¿çÁĞ")){
-			if((attVal=atts.getValue("×Ö:Öµ")) != null){
+		else if(qName.equals("å­—:è·¨åˆ—")){
+			if((attVal=atts.getValue("å­—:å€¼")) != null){
 				_cols_spanned = attVal;
 			}
 		}
-		else if(qName.equals("×Ö:¿çĞĞ")){
-			if((attVal=atts.getValue("×Ö:Öµ")) != null){
+		else if(qName.equals("å­—:è·¨è¡Œ")){
+			if((attVal=atts.getValue("å­—:å€¼")) != null){
 				_rows_spanned = attVal;
 			}
 		}
-		else if(qName.equals("×Ö:ÊÊÓ¦ÎÄ×Ö")){
-			if((attVal=atts.getValue("×Ö:Öµ")) != null){
+		else if(qName.equals("å­—:é€‚åº”æ–‡å­—")){
+			if((attVal=atts.getValue("å­—:å€¼")) != null){
 				_cell_pro += " style:shrink-to-fit=\"" + attVal + "\"";
 			}
 		}
-		else if (qName.equals("×Ö:×Ô¶¯»»ĞĞ")) {	
-			attVal = atts.getValue("×Ö:Öµ");
+		else if (qName.equals("å­—:è‡ªåŠ¨æ¢è¡Œ")) {
+			attVal = atts.getValue("å­—:å€¼");
 			if(attVal != null){
 				String val = (attVal.equals("true"))?"wrap":"no-wrap";
 				_cell_pro += " fo:wrap-option=\"" + val + "\"";
 			}
 		}
 	}
-	
-	public static void process_chars(String chs){	
+
+	public static void process_chars(String chs){
 		_chs = chs;
 	}
-	
-	public static void process_end(String qName){		
-		if(qName.equals("×Ö:´¹Ö±¶ÔÆë·½Ê½")){
-			_cell_pro += " style:vertical-align=\"" 
+
+	public static void process_end(String qName){
+		if(qName.equals("å­—:å‚ç›´å¯¹é½æ–¹å¼")){
+			_cell_pro += " style:vertical-align=\""
 				+ conv_vertical_align(_chs) + "\"";
 		}
-		else if(qName.equals("uof:ÑÕÉ«")){
+		else if(qName.equals("uof:é¢œè‰²")){
 			_cell_pro += " fo:background-color\"" + _chs + "\"";
 		}
-		else if(qName.equals("×Ö:±ß¿ò")){
+		else if(qName.equals("å­—:è¾¹æ¡†")){
 			//@style:border-line-width
 			_cell_pro += Common_Pro.get_double_line_width();
 		}
 	}
-	
-	//"style:vertical-align"ÊôĞÔÖµ£ºUOFÖĞboth
-	//ºÍODFÖĞautomatic·Ö±ğÔÚ¶Ô·½ÕÒ²»µ½¶ÔÓ¦
+
+	//"style:vertical-align"å±æ€§å€¼ï¼šUOFä¸­both
+	//å’ŒODFä¸­automaticåˆ†åˆ«åœ¨å¯¹æ–¹æ‰¾ä¸åˆ°å¯¹åº”
 	private static String conv_vertical_align(String val){
 		String convVal = "automatic";
-		
+
 		if(val.equals("top")){
 			convVal = "top";
 		}
@@ -177,10 +177,10 @@ public class Cell_Pro extends Common_Pro{
 		else if(val.equals("bottom")){
 			convVal = "bottom";
 		}
-		
+
 		return convVal;
 	}
-	
+
 	private static String gen_cell_styleID(){
 		_cell_style_id ++;
 		return "cell_style" + _cell_style_id;

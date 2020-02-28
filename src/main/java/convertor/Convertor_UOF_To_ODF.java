@@ -56,7 +56,7 @@ public class Convertor_UOF_To_ODF  extends JFrame implements ActionListener{
 		super(title);
 		getContentPane().setLayout(new GridBagLayout());
 
-	    JLabel pathLb = new JLabel("������UOFԴ�ļ���: ");
+	    JLabel pathLb = new JLabel("请输入UOF源文件名: ");
 	    pathLb.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));
 	    pathLb.setFont(new Font(" ", Font.BOLD, 14));
 	    _src_path_field = new JTextField(System.getProperty("user.dir"));
@@ -64,7 +64,7 @@ public class Convertor_UOF_To_ODF  extends JFrame implements ActionListener{
 	    _src_path_field.setColumns(37);
 	    add_content(create_src_panel(pathLb, _src_path_field),new Insets(25,5,5,5), 0, 0, 2);
 
-	    convertButton = new JButton("ת����");
+	    convertButton = new JButton("转换到");
 	    convertButton.setBorder(BorderFactory.createEmptyBorder(3,4,3,4));
 	    convertButton.setActionCommand("CONVERT");
 	    convertButton.addActionListener(this);
@@ -77,9 +77,9 @@ public class Convertor_UOF_To_ODF  extends JFrame implements ActionListener{
 	    _rst_path_field.setColumns(32);
 	    add_content(create_src_panel(butPn, _rst_path_field),new Insets(5,5,5,5), 0, 1, 2);
 
-	    add_content(new JLabel("����Դ�ļ�: "),new Insets(5,5,0,35), 0, 2, 1);
+	    add_content(new JLabel("解析源文件: "),new Insets(5,5,0,35), 0, 2, 1);
 
-	    add_content(new JLabel("������:   "),new Insets(5,0,0,55), 1, 2, 1);
+	    add_content(new JLabel("结果输出:   "),new Insets(5,0,0,55), 1, 2, 1);
 
 	    _source_area = new JTextArea("",20,25);
 	    _source_area.setEditable(false);
@@ -109,7 +109,7 @@ public class Convertor_UOF_To_ODF  extends JFrame implements ActionListener{
 			String userDir = System.getProperty("user.dir");
 
 			if(!srcFile.endsWith(".uof")){
-				_source_area.setText("����! Դ�ļ�������uof���ͣ����������룡");
+				_source_area.setText("错误! 源文件必须是uof类型，请重新输入！");
 			}
 			else {
 				try{
@@ -182,25 +182,25 @@ public class Convertor_UOF_To_ODF  extends JFrame implements ActionListener{
 	        Results_Writer.initialize();
 
 			SAXParserFactory spfactory = SAXParserFactory.newInstance();
-			spfactory.setValidating(false);    //����֤�����������ڸ�ʽ���õ��ĵ���
+			spfactory.setValidating(false);    //非验证解析器，用于格式良好的文档。
 			SAXParser saxParser = spfactory.newSAXParser();
 			xmlReader = saxParser.getXMLReader();
 			srcFileName = "file:///" + srcFileName;
 			InputSource source = new InputSource(srcFileName);
 
-			//��ǰɨ��Դ�ĵ�,��ȡ������λ���ļ�����
+			//提前扫描源文档,提取度量单位、文件类型
 			DefaultHandler preConvertHandler = new Pre_ConvHandler();
 			xmlReader.setContentHandler(preConvertHandler);
 			xmlReader.setErrorHandler(preConvertHandler);
 			xmlReader.parse(source);
 
-			//��һ��ɨ��Դ�ĵ�
+			//第一次扫描源文档
 			DefaultHandler firstConvertHandler = new First_ConvHandler();
 			xmlReader.setContentHandler(firstConvertHandler);
 			xmlReader.setErrorHandler(firstConvertHandler);
 			xmlReader.parse(source);
 
-			//�ڶ���ɨ��Դ�ĵ�
+			//第二次扫描源文档
 			IDGenerator.restart();
 			DefaultHandler secondConvertHandler = new Second_ConvHandler();
 			xmlReader.setContentHandler(secondConvertHandler);
@@ -210,7 +210,7 @@ public class Convertor_UOF_To_ODF  extends JFrame implements ActionListener{
 			Results_Writer.close();
 			Settings_Writer settingsWriter = new Settings_Writer(Common_Data.get_file_type());
 			settingsWriter.writeFiles();
-			_rst_path_field.setText(ZipCompress.compress(rstFileName));		//ѹ��
+			_rst_path_field.setText(ZipCompress.compress(rstFileName));		//压缩
 
 			state = "          Convert successfully!!!";
 		} catch (Exception exception) {

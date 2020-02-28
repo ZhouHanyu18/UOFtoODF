@@ -5,7 +5,7 @@ import org.xml.sax.Attributes;
 import style_set.Common_Pro;
 
 /**
- * 
+ *
  * @author xie
  *
  */
@@ -13,63 +13,63 @@ public class Page_Layout_p extends Common_Pro{
 	//
 	private static String _chs = "";
 	//page-layout properties
-	private static String _pl_pros = ""; 
+	private static String _pl_pros = "";
 	//@style:name
-	private static String _id = "";	
+	private static String _id = "";
 	//the result
 	private static String _result = "";
-	
-	
+
+
 	protected static void clear(){
 		_chs = "";
 		_pl_pros = "";
 		_id = "";
 	}
-	
+
 	private static String get_one_PL(){
 		String str = "";
-		
+
 		str = "<style:page-layout style:name=\"" + _id + "\">";
-		str += "<style:page-layout-properties" + _pl_pros + "/>";	
+		str += "<style:page-layout-properties" + _pl_pros + "/>";
 		str += "</style:page-layout>";
-		
-		clear(); 
+
+		clear();
 		return str;
-	} 
-	
+	}
+
 	public static String get_result(){
 		String pls = "";
-		
+
 		pls = _result;
 		_result = "";
-		
+
 		return pls;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
-		if(qName.equals("—›:“≥√Ê…Ë÷√")){
-			_id = atts.getValue("—›:±Í ∂∑˚");
+		if(qName.equals("Êºî:È°µÈù¢ËÆæÁΩÆ")){
+			_id = atts.getValue("Êºî:Ê†áËØÜÁ¨¶");
 		}
-		else if(qName.equals("—›:÷Ω’≈")){
+		else if(qName.equals("Êºî:Á∫∏Âº†")){
 			_pl_pros += get_page(atts);
 		}
-		else if(qName.equals("—›:“≥±ﬂæ‡")){
+		else if(qName.equals("Êºî:È°µËæπË∑ù")){
 			_pl_pros += get_margins(atts);
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		_chs = chs;
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("—›:÷Ω’≈∑ΩœÚ")){
+		if(qName.equals("Êºî:Á∫∏Âº†ÊñπÂêë")){
 			_pl_pros += " style:print-orientation=\"" + _chs + "\"";
 		}
-		else if(qName.equals("—›:“≥¬Î∏Ò Ω")){   
+		else if(qName.equals("Êºî:È°µÁ†ÅÊ†ºÂºè")){
 			_pl_pros += " style:num-format\"" + conv_num_format(_chs) + "\"";
 		}
-		else if(qName.equals("—›:“≥√Ê…Ë÷√")){
+		else if(qName.equals("Êºî:È°µÈù¢ËÆæÁΩÆ")){
 			_result += get_one_PL();
 		}
 		_chs = "";

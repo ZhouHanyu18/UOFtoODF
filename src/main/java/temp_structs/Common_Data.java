@@ -3,18 +3,18 @@ package temp_structs;
 public class Common_Data {
 	private static String _file_type = "";
 	//default value is "pt"
-	private static String _unit = "pt";	
-	
-	public static final String LTAG = "&lt;";			//◊Û±Í«©
-	public static final String RTAG = "&gt;";			//”“±Í«©
+	private static String _unit = "pt";
+
+	public static final String LTAG = "&lt;";			//Â∑¶Ê†áÁ≠æ
+	public static final String RTAG = "&gt;";			//Âè≥Ê†áÁ≠æ
 	public static final String ANDTAG = "&amp;";		//AND
-	public static final String APOTAG = "&apos;";		//µ•“˝∫≈
-	public static final String QUOTAG = "&quot;";		//À´“˝∫≈
-	
-	//========because of ”¿÷–========
+	public static final String APOTAG = "&apos;";		//ÂçïÂºïÂè∑
+	public static final String QUOTAG = "&quot;";		//ÂèåÂºïÂè∑
+
+	//========because of Ê∞∏‰∏≠========
 	public static final float GRAPHRATIO = (float)0.75;
-	
-//	*********************************	
+
+//	*********************************
 	public static void set_file_type(String type){
 		_file_type = type;
 	}
@@ -22,8 +22,8 @@ public class Common_Data {
 		return _file_type;
 	}
 //*********************************
-	
-//	*********************************	
+
+//	*********************************
 	public static void set_unit(String unit){
 		_unit = unit;
 	}
@@ -31,7 +31,7 @@ public class Common_Data {
 		return _unit;
 	}
 //*********************************
-	
+
 	public static float get_graphratio() {
 		return GRAPHRATIO;
 	}

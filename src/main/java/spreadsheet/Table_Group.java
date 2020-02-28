@@ -3,26 +3,26 @@ package spreadsheet;
 import org.xml.sax.Attributes;
 import temp_structs.Spreadsheet_Data;
 
-//´¦Àí<±í:·Ö×é¼¯>
+//å¤„ç†<è¡¨:åˆ†ç»„é›†>
 public class Table_Group {
-	
+
 	public static void process_start(String qName, Attributes atts){
 		int start = 0;
 		int end = 0;
-		
-		if(qName.equals("±í:ĞĞ")){
-			start = Integer.parseInt(atts.getValue("±í:ÆğÊ¼"));
-			end = Integer.parseInt(atts.getValue("±í:ÖÕÖ¹"));
+
+		if(qName.equals("è¡¨:è¡Œ")){
+			start = Integer.parseInt(atts.getValue("è¡¨:èµ·å§‹"));
+			end = Integer.parseInt(atts.getValue("è¡¨:ç»ˆæ­¢"));
 			Spreadsheet_Data.add_row_start(start);
 			Spreadsheet_Data.add_row_end(end);
 		}
-		else if(qName.equals("±í:ÁĞ")){
-			start = Integer.parseInt(atts.getValue("±í:ÆğÊ¼"));
-			end = Integer.parseInt(atts.getValue("±í:ÖÕÖ¹"));
+		else if(qName.equals("è¡¨:åˆ—")){
+			start = Integer.parseInt(atts.getValue("è¡¨:èµ·å§‹"));
+			end = Integer.parseInt(atts.getValue("è¡¨:ç»ˆæ­¢"));
 			Spreadsheet_Data.add_column_start(start);
 			Spreadsheet_Data.add_column_end(end);
 		}
 	}
-	
+
 	//public static void process_end(String qName){}
 }

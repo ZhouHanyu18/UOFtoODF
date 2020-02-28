@@ -2,85 +2,85 @@ package presentation;
 
 import org.xml.sax.Attributes;
 
-//´¦Àí¶¯»­ÀàĞÍ
+//å¤„ç†åŠ¨ç”»ç±»å‹
 public class Animation {
-	private static String _qName = "";					//µ±Ç°´¦ÀíµÄÔªËØÃû
-	private static Attributes _atts = null;				//µ±Ç°´¦ÀíÔªËØµÄÊôĞÔÁĞ±í	
-	private static String _chs = "";					//´æ·Å×Ö·û½ÚµãµÄÄÚÈİ
-	
-	private static String _shape_id = "";				//¶¯»­¶ÔÏó
-	private static String _action_type = "";  			//ÓÃÀ´ÅĞ¶Ï½øÈë»òÍË³ö
-	private static String _direction = "";				//½øÈë¡¢ÍË³öµÄ·½Ïò
-	private static String _delay = "";					//³ÖĞøÊ±¼ä
-	private static String _speed = "";					//½øÈë»òÍË³öËÙ¶È
-	
+	private static String _qName = "";					//å½“å‰å¤„ç†çš„å…ƒç´ å
+	private static Attributes _atts = null;				//å½“å‰å¤„ç†å…ƒç´ çš„å±æ€§åˆ—è¡¨
+	private static String _chs = "";					//å­˜æ”¾å­—ç¬¦èŠ‚ç‚¹çš„å†…å®¹
+
+	private static String _shape_id = "";				//åŠ¨ç”»å¯¹è±¡
+	private static String _action_type = "";  			//ç”¨æ¥åˆ¤æ–­è¿›å…¥æˆ–é€€å‡º
+	private static String _direction = "";				//è¿›å…¥ã€é€€å‡ºçš„æ–¹å‘
+	private static String _delay = "";					//æŒç»­æ—¶é—´
+	private static String _speed = "";					//è¿›å…¥æˆ–é€€å‡ºé€Ÿåº¦
+
 	private static boolean _duration_tag = false;
 	private static boolean _direction_tag = false;
-	
+
 	public static void process_start(String qName,Attributes atts){
 		_qName = qName;
 		_atts = atts;
-		
-		if(_qName.equals("Ñİ:¶¯»­ĞòÁĞ")){
-			_shape_id = _atts.getValue("Ñİ:¶¯»­¶ÔÏó");
+
+		if(_qName.equals("æ¼”:åŠ¨ç”»åºåˆ—")){
+			_shape_id = _atts.getValue("æ¼”:åŠ¨ç”»å¯¹è±¡");
 		}
-		if(_qName.equals("Ñİ:³ÖĞøÊ±¼ä")){
+		if(_qName.equals("æ¼”:æŒç»­æ—¶é—´")){
 			_duration_tag = true;
 		}
-		else if(_qName.equals("Ñİ:¶¯»­·½Ïò")){
+		else if(_qName.equals("æ¼”:åŠ¨ç”»æ–¹å‘")){
 			_direction_tag = true;
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		_chs = chs;
 	}
-	
+
 	public static void process_end(String qName){
 		_qName = qName;
-		
-		if(_qName.equals("Ñİ:³ÖĞøÊ±¼ä")){
+
+		if(_qName.equals("æ¼”:æŒç»­æ—¶é—´")){
 			_duration_tag = false;
 		}
-		else if(_qName.equals("Ñİ:¶¯»­·½Ïò")){
+		else if(_qName.equals("æ¼”:åŠ¨ç”»æ–¹å‘")){
 			_direction_tag = false;
 		}
-		
+
 		if(_duration_tag){
-			if(_qName.equals("Ñİ:½øÈë")){
+			if(_qName.equals("æ¼”:è¿›å…¥")){
 				_speed = _chs.trim();
 			}
-			else if(_qName.equals("Ñİ:Í£Áô")){
+			else if(_qName.equals("æ¼”:åœç•™")){
 				_delay = _chs.trim();
 			}
-			else if(_qName.equals("Ñİ:ÍÆ³ö")){
+			else if(_qName.equals("æ¼”:æ¨å‡º")){
 				_speed = _chs.trim();
 			}
 		}
 		else if(_direction_tag){
-			if(_qName.equals("Ñİ:½øÈë")){
+			if(_qName.equals("æ¼”:è¿›å…¥")){
 				_direction = convertDirection(_chs.trim(),"show-shape");
 				_action_type = "show-shape";
 			}
-			else if(_qName.equals("Ñİ:ÍË³ö")){
+			else if(_qName.equals("æ¼”:é€€å‡º")){
 				_direction = convertDirection(_chs.trim(),"hide-shape");
 				_action_type = "hide-shape";
 			}
 		}
 	}
-	
-	//uofÓëodf¶Ô ·½Ïò µÄ¶¨Òå²»Ò»ÖÂ£¬ĞèÒª×ª»» 
+
+	//uofä¸odfå¯¹ æ–¹å‘ çš„å®šä¹‰ä¸ä¸€è‡´ï¼Œéœ€è¦è½¬æ¢
 	private static String convertDirection(String string,String action_type){
 		String direction = "";
 		String pre = "";
-		
+
 		if(action_type.equals("hide-shape")){
 			pre = "to-";
 		}
 		else{
 			pre = "from-";
 		}
-		
+
 		if(string.equals("top")){
 			direction = pre + "top";
 		}
@@ -105,21 +105,21 @@ public class Animation {
 		else if(string.equals("lower right")){
 			direction = pre + "lower-right";
 		}
-		
+
 		return direction;
 	}
-	
+
 	public static String getResult(){
 		String str = "<presentation:animations>";
 		String action = "";
-		
+
 		if(_action_type.equals("show-shape")){
 			action = "presentation:show-shape";
 		}
-		else{ 
+		else{
 			action = "presentation:hide-shape";
 		}
-		
+
 		str += "<" + action;
 		str += " draw:shape-id=\"" + _shape_id + "\"";
 		str += " presentation:direction=\"" + _direction + "\"";
@@ -127,12 +127,12 @@ public class Animation {
 		str += " presentation:delay=\"" + _delay + "\"";
 		str += ">";
 		str += "</presentation:animations>";
-		
-		clear();           
-		
+
+		clear();
+
 		return str;
 	}
-	
+
 	private static void clear(){
 		_qName = "";
 		_atts = null;

@@ -7,38 +7,38 @@ import temp_structs.Stored_Data;
 public class Presentation_Page_Layout {
 	//the result
 	private static String _result = "";
-	
-	
+
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if(qName.equals("Ñİ:Ò³Ãæ°æÊ½")){
+
+		if(qName.equals("æ¼”:é¡µé¢ç‰ˆå¼")){
 			_result += "<style:presentation-page-layout";
-			_result += " style:name=\"" + atts.getValue("Ñİ:±êÊ¶·û") + "\"";
+			_result += " style:name=\"" + atts.getValue("æ¼”:æ ‡è¯†ç¬¦") + "\"";
 			_result += ">";
 		}
-		else if(qName.equals("Ñİ:Õ¼Î»·û")){
+		else if(qName.equals("æ¼”:å ä½ç¬¦")){
 			_result += "<presentation:placeholder";
-			
-			attVal = atts.getValue("Ñİ:ÀàĞÍ");
+
+			attVal = atts.getValue("æ¼”:ç±»å‹");
 			if(attVal != null){
 				_result += " presentation:object=\"" + conv_PH_type(attVal) + "\"";
 			}
 			_result += "/>";
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if(qName.equals("Ñİ:Ò³Ãæ°æÊ½")){
+		if(qName.equals("æ¼”:é¡µé¢ç‰ˆå¼")){
 			_result += "</style:presentation-page-layout>";
 		}
-		else if(qName.equals("Ñİ:Ò³Ãæ°æÊ½¼¯")){
+		else if(qName.equals("æ¼”:é¡µé¢ç‰ˆå¼é›†")){
 			Stored_Data.addStylesInStylesXml(_result);
 			_result = "";
 		}
 	}
-	
-	
+
+
 	//There are 21 types in UOF in all:
 	//title,subtitle,text,clipart,graphics,
 	//chart,spreadsheet,object,header,footer,
@@ -47,7 +47,7 @@ public class Presentation_Page_Layout {
 	//outline,handout,notes
 	public static String conv_PH_type(String val){
 		String type = "";
-		
+
 		if(val.equals("text")){
 			type = "outline";
 		}
@@ -75,7 +75,7 @@ public class Presentation_Page_Layout {
 		else{
 			type = val;
 		}
-		
+
 		return type;
 	}
 }

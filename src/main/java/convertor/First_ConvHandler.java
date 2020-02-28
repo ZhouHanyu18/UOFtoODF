@@ -17,64 +17,64 @@ import style_set.*;
 
 public class First_ConvHandler extends DefaultHandler {
 	private String _file_type = Common_Data.get_file_type();
-	
-	private boolean _object_set_tag = false;			//uof:¶ÔÏó¼¯
-	private boolean _style_set_tag = false;				//uof:Ê½Ñù¼¯
-	
+
+	private boolean _object_set_tag = false;			//uof:å¯¹è±¡é›†
+	private boolean _style_set_tag = false;				//uof:å¼æ ·é›†
+
 	//text
-	private boolean _tracked_changes_tag = false;		//×Ö:ĞŞ¶©ĞÅÏ¢¼¯
-	private boolean _hyperlink_tag = false;				//uof:Á´½Ó¼¯
-	private boolean _annotation_tag = false;			//×Ö:Åú×¢¼¯
-	private boolean _deletion_tag = false;				//×Ö:É¾³ı
-	private boolean _sectype_tag = false;				//½ÚÊôĞÔ
-	private boolean _cell_pro_tag = false;				//×Ö:µ¥Ôª¸ñÊôĞÔ
-	private boolean _row_pro_tag = false;				//×Ö:±íĞĞÊôĞÔ
-	private boolean _para_tag = false;					//×Ö:¶ÎÂä
-	private boolean _text_table_style_tag = false;		//×Ö:ÎÄ×Ö±íÊôĞÔ
-	private boolean _para_pro_tag = false;				//×Ö:¶ÎÂäÊôĞÔ
-	private boolean _text_pro_tag = false;				//×Ö:¾äÊôĞÔ
-	private boolean _field_tag = false;					//×Ö:Óò´úÂë
-	
+	private boolean _tracked_changes_tag = false;		//å­—:ä¿®è®¢ä¿¡æ¯é›†
+	private boolean _hyperlink_tag = false;				//uof:é“¾æ¥é›†
+	private boolean _annotation_tag = false;			//å­—:æ‰¹æ³¨é›†
+	private boolean _deletion_tag = false;				//å­—:åˆ é™¤
+	private boolean _sectype_tag = false;				//èŠ‚å±æ€§
+	private boolean _cell_pro_tag = false;				//å­—:å•å…ƒæ ¼å±æ€§
+	private boolean _row_pro_tag = false;				//å­—:è¡¨è¡Œå±æ€§
+	private boolean _para_tag = false;					//å­—:æ®µè½
+	private boolean _text_table_style_tag = false;		//å­—:æ–‡å­—è¡¨å±æ€§
+	private boolean _para_pro_tag = false;				//å­—:æ®µè½å±æ€§
+	private boolean _text_pro_tag = false;				//å­—:å¥å±æ€§
+	private boolean _field_tag = false;					//å­—:åŸŸä»£ç 
+
 	//spreadsheet
-	private boolean _bookmark_tag = false;				//uof:ÊéÇ©£¨ÃüÃû±í´ïÊ½£©
-	private boolean _validation_tag = false;			//±í:Êı¾İÓĞĞ§ĞÔ¼¯
-	private boolean _map_style_tag = false;				//±í:Ìõ¼ş¸ñÊ½»¯¼¯
-	private boolean _group_set_tag = false;				//±í:·Ö×é¼¯
-	private boolean _page_layout_s_tag = false;			//±í:Ò³ÃæÉèÖÃ
-	
+	private boolean _bookmark_tag = false;				//uof:ä¹¦ç­¾ï¼ˆå‘½åè¡¨è¾¾å¼ï¼‰
+	private boolean _validation_tag = false;			//è¡¨:æ•°æ®æœ‰æ•ˆæ€§é›†
+	private boolean _map_style_tag = false;				//è¡¨:æ¡ä»¶æ ¼å¼åŒ–é›†
+	private boolean _group_set_tag = false;				//è¡¨:åˆ†ç»„é›†
+	private boolean _page_layout_s_tag = false;			//è¡¨:é¡µé¢è®¾ç½®
+
 	//Added by CY.
 	private boolean _chart_tag = false;
 	private String _chartID = "";
-	
+
 	//presentation
-	private boolean _master_pane_tag = false;			//Ñİ:Ä¸°æ
-	private boolean _page_layout_p_tag = false;			//Ñİ:Ò³ÃæÉèÖÃ
-	private boolean _present_setting_tag = false; 		//Ñİ:·ÅÓ³ÉèÖÃ
-	private boolean _dp_tag = false;					//Ñİ:ÇĞ»»/Ñİ:±³¾°
-	private boolean _present_style_tag = false;			//Ñİ:ÎÄ±¾Ê½Ñù¼¯
-	private boolean _present_pl_tag = false;			//Ñİ:Ò³Ãæ°æÊ½¼¯
-	
+	private boolean _master_pane_tag = false;			//æ¼”:æ¯ç‰ˆ
+	private boolean _page_layout_p_tag = false;			//æ¼”:é¡µé¢è®¾ç½®
+	private boolean _present_setting_tag = false; 		//æ¼”:æ”¾æ˜ è®¾ç½®
+	private boolean _dp_tag = false;					//æ¼”:åˆ‡æ¢/æ¼”:èƒŒæ™¯
+	private boolean _present_style_tag = false;			//æ¼”:æ–‡æœ¬å¼æ ·é›†
+	private boolean _present_pl_tag = false;			//æ¼”:é¡µé¢ç‰ˆå¼é›†
+
 	private String _current_deletionID = "";
-	private Stack<String> _stack = new Stack<String>(); 	//´¦Àí<×Ö:¶ÎÂä>Ç¶Ì×
-	
-	
-	
+	private Stack<String> _stack = new Stack<String>(); 	//å¤„ç†<å­—:æ®µè½>åµŒå¥—
+
+
+
 	public First_ConvHandler() {
 
 	}
 
 	public void startElement(String namespaceURI, String localName,
 			String qName, Attributes atts) throws SAXException {
-		
+
 		Convertor_UOF_To_ODF.write_source_ta("parsing <" + qName + ">...\n");
-		
+
 		if(_para_pro_tag){
 			Para_Pro.process_start(qName,atts);
 		}
-		else if(qName.equals("×Ö:¶ÎÂäÊôĞÔ")){
+		else if(qName.equals("å­—:æ®µè½å±æ€§")){
 			Para_Pro.plus_para_counter();
 			Text_p.plus_para_counter();
-			
+
 			_para_pro_tag = true;
 			Para_Pro.process_start(qName,atts);
 		}
@@ -82,83 +82,83 @@ public class First_ConvHandler extends DefaultHandler {
 		if(_text_pro_tag){
 			Text_Pro.process_start(qName,atts);
 		}
-		else if(qName.equals("×Ö:¾äÊôĞÔ")){
+		else if(qName.equals("å­—:å¥å±æ€§")){
 			Text_p.plus_text_counter();
 			Text_Pro.plus_text_counter();
-			
+
 			if(!_style_set_tag && !_present_style_tag){
 				_text_pro_tag = true;
 				Text_Pro.process_start(qName,atts);
 			}
 		}
-		
+
 		if (_chart_tag) {
 			Chart.processStart(qName, atts);
 		}
 		else if(_style_set_tag){
 			Style_Set.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:Ê½Ñù¼¯")){
+		else if(qName.equals("uof:å¼æ ·é›†")){
 			_style_set_tag = true;
 		}
-		
+
 		else if(_object_set_tag){
 			Object_Set.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:¶ÔÏó¼¯")){
+		else if(qName.equals("uof:å¯¹è±¡é›†")){
 			_object_set_tag = true;
 		}
-		
+
 		else if(_hyperlink_tag){
 			HyperLink.process(qName,atts);
 		}
-		else if(qName.equals("uof:Á´½Ó¼¯")){
+		else if(qName.equals("uof:é“¾æ¥é›†")){
 			_hyperlink_tag = true;
 		}
-		
+
 		else if(_bookmark_tag){
 			Name_Expression.process_start(qName,atts);
 		}
-		else if(qName.equals("uof:ÊéÇ©¼¯")){
+		else if(qName.equals("uof:ä¹¦ç­¾é›†")){
 			_bookmark_tag = true;
 		}
 		else if(_file_type.equals("text")){
 			if(_annotation_tag){
 				Annotation.process_start(qName,atts);
 			}
-			else if(qName.equals("×Ö:Åú×¢¼¯")){
+			else if(qName.equals("å­—:æ‰¹æ³¨é›†")){
 				_annotation_tag = true;
 			}
-			
+
 			else if(_sectype_tag){
 				Page_Layout.process_start(qName,atts);
 			}
-			else if(qName.equals("×Ö:½ÚÊôĞÔ")){
+			else if(qName.equals("å­—:èŠ‚å±æ€§")){
 				Para_Pro.in_sec_type(true);
 				Text_Pro.in_sec_type(true);
 				_sectype_tag = true;
 				Page_Layout.process_start(qName,atts);
 			}
-	
+
 			else if(_deletion_tag){
 				Text_p.process_start(qName,atts);
 			}
-			else if(qName.equals("×Ö:É¾³ı")){
+			else if(qName.equals("å­—:åˆ é™¤")){
 				_deletion_tag = true;
-				_current_deletionID = atts.getValue("×Ö:ĞŞ¶©ĞÅÏ¢ÒıÓÃ");
+				_current_deletionID = atts.getValue("å­—:ä¿®è®¢ä¿¡æ¯å¼•ç”¨");
 				Text_Data.addChangeType(_current_deletionID, "deletion");
 			}
-			
+
 			else if(_para_tag){
 				_stack.push(qName);
-				
-				if(qName.equals("×Ö:Óò´úÂë")){
+
+				if(qName.equals("å­—:åŸŸä»£ç ")){
 					_field_tag = true;
 				}
 				List_Para.process_start(qName,atts);
 				Text_Anchor.process_start(qName,atts);
 			}
-			else if(qName.equals("×Ö:¶ÎÂä")){
+			else if(qName.equals("å­—:æ®µè½")){
 				_para_tag = true;
 				_stack.push(qName);
 				List_Para.process_start(qName,atts);
@@ -166,274 +166,274 @@ public class First_ConvHandler extends DefaultHandler {
 
 			else if(_cell_pro_tag){
 				Cell_Pro.process_start(qName,atts);
-			}	
-			else if(qName.equals("×Ö:µ¥Ôª¸ñÊôĞÔ")){
+			}
+			else if(qName.equals("å­—:å•å…ƒæ ¼å±æ€§")){
 				_cell_pro_tag = true;
 				Cell_Pro.process_start(qName,atts);
 			}
-			
+
 			else if(_text_table_style_tag){
 				Table_Style.process_start(qName,atts);
 			}
-			else if(qName.equals("×Ö:ÎÄ×Ö±íÊôĞÔ")){
+			else if(qName.equals("å­—:æ–‡å­—è¡¨å±æ€§")){
 				_text_table_style_tag = true;
 				Table_Style.process_start(qName,atts);
 			}
-			
+
 			else if(_row_pro_tag){
 				Table_Row.process_text_atts(qName,atts);
 			}
-			else if(qName.equals("×Ö:±íĞĞÊôĞÔ")){
+			else if(qName.equals("å­—:è¡¨è¡Œå±æ€§")){
 				_row_pro_tag = true;
 				Table_Row.process_text_atts(qName,atts);
-			}		
-			
-			else if(qName.equals("×Ö:²åÈë¿ªÊ¼")){
-				Text_Data.addChangeType(atts.getValue("×Ö:ĞŞ¶©ĞÅÏ¢ÒıÓÃ"),"insertion");
 			}
-			else if(qName.equals("×Ö:¸ñÊ½ĞŞ¶©")){
-				Text_Data.addChangeType(atts.getValue("×Ö:ĞŞ¶©ĞÅÏ¢ÒıÓÃ"),"format-change");
+
+			else if(qName.equals("å­—:æ’å…¥å¼€å§‹")){
+				Text_Data.addChangeType(atts.getValue("å­—:ä¿®è®¢ä¿¡æ¯å¼•ç”¨"),"insertion");
 			}
-			
+			else if(qName.equals("å­—:æ ¼å¼ä¿®è®¢")){
+				Text_Data.addChangeType(atts.getValue("å­—:ä¿®è®¢ä¿¡æ¯å¼•ç”¨"),"format-change");
+			}
+
 			else if(_tracked_changes_tag){
 				Tracked_changes.process(qName,atts);
 			}
-			else if(qName.equals("×Ö:ĞŞ¶©ĞÅÏ¢¼¯")){
+			else if(qName.equals("å­—:ä¿®è®¢ä¿¡æ¯é›†")){
 				_tracked_changes_tag = true;
 			}
-			else if(qName.equals("×Ö:ÓÃ»§")){
-				String id = atts.getValue("×Ö:±êÊ¶·û");
-				String name = atts.getValue("×Ö:ĞÕÃû");
+			else if(qName.equals("å­—:ç”¨æˆ·")){
+				String id = atts.getValue("å­—:æ ‡è¯†ç¬¦");
+				String name = atts.getValue("å­—:å§“å");
 				Text_Data.addUser(id,name);
 			}
 		}
 		else if(_file_type.equals("spreadsheet")){
-			if(qName.equals("±í:¹¤×÷±í")){
-				Table_Style.process_sheet_atts(qName,atts);				
+			if(qName.equals("è¡¨:å·¥ä½œè¡¨")){
+				Table_Style.process_sheet_atts(qName,atts);
 
-				Table_Shapes.set_table_id(atts.getValue("±í:Ãû³Æ"));
-			}			
-			else if(qName.equals("±í:ÁĞ")){
+				Table_Shapes.set_table_id(atts.getValue("è¡¨:åç§°"));
+			}
+			else if(qName.equals("è¡¨:åˆ—")){
 				Sheet_Table.set_has_col(true);
 				Table_Column.process_sheet_col(qName,atts);
 			}
-			else if(qName.equals("±í:ĞĞ")){
+			else if(qName.equals("è¡¨:è¡Œ")){
 				Table_Row.process_sheet_row(qName,atts);
 			}
-			else if(qName.equals("±í:¹¤×÷±íÄÚÈİ")){
+			else if(qName.equals("è¡¨:å·¥ä½œè¡¨å†…å®¹")){
 				Table_Column.process_sheet_col(qName,atts);
 				Table_Row.process_sheet_row(qName,atts);
 			}
-			
-			else if(qName.equals("±í:¼ÆËãÉèÖÃ")
-					||qName.equals("±í:ÈÕÆÚÏµÍ³-1904")
-					||qName.equals("±í:¾«È·¶ÈÒÔÏÔÊ¾ÖµÎª×¼")){
+
+			else if(qName.equals("è¡¨:è®¡ç®—è®¾ç½®")
+					||qName.equals("è¡¨:æ—¥æœŸç³»ç»Ÿ-1904")
+					||qName.equals("è¡¨:ç²¾ç¡®åº¦ä»¥æ˜¾ç¤ºå€¼ä¸ºå‡†")){
 				Calculation_Setting.process_start(qName,atts);
 			}
-			
+
 			else if(_validation_tag){
 				Content_Validation.process_start(qName,atts);
 			}
-			else if(qName.equals("±í:Êı¾İÓĞĞ§ĞÔ¼¯")){
+			else if(qName.equals("è¡¨:æ•°æ®æœ‰æ•ˆæ€§é›†")){
 				_validation_tag = true;
 				Content_Validation.process_start(qName,atts);
 			}
-			
+
 			else if(_map_style_tag){
 				Style_Map.process_start(qName,atts);
 			}
-			else if(qName.equals("±í:Ìõ¼ş¸ñÊ½»¯¼¯")){
+			else if(qName.equals("è¡¨:æ¡ä»¶æ ¼å¼åŒ–é›†")){
 				_map_style_tag = true;
 			}
-			
+
 			else if(_group_set_tag){
 				Table_Group.process_start(qName,atts);
-			}	
-			else if(qName.equals("±í:·Ö×é¼¯")){
-				_group_set_tag = true;		
 			}
-			
+			else if(qName.equals("è¡¨:åˆ†ç»„é›†")){
+				_group_set_tag = true;
+			}
+
 			else if(_page_layout_s_tag){
 				Page_Layout_S.process_start(qName,atts);
 			}
-			else if(qName.equals("±í:Ò³ÃæÉèÖÃ")){
+			else if(qName.equals("è¡¨:é¡µé¢è®¾ç½®")){
 				_page_layout_s_tag = true;
 				Page_Layout_S.process_start(qName,atts);
 			}
-			
+
 			//Added by CY.
-			else if(qName.equals("uof:Ãªµã") || qName.equals("±í:Åú×¢")){
+			else if(qName.equals("uof:é”šç‚¹") || qName.equals("è¡¨:æ‰¹æ³¨")){
 				Table_Shapes.process_start(qName,atts);
-			}		
-			else if(qName.equals("±í:Í¼±í")){
+			}
+			else if(qName.equals("è¡¨:å›¾è¡¨")){
 				_chart_tag = true;
 				_chartID = IDGenerator.get_chart_id();
 				Chart.set_ID(_chartID);
 				ZipCompress.addFolder(_chartID);
 				Spreadsheet_Data.add_table_chart(_chartID);
-				
+
 				Chart.processStart(qName, atts);
 			}
 		}
-		
+
 		else if(_file_type.equals("presentation")){
 			if(_dp_tag){
 				Draw_Page_Style.process_start(qName,atts);
 			}
-			else if(qName.equals("Ñİ:»ÃµÆÆ¬")){
+			else if(qName.equals("æ¼”:å¹»ç¯ç‰‡")){
 				_dp_tag = true;
 				Draw_Page_Style.process_start(qName,atts);
 			}
-			
+
 			else if(_present_style_tag){
 				Presentation_Style.process_start(qName,atts);
 			}
-			else if(qName.equals("Ñİ:ÎÄ±¾Ê½Ñù¼¯")){
+			else if(qName.equals("æ¼”:æ–‡æœ¬å¼æ ·é›†")){
 				_present_style_tag = true;
 			}
-			
+
 			else if(_present_pl_tag){
 				Presentation_Page_Layout.process_start(qName,atts);
 			}
-			else if(qName.equals("Ñİ:Ò³Ãæ°æÊ½¼¯")){
+			else if(qName.equals("æ¼”:é¡µé¢ç‰ˆå¼é›†")){
 				_present_pl_tag = true;
 			}
-			
+
 			else if(_master_pane_tag){
 				Master_Pane.process_start(qName,atts);
 			}
-			else if(qName.equals("Ñİ:Ä¸°æ¼¯")){
+			else if(qName.equals("æ¼”:æ¯ç‰ˆé›†")){
 				_master_pane_tag = true;
 			}
-			
+
 			else if(_page_layout_p_tag){
 				Page_Layout_p.process_start(qName,atts);
 			}
-			else if(qName.equals("Ñİ:Ò³ÃæÉèÖÃ¼¯")){
+			else if(qName.equals("æ¼”:é¡µé¢è®¾ç½®é›†")){
 				_page_layout_p_tag = true;
 			}
-			
+
 			else if(_present_setting_tag){
 				Presentation_Setting.process_start(qName,atts);
 			}
-			else if(qName.equals("Ñİ:·ÅÓ³ÉèÖÃ")){
+			else if(qName.equals("æ¼”:æ”¾æ˜ è®¾ç½®")){
 				_present_setting_tag = true;
 			}
 		}
 	}
-	
+
 	public void endElement(String namespaceURI, String localName, String qName)
-	throws SAXException {	
+	throws SAXException {
 		Convertor_UOF_To_ODF.write_source_ta("parsing </" + qName + ">...\n");
-		
+
 		if(_para_pro_tag){
 			Para_Pro.process_end(qName);
-			if(qName.equals("×Ö:¶ÎÂäÊôĞÔ")){
+			if(qName.equals("å­—:æ®µè½å±æ€§")){
 				_para_pro_tag = false;
 			}
 		}
-		
+
 		else if(_text_pro_tag){
 			Text_Pro.process_end(qName);
-			if(qName.equals("×Ö:¾äÊôĞÔ")){
+			if(qName.equals("å­—:å¥å±æ€§")){
 				_text_pro_tag = false;
 			}
 		}
-		
+
 		if(_style_set_tag){
 			Style_Set.process_end(qName);
-			if(qName.equals("uof:Ê½Ñù¼¯")){
+			if(qName.equals("uof:å¼æ ·é›†")){
 				_style_set_tag = false;
 			}
 		}
-		
+
 		else if(_object_set_tag){
 			Object_Set.process_end(qName);
-			if(qName.equals("uof:¶ÔÏó¼¯")){
+			if(qName.equals("uof:å¯¹è±¡é›†")){
 				_object_set_tag = false;
 			}
 		}
-		
-		else if(qName.equals("uof:Á´½Ó¼¯")){
+
+		else if(qName.equals("uof:é“¾æ¥é›†")){
 			_hyperlink_tag = false;
 		}
-		else if(qName.equals("uof:ÊéÇ©¼¯")){
+		else if(qName.equals("uof:ä¹¦ç­¾é›†")){
 			_bookmark_tag = false;
 		}
 
 		else if(_file_type.equals("text")){
 			if(_para_tag){
-				if(qName.equals("×Ö:Óò´úÂë")){
+				if(qName.equals("å­—:åŸŸä»£ç ")){
 					 _field_tag = false;
 				}
-				
+
 				Text_Anchor.process_end(qName);
 				_stack.pop();
 				if(_stack.empty()){
 					_para_tag = false;
 				}
 			}
-			
-			else if(qName.equals("×Ö:ĞŞ¶©ĞÅÏ¢¼¯")){
+
+			else if(qName.equals("å­—:ä¿®è®¢ä¿¡æ¯é›†")){
 				_tracked_changes_tag = false;
 			}
 
-			else if(qName.equals("×Ö:Åú×¢¼¯")){
+			else if(qName.equals("å­—:æ‰¹æ³¨é›†")){
 				_annotation_tag = false;
 				Annotation.process_end(qName);
 			}
 			else if(_annotation_tag){
 				Annotation.process_end(qName);
 			}
-			
-			else if(qName.equals("×Ö:É¾³ı")){
+
+			else if(qName.equals("å­—:åˆ é™¤")){
 				_deletion_tag = false;
 				Text_Data.addDeletionData(_current_deletionID,Text_p.get_result());
 			}
 			else if(_deletion_tag){
 				Text_p.process_end(qName);
 			}
-			
+
 			else if(_cell_pro_tag){
 				Cell_Pro.process_end(qName);
-				if(qName.equals("×Ö:µ¥Ôª¸ñÊôĞÔ")){
+				if(qName.equals("å­—:å•å…ƒæ ¼å±æ€§")){
 					_cell_pro_tag = false;
 					Stored_Data.addCellStyle(Cell_Pro.get_result());
 				}
 			}
-			
+
 			else if(_text_table_style_tag){
 				Table_Style.process_end(qName);
-				if(qName.equals("×Ö:ÎÄ×Ö±íÊôĞÔ")){
+				if(qName.equals("å­—:æ–‡å­—è¡¨å±æ€§")){
 					_text_table_style_tag = false;
 				}
 			}
-			
-			else if(qName.equals("×Ö:±íĞĞÊôĞÔ")){
+
+			else if(qName.equals("å­—:è¡¨è¡Œå±æ€§")){
 				Table_Row.add_text_atts();
 				_row_pro_tag = false;
 			}
 
 			else if(_sectype_tag){
 				Page_Layout.process_end(qName);
-				if(qName.equals("×Ö:½ÚÊôĞÔ")){
+				if(qName.equals("å­—:èŠ‚å±æ€§")){
 					Para_Pro.in_sec_type(false);
 					Text_Pro.in_sec_type(false);
 					_sectype_tag = false;
 				}
 			}
 		}
-		
+
 		else if(_file_type.equals("spreadsheet")){
 			//===Added by CY.===
 			if (_chart_tag){
 				Chart.processEnd(qName);
 			}
-			
-			if(qName.equals("uof:Ãªµã") || qName.equals("±í:Åú×¢")){
+
+			if(qName.equals("uof:é”šç‚¹") || qName.equals("è¡¨:æ‰¹æ³¨")){
 				Table_Shapes.process_end(qName);
 			}
-			else if(qName.equals("±í:Í¼±í")){
+			else if(qName.equals("è¡¨:å›¾è¡¨")){
 				_chart_tag = false;
 				String chartFrame = Chart.getChartFrame();
 				Table_Shapes.add_one_shape(chartFrame);
@@ -443,87 +443,87 @@ public class First_ConvHandler extends DefaultHandler {
 				_chartID = "";
 			}
 			//==================
-			
-			else if(qName.equals("±í:·Ö×é¼¯")){
+
+			else if(qName.equals("è¡¨:åˆ†ç»„é›†")){
 				_group_set_tag = false;
 			}
-			
+
 			else if(_page_layout_s_tag){
 				Page_Layout_S.process_end(qName);
-				if(qName.equals("±í:Ò³ÃæÉèÖÃ")){
+				if(qName.equals("è¡¨:é¡µé¢è®¾ç½®")){
 					_page_layout_s_tag = false;
 				}
 			}
-			
+
 			else if(_validation_tag){
 				Content_Validation.process_end(qName);
-				if(qName.equals("±í:Êı¾İÓĞĞ§ĞÔ¼¯")){
+				if(qName.equals("è¡¨:æ•°æ®æœ‰æ•ˆæ€§é›†")){
 					_validation_tag = false;
 				}
 			}
-			
+
 			else if(_map_style_tag){
 				Style_Map.process_end(qName);
-				if(qName.equals("±í:Ìõ¼ş¸ñÊ½»¯¼¯")){
+				if(qName.equals("è¡¨:æ¡ä»¶æ ¼å¼åŒ–é›†")){
 					_map_style_tag = false;
 				}
 			}
 		}
-		
-		else if(_file_type.equals("presentation")){			
+
+		else if(_file_type.equals("presentation")){
 			if(_dp_tag){
 				Draw_Page_Style.process_end(qName);
-				if(qName.equals("Ñİ:»ÃµÆÆ¬")){
+				if(qName.equals("æ¼”:å¹»ç¯ç‰‡")){
 					_dp_tag = false;
 				}
 			}
-			
+
 			else if(_present_style_tag){
 				Presentation_Style.process_end(qName);
-				if(qName.equals("Ñİ:ÎÄ±¾Ê½Ñù¼¯")){
+				if(qName.equals("æ¼”:æ–‡æœ¬å¼æ ·é›†")){
 					_present_style_tag = false;
 				}
 			}
-			
+
 			else if(_present_pl_tag){
 				Presentation_Page_Layout.process_end(qName);
-				if(qName.equals("Ñİ:Ò³Ãæ°æÊ½¼¯")){
+				if(qName.equals("æ¼”:é¡µé¢ç‰ˆå¼é›†")){
 					_present_pl_tag = false;
 				}
 			}
-			
+
 			else if(_master_pane_tag){
 				Master_Pane.process_end(qName);
-				if(qName.equals("Ñİ:Ä¸°æ¼¯")){
+				if(qName.equals("æ¼”:æ¯ç‰ˆé›†")){
 					_master_pane_tag = false;
 				}
 			}
-			
+
 			else if(_page_layout_p_tag){
 				Page_Layout_p.process_end(qName);
-				if(qName.equals("Ñİ:Ò³ÃæÉèÖÃ¼¯")){
+				if(qName.equals("æ¼”:é¡µé¢è®¾ç½®é›†")){
 					_page_layout_p_tag = false;
 				}
 			}
-			
+
 			else if(_present_setting_tag){
 				Presentation_Setting.process_end(qName);
-				if(qName.equals("Ñİ:·ÅÓ³ÉèÖÃ")){
+				if(qName.equals("æ¼”:æ”¾æ˜ è®¾ç½®")){
 					_present_setting_tag = false;
 				}
-			}								
-		}	
+			}
+		}
 	}
-	
+
 	public void characters(char[] ch, int start, int length)
 	throws SAXException  {
 		String chs = new String(ch, start, length);
-		
+
 		if(chs.equals(""))		return ;
 		chs = chs.replaceAll("&", Common_Data.ANDTAG);
 		chs = chs.replaceAll("<", Common_Data.LTAG);
-		
-		
+
+
 		if(_para_pro_tag){
 			Para_Pro.process_chars(chs);
 		}
@@ -536,12 +536,12 @@ public class First_ConvHandler extends DefaultHandler {
 		else if(_style_set_tag){
 			Style_Set.process_chars(chs);
 		}
-		
+
 		else if(_file_type.equals("text")){
 			if(_field_tag && chs.toUpperCase().contains("SEQ")){
 				Text_Field.add_seq_vari(chs);
 			}
-			
+
 			if(_para_tag){
 				Text_Anchor.process_chars(chs);
 			}
@@ -561,7 +561,7 @@ public class First_ConvHandler extends DefaultHandler {
 				Text_p.process_chars(chs);
 			}
 		}
-		
+
 		else if(_file_type.equals("spreadsheet")){
 			if(_validation_tag){
 				Content_Validation.process_chars(chs);
@@ -576,7 +576,7 @@ public class First_ConvHandler extends DefaultHandler {
 				Chart.process_chars(chs);
 			}
 		}
-		
+
 		else if(_file_type.equals("presentation")){
 			if(_present_setting_tag){
 				Presentation_Setting.process_chars(chs);
@@ -589,18 +589,18 @@ public class First_ConvHandler extends DefaultHandler {
 			}
 		}
 	}
-	
-	public void error(SAXParseException exception) 
+
+	public void error(SAXParseException exception)
 	{
 		System.err.println("Error parsing the file: "+exception.getMessage());
 	}
-	
-	public void warning(SAXParseException exception) 
+
+	public void warning(SAXParseException exception)
 	{
 		System.err.println("Warning parsing the file: "+exception.getMessage());
 	}
-	
-	public void fatalError(SAXParseException exception) 
+
+	public void fatalError(SAXParseException exception)
 	{
 		System.err.println("Fatal error parsing the file: "+exception.getMessage());
 		System.err.println("Cannot continue.");

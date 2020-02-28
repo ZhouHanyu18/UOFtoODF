@@ -7,28 +7,28 @@ import convertor.IDGenerator;
 import temp_structs.*;
 
 public class AutoNum_Set {
-	
-	private static String _chs = ""; 
+
+	private static String _chs = "";
 	//The result
-	private static String _result = ""; 
+	private static String _result = "";
 	//The level element's name
 	private static String _level_qName = "";
 	//Attributes for <_level_qName>
-	private static String _level_atts = "";	
+	private static String _level_atts = "";
 	//Attributes for <style:list-level-properties>
 	private static String _level_pro = "";
 	//Attributes for <style:text-properties>
-	private static String _text_pro = ""; 
+	private static String _text_pro = "";
 	//The indent type of UOF:"left" or "first"
 	private static String _indent_type = "";
-	//Indent value for <×Ö:×ó>
+	//Indent value for <å­—:å·¦>
 	private static float _indent_left = 0.0f;
-	//tag for <×Ö:·ûºÅ×ÖÌå>
+	//tag for <å­—:ç¬¦å·å­—ä½“>
 	private static boolean _sent_tag = false;
 	//name of the text-style
-	private static String _text_style_name = "";	
-	
-	
+	private static String _text_style_name = "";
+
+
 	private static void clear(){
 		_level_qName = "";
 		_level_atts = "";
@@ -38,43 +38,43 @@ public class AutoNum_Set {
 		_indent_left = 0.0f;
 		_text_style_name = "";
 	}
-	
+
 	//Get an entire level element
 	private static String get_level(){
 		String level = "";
 		String name = "";
-		
+
 		name = commit_text_style();
 		if(!name.equals("")){
 			_level_atts += " text:style-name=\"" + name + "\"";
 		}
-		
+
 		if(_level_qName.equals("")){
 			//The default element name
 			_level_qName = "text:list-level-style-number";
 		}
-		
+
 		level = "<" + _level_qName + _level_atts + ">";
 		level += "<style:list-level-properties" + _level_pro + "/>";
 		if(!_text_pro.equals("")){
 			level += "<style:text-properties" + _text_pro + "/>";
-		}		
+		}
 		level += "</" + _level_qName + ">";
-		
+
 		clear();
 		return level;
 	}
-	
+
 	private static String commit_text_style(){
 		String name = "";
 		String style = "";
-		
+
 		if(_text_pro.equals("")){
 			name = _text_style_name;
 		}
 		else {
 			name = IDGenerator.get_olts_id();
-			
+
 			style = "<style:style style:family=\"text\"";
 			style += " style:name=\"" + name + "\"";
 			if(!_text_style_name.equals("")){
@@ -84,36 +84,36 @@ public class AutoNum_Set {
 			style += "<style:text-properties" + _text_pro + "/>";
 			style += "</style:style>";
 		}
-		
+
 		Stored_Data.addStylesInStylesXml(style);
-		
+
 		return name;
 	}
-	
+
 	public static String get_reuslt(){
 		String rst = "";
-		
+
 		rst = _result;
 		_result = "";
-		
+
 		return rst;
 	}
-	
+
 	public static void process_start(String qName,Attributes atts){
 		String attVal = "";
-		
-		if (qName.equals("×Ö:×Ô¶¯±àºÅ")){
-			_result += "<text:list-style style:name=\"" 
-				+ atts.getValue("×Ö:±êÊ¶·û") + "\">"; 
+
+		if (qName.equals("å­—:è‡ªåŠ¨ç¼–å·")){
+			_result += "<text:list-style style:name=\""
+				+ atts.getValue("å­—:æ ‡è¯†ç¬¦") + "\">";
 		}
-		
-		else if (qName.equals("×Ö:¼¶±ğ")) {
-			attVal = atts.getValue("×Ö:¼¶±ğÖµ");
+
+		else if (qName.equals("å­—:çº§åˆ«")) {
+			attVal = atts.getValue("å­—:çº§åˆ«å€¼");
 			attVal = (attVal==null) ? "0" : attVal;
 			int level = Integer.parseInt(attVal) + 1;
 			_level_atts += " text:level=\"" + level + "\"";
-			
-			attVal = atts.getValue("×Ö:±àºÅ¶ÔÆë·½Ê½");
+
+			attVal = atts.getValue("å­—:ç¼–å·å¯¹é½æ–¹å¼");
 			attVal = (attVal==null) ? "left" : attVal;
 			_level_pro += " fo:text-align=\"" + attVal + "\"";
 		}
@@ -121,31 +121,31 @@ public class AutoNum_Set {
 		else if(_sent_tag){
 			Sent_Style.process_start(qName,atts);
 		}
-		else if (qName.equals("×Ö:·ûºÅ×ÖÌå")) {
-			attVal = atts.getValue("×Ö:Ê½ÑùÒıÓÃ");		
+		else if (qName.equals("å­—:ç¬¦å·å­—ä½“")) {
+			attVal = atts.getValue("å­—:å¼æ ·å¼•ç”¨");
 			if(attVal != null){
 				_text_style_name = attVal;
-			}		
+			}
 			_sent_tag = true;
 		}
-/*		
-		else if(qName.equals("×Ö:×ÖÌå")){
+/*
+		else if(qName.equals("å­—:å­—ä½“")){
 			//The default font-name is StarSymbol
-			attVal = atts.getValue("×Ö:Î÷ÎÄ×ÖÌåÒıÓÃ");
+			attVal = atts.getValue("å­—:è¥¿æ–‡å­—ä½“å¼•ç”¨");
 			attVal = (attVal==null) ? "StarSymbol" : attVal;
 			_text_pro += " style:font-name=\"" + attVal + "\"";
 		}
-	*/	
-		else if(qName.equals("×Ö:×ó")){
+	*/
+		else if(qName.equals("å­—:å·¦")){
 			_indent_type = "left";
 		}
-		else if(qName.equals("×Ö:Ê×ĞĞ")){
+		else if(qName.equals("å­—:é¦–è¡Œ")){
 			_indent_type = "first";
 		}
-		else if(qName.equals("×Ö:¾ø¶Ô")){
-			attVal = atts.getValue("×Ö:Öµ");
+		else if(qName.equals("å­—:ç»å¯¹")){
+			attVal = atts.getValue("å­—:å€¼");
 			attVal = (attVal==null) ? "0" : attVal;
-			
+
 			if(_indent_type.equals("left")){
 				_indent_left = Float.parseFloat(attVal);
 			}
@@ -154,138 +154,138 @@ public class AutoNum_Set {
 			}
 		}
 	}
-	
+
 	public static void process_chars(String chs){
 		if(_sent_tag){
 			Sent_Style.process_chars(chs);
 		}
 		else {
-			_chs = chs;			
+			_chs = chs;
 		}
 	}
-	
+
 	public static void process_end(String qName){
-		if (qName.equals("×Ö:×Ô¶¯±àºÅ")){
+		if (qName.equals("å­—:è‡ªåŠ¨ç¼–å·")){
 			_result += "</text:list-style>";
 		}
-		
-		else if (qName.equals("×Ö:¼¶±ğ")) {
+
+		else if (qName.equals("å­—:çº§åˆ«")) {
 			_result += get_level();
 		}
-		
+
 		else if(_sent_tag){
 			Sent_Style.process_end(qName);
-			if(qName.equals("×Ö:·ûºÅ×ÖÌå")){
+			if(qName.equals("å­—:ç¬¦å·å­—ä½“")){
 				_sent_tag = false;
 				_text_pro = Sent_Style.get_text_pro();
 			}
 		}
-		else if (qName.equals("×Ö:ÏîÄ¿·ûºÅ")) {
+		else if (qName.equals("å­—:é¡¹ç›®ç¬¦å·")) {
 			if(!_chs.equals("")){
 				_level_qName = "text:list-level-style-bullet";
 				_level_atts += " text:bullet-char=\"" + _chs + "\"";
 			}
 		}
-		
-		else if (qName.equals("×Ö:±àºÅ¸ñÊ½")) {
+
+		else if (qName.equals("å­—:ç¼–å·æ ¼å¼")) {
 			_level_atts += " style:num-format=\"" + Common_Pro.conv_num_format(_chs) + "\"";
 		}
-		
-		else if(qName.equals("×Ö:±àºÅ¸ñÊ½±íÊ¾")){
+
+		else if(qName.equals("å­—:ç¼–å·æ ¼å¼è¡¨ç¤º")){
 			if(!parse_prefix(_chs).equals("")){
 				_level_atts += " style:num-prefix=\"" + parse_prefix(_chs) + "\"";
 			}
-			
+
 			if(!parse_suffix(_chs).equals("")){
 				_level_atts += " style:num-suffix=\"" + parse_suffix(_chs) + "\"";
 			}
-			
+
 			int levels = display_levels(_chs);
 			if(levels != 0){
 				_level_atts += " text:display-levels=\"" + levels + "\"";
 			}
 		}
-		
-		else if (qName.equals("×Ö:Í¼Æ¬·ûºÅÒıÓÃ")) {
+
+		else if (qName.equals("å­—:å›¾ç‰‡ç¬¦å·å¼•ç”¨")) {
 			if(!_chs.equals("")){
 				_level_qName = "text:list-level-style-image";
-				_level_atts += " xlink:href=\"" 
+				_level_atts += " xlink:href=\""
 					+ Object_Set_Data.getOtherObj(_chs) + "\"";
 				_level_atts += " xlink:type=\"simple\"" +
 						" xlink:show=\"embed\" xlink:actuate=\"onLoad\"";
-				
-				//For <text:list-level-style-image>, the width and 
+
+				//For <text:list-level-style-image>, the width and
 				//height attributes are needed
 				_level_pro += " fo:width=\"9.01pt\" fo:height=\"9.01pt\"";
 			}
 		}
-		
-		else if (qName.equals("×Ö:Ëõ½ø")){
+
+		else if (qName.equals("å­—:ç¼©è¿›")){
 			float space = _indent_left;
-			_level_pro += " text:space-before=\"" + space + Common_Data.get_unit() + "\"";		
+			_level_pro += " text:space-before=\"" + space + Common_Data.get_unit() + "\"";
 		}
-		
-		else if (qName.equals("×Ö:ÖÆ±í·ûÎ»ÖÃ")){
+
+		else if (qName.equals("å­—:åˆ¶è¡¨ç¬¦ä½ç½®")){
 			float tab = 0.0f;
 			float labelWid = 18;
 			float labelDis = 0.0f;
-			_chs = (_chs.equals("")) ? "0" : _chs;		
+			_chs = (_chs.equals("")) ? "0" : _chs;
 			tab = Float.parseFloat(_chs);
 
-			_level_pro += " text:min-label-width=\"" 
+			_level_pro += " text:min-label-width=\""
 				+ labelWid + Common_Data.get_unit() + "\"";
-			
+
 			labelDis = tab - _indent_left - labelWid;
-			_level_pro += " text:min-label-distance=\"" 
+			_level_pro += " text:min-label-distance=\""
 				+ labelDis + Common_Data.get_unit() + "\"";
 		}
-		
-		else if (qName.equals("×Ö:ÆğÊ¼±àºÅ")) {
+
+		else if (qName.equals("å­—:èµ·å§‹ç¼–å·")) {
 			if(!_chs.equals("")){
 				_level_atts += " text:start-value=\"" + _chs + "\"";
 			}
 		}
-		
-		_chs = "";   
+
+		_chs = "";
 	}
-	
+
 	//Parse the style:num-prefix attribute for ODF
 	//from a string like "<prefix>%1.%2<suffix>"
 	private static String parse_prefix(String val){
 		String prefix = "";
 		int index = 0;
-		
+
 		index = val.indexOf("%");
-		
+
 		if(index == -1){
 			prefix = "";
 		}else{
 			prefix = val.substring(0,index);
 		}
-		
+
 		return prefix;
 	}
-	
+
 	//Parse the style:num-suffix attribute for ODF
 	//from a string like "<prefix>%1.%2<suffix>"
 	private static String parse_suffix(String val){
 		String suffix = "";
 		int index = 0;
-		
+
 		index = val.lastIndexOf("%");
 		if(index == -1){
 			suffix = "";
 		}else {
 			suffix = val.substring(index+2);
 		}
-		
+
 		return suffix;
 	}
-	
+
 	//Parse the style:display-levels attribute for odf
 	private static int display_levels(String val){
 		int count = 0;
-		
+
 		for(int i = 0; i < val.length(); i ++){
 			if(val.charAt(i) == '%'){
 				count ++;
