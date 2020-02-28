@@ -71,7 +71,7 @@ public class Convertor_UOF_To_ODF  extends JFrame implements ActionListener{
 	    JPanel butPn = new JPanel();
 	    butPn.add(convertButton);
 	    butPn.setBorder(BorderFactory.createEmptyBorder(0,0,0,37));
-	    _rst_path_field = new JTextField(System.getProperty("user.dir") + "\\");
+	    _rst_path_field = new JTextField(System.getProperty("user.dir") + "/");
 	    _rst_path_field.setBorder(BorderFactory.createEmptyBorder(0,0,0,20));
 	    _rst_path_field.setBackground(Color.LIGHT_GRAY);
 	    _rst_path_field.setColumns(32);
